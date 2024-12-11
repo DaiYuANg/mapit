@@ -1,16 +1,21 @@
 package org.mapit.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
+import org.hibernate.annotations.SoftDelete;
+import org.mapit.converter.JsonConverter;
+
+import java.util.Map;
+
+import static org.mapit.constant.TableNaming.DICTIONARY_ITEM;
 
 @Entity
-@Table
+@Table(name = DICTIONARY_ITEM)
 @Getter
 @Setter
+@ToString(callSuper = true, onlyExplicitlyIncluded = true)
 public class DictionaryItem extends BaseEntity {
 
   @Column
@@ -19,6 +24,19 @@ public class DictionaryItem extends BaseEntity {
   @Column
   private String value;
 
+  @Column
+  private String description;
+
+  @Column
+  private String remark;
+
   @ManyToOne
   private Dictionary dictionary;
+
+  @SoftDelete
+  private Boolean delete;
+
+  @Convert(converter = JsonConverter.class)
+  @Column(columnDefinition = "json")
+  private Map<String, Object> meta;
 }

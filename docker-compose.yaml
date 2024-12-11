@@ -1,0 +1,22 @@
+services:
+  infinispan-server:
+    image: infinispan/server:latest
+    environment:
+      - USER=admin
+      - PASS=password
+    ports:
+      - "11222:11222"
+
+  postgres:
+    image: postgres:latest
+    environment:
+      - POSTGRES_USER=mapit
+      - POSTGRES_PASSWORD=mapit
+      - POSTGRES_DB=mapit
+    ports:
+      - '5432:5432'
+    volumes:
+      - db:/var/lib/postgresql/data
+
+volumes:
+  db:

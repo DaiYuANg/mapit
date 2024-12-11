@@ -1,0 +1,39 @@
+services:
+  mapit:
+    image: mapit/server:8758e630
+    ports:
+      - "19090:19090"
+    environment:
+      - QUARKUS_DATASOURCE_DB_KIND=postgresql
+      - QUARKUS_DATASOURCE_USERNAME=mapit
+      - QUARKUS_DATASOURCE_PASSWORD=mapit
+      - QUARKUS_DATASOURCE_REACTIVE_URL=vertx-reactive:postgresql://postgres:5432/mapit?loggerLevel=OFF
+      - MP_JWT_VERIFY_PUBLICKEY_LOCATION=file://publicKey.pem
+      - SMALLRYE_JWT_SIGN_KEY_LOCATION=file://privateKey.pem
+      - QUARKUS_INFINISPAN_CLIENT_CLIENT_INTELLIGENCE=BASIC
+      - QUARKUS_INFINISPAN_CLIENT_HOSTS=infinispan:11222
+      - QUARKUS_INFINISPAN_CLIENT_PASSWORD=password
+      - QUARKUS_INFINISPAN_CLIENT_USERNAME=admin
+
+  infinispan-server:
+    image: infinispan/server:latest
+    container_name: infinispan
+    environment:
+      - USER=admin
+      - PASS=password
+    ports:
+      - "11222:11222"
+
+  postgres:
+    image: postgres:latest
+    environment:
+      - POSTGRES_USER=mapit
+      - POSTGRES_PASSWORD=mapit
+      - POSTGRES_DB=mapit
+    ports:
+      - '5432:5432'
+    volumes:
+      - db:/var/lib/postgresql/data
+
+volumes:
+  db:

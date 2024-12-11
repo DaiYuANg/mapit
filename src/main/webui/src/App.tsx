@@ -5,15 +5,12 @@ import { notificationProvider, RefineSnackbarProvider, ThemedLayoutV2 } from "@r
 
 import CssBaseline from "@mui/material/CssBaseline";
 import GlobalStyles from "@mui/material/GlobalStyles";
-import routerBindings, {
-  DocumentTitleHandler,
-  NavigateToResource,
-  UnsavedChangesNotifier,
-} from "@refinedev/react-router-v6";
+import routerBindings, { DocumentTitleHandler, UnsavedChangesNotifier } from "@refinedev/react-router-v6";
 import { authProvider } from "./provider/authProvider";
 import { AppIcon } from "./components/app-icon";
 import { MapitDataProvider } from "./provider/dataProvider";
 import { RoutesDefine } from "./router/Route";
+import { resource } from "./router/resource";
 
 function App() {
   return (
@@ -21,34 +18,13 @@ function App() {
       <CssBaseline />
       <GlobalStyles styles={{ html: { WebkitFontSmoothing: "auto" } }} />
       <RefineSnackbarProvider>
-        <DevtoolsProvider>
+        <DevtoolsProvider url={"localhost"}>
           <Refine
             dataProvider={MapitDataProvider("/api")}
             notificationProvider={notificationProvider}
             authProvider={authProvider}
             routerProvider={routerBindings}
-            resources={[
-              {
-                name: "project",
-                list: "/blog-posts",
-                create: "/blog-posts/create",
-                edit: "/blog-posts/edit/:id",
-                show: "/blog-posts/show/:id",
-                meta: {
-                  canDelete: true,
-                },
-              },
-              {
-                name: "categories",
-                list: "/categories",
-                create: "/categories/create",
-                edit: "/categories/edit/:id",
-                show: "/categories/show/:id",
-                meta: {
-                  canDelete: true,
-                },
-              },
-            ]}
+            resources={resource}
             options={{
               syncWithLocation: true,
               warnWhenUnsavedChanges: true,

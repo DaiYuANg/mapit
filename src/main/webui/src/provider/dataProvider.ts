@@ -13,7 +13,8 @@ export const MapitDataProvider = (url: string): DataProvider => {
         pageSize: pagination?.pageSize,
       };
       const response = await req.get(resource, { params: queryParam });
-      const data = response.data;
+      console.log(response);
+      const data = response.data ? response.data : [];
 
       return {
         data,

@@ -1,8 +1,8 @@
-import axios from 'axios';
-import {TOKEN_KEY} from "../provider/authProvider";
+import axios from "axios";
+import { TOKEN_KEY } from "../provider/authProvider";
 
 const req = axios.create({
-  baseURL: '/api/v1',
+  baseURL: "/api/v1",
   timeout: 10000,
 });
 
@@ -19,7 +19,7 @@ req.interceptors.request.use(
   },
 );
 
-req.interceptors.response.use(resp => {
-  return resp.data
-})
-export {req}
+req.interceptors.response.use((resp) => {
+  return resp.data.data;
+});
+export { req };

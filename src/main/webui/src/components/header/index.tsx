@@ -6,10 +6,10 @@ import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import {useGetIdentity} from "@refinedev/core";
-import {HamburgerMenu, RefineThemedLayoutV2HeaderProps} from "@refinedev/mui";
-import React, {useContext} from "react";
-import {ColorModeContext} from "../../contexts/color-mode";
+import { useGetIdentity } from "@refinedev/core";
+import { HamburgerMenu, RefineThemedLayoutV2HeaderProps } from "@refinedev/mui";
+import React, { useContext } from "react";
+import { ColorModeContext } from "../../contexts/color-mode";
 
 type IUser = {
   id: number;
@@ -17,45 +17,28 @@ type IUser = {
   avatar: string;
 };
 
-export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
-                                                                    sticky = true,
-                                                                  }) => {
-  const {mode, setMode} = useContext(ColorModeContext);
+export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({ sticky = true }) => {
+  const { mode, setMode } = useContext(ColorModeContext);
 
-  const {data: user} = useGetIdentity<IUser>();
+  const { data: user } = useGetIdentity<IUser>();
 
   return (
     <AppBar position={sticky ? "sticky" : "relative"}>
       <Toolbar>
-        <Stack
-          direction="row"
-          width="100%"
-          justifyContent="flex-end"
-          alignItems="center"
-        >
-          <HamburgerMenu/>
-          <Stack
-            direction="row"
-            width="100%"
-            justifyContent="flex-end"
-            alignItems="center"
-          >
+        <Stack direction="row" width="100%" justifyContent="flex-end" alignItems="center">
+          <HamburgerMenu />
+          <Stack direction="row" width="100%" justifyContent="flex-end" alignItems="center">
             <IconButton
               color="inherit"
               onClick={() => {
                 setMode();
               }}
             >
-              {mode === "dark" ? <LightModeOutlined/> : <DarkModeOutlined/>}
+              {mode === "dark" ? <LightModeOutlined /> : <DarkModeOutlined />}
             </IconButton>
 
             {(user?.avatar || user?.name) && (
-              <Stack
-                direction="row"
-                gap="16px"
-                alignItems="center"
-                justifyContent="center"
-              >
+              <Stack direction="row" gap="16px" alignItems="center" justifyContent="center">
                 {user?.name && (
                   <Typography
                     sx={{
@@ -69,7 +52,7 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
                     {user?.name}
                   </Typography>
                 )}
-                <Avatar src={user?.avatar} alt={user?.name}/>
+                <Avatar src={user?.avatar} alt={user?.name} />
               </Stack>
             )}
           </Stack>

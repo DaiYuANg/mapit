@@ -3,7 +3,7 @@ import { Authenticated } from "@refinedev/core";
 import { CatchAllNavigate, NavigateToResource } from "@refinedev/react-router-v6";
 import { ErrorComponent, ThemedLayoutV2 } from "@refinedev/mui";
 import { Header } from "../components";
-import { ProjectCreate, BlogPostEdit, BlogPostList, BlogPostShow } from "../pages/projects";
+import { ProjectCreate, BlogPostEdit, BlogPostList, BlogPostShow } from "../pages/project";
 import { CategoryCreate, CategoryEdit, CategoryList, CategoryShow } from "../pages/categories";
 import { Login } from "../pages/login";
 import { Register } from "../pages/register";

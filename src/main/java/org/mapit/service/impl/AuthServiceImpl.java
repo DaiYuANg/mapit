@@ -1,4 +1,4 @@
-package org.mapit.service;
+package org.mapit.service.impl;
 
 import io.smallrye.jwt.build.Jwt;
 import io.smallrye.mutiny.Uni;
@@ -12,6 +12,8 @@ import org.mapit.model.LoginParameter;
 import org.mapit.model.LoginResult;
 import org.mapit.model.LoginResultBuilder;
 import org.mapit.repository.UserRepository;
+import org.mapit.service.AuthService;
+import org.mapit.util.JwtBuilderHelper;
 
 import java.util.Date;
 
@@ -26,12 +28,11 @@ public class AuthServiceImpl implements AuthService {
 
   private final MapitConfig mapitConfig;
 
+  private final JwtBuilderHelper jwtBuilderHelper;
+
   @Override
   public Uni<LoginResult> login(LoginParameter loginParameter) {
-    val jwt = Jwt.issuer("https://api.mapit.com")
-      .upn(mapitConfig.username())
-      .expiresAt(DateUtils.addDays(new Date(), 10).getTime())
-      .sign();
+    val jwt = jwtBuilderHelper.buildJwt();
     log.atInfo().log("Config:{}", mapitConfig.username());
     log.atInfo().log("Config:{}", mapitConfig.password());
     log.atInfo().log("Auth Request{}", loginParameter);

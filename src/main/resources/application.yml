@@ -5,6 +5,7 @@ mapit:
 quarkus:
   http:
     enable-compression: true
+    port: 19090
   console:
     color: true
   hibernate-orm:
@@ -32,3 +33,6 @@ quarkus:
       auto-ping-interval: 1
       traffic-logging:
         enabled: true
+  container-image:
+    group: mapit
+    name: server

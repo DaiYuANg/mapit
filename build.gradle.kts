@@ -1,3 +1,5 @@
+import com.xenoterracide.gradle.semver.GitMetadataExtension
+
 plugins {
   java
   alias(libs.plugins.quarkus)
@@ -7,15 +9,19 @@ plugins {
   alias(libs.plugins.lombok)
   alias(libs.plugins.plantuml)
   alias(libs.plugins.semver)
+  alias(libs.plugins.spotless)
+  alias(libs.plugins.docker.compose)
 }
 
 apply<RSAKeyPlugin>()
 
-repositories {
-  mavenCentral()
-  mavenLocal()
-  gradlePluginPortal()
-  google()
+allprojects {
+  repositories {
+    mavenCentral()
+    mavenLocal()
+    gradlePluginPortal()
+    google()
+  }
 }
 
 dependencies {
@@ -49,6 +55,11 @@ dependencies {
   implementation(libs.quarkus.container.image.docker)
   implementation(libs.quarkus.smallrye.health)
   implementation(libs.quarkus.smallrye.openapi)
+  implementation(libs.quarkus.flyway)
+  implementation(libs.quarkus.jdbc.mysql)
+  implementation(libs.quarkus.jdbc.mariadb)
+  implementation(libs.quarkus.jdbc.postgresql)
+  implementation(libs.quarkus.systemd.notifiy)
 
   implementation(libs.record.builder.core)
   annotationProcessor(libs.record.builder.processor)
@@ -56,10 +67,13 @@ dependencies {
   implementation(libs.mapstruct)
   annotationProcessor(libs.mapstruct.processor)
 
+  implementation(projects.sharedDataStructure)
+
   implementation(libs.agrona)
 
+  implementation(libs.vavr)
   implementation(libs.guava)
-  implementation(libs.useragent)
+
   compileOnly(libs.jetbrainsAnnotation)
   implementation(libs.password4j)
 
@@ -76,8 +90,10 @@ dependencies {
   testImplementation(libs.rest.assured)
 }
 
+val git: GitMetadataExtension = semver.git
+
 group = "org.mapit"
-version = "1.0-SNAPSHOT"
+version = git.commitShort!!
 
 java {
   sourceCompatibility = JavaVersion.VERSION_21

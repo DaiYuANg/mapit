@@ -31,9 +31,10 @@ export const BlogPostList = () => {
         minWidth: 200,
       },
       {
-        field: "content",
+        field: "description",
         flex: 1,
-        headerName: "Content",
+        headerName: "Description",
+        align: "left",
         minWidth: 250,
         renderCell: function render({ value }) {
           if (!value) return "-";
@@ -41,13 +42,15 @@ export const BlogPostList = () => {
         },
       },
       {
-        field: "status",
+        field: "accessKey",
         flex: 1,
-        headerName: "Status",
+        headerName: "Access Key",
+        align: "left",
         minWidth: 200,
       },
       {
-        field: "createdAt",
+        field: "createAt",
+        align: "left",
         flex: 1,
         headerName: "Created at",
         minWidth: 250,

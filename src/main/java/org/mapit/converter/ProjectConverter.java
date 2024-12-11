@@ -16,7 +16,7 @@ public interface ProjectConverter {
   @Mapping(target = "updateAt", ignore = true)
   @Mapping(target = "dictionaries", ignore = true)
   @Mapping(target = "createAt", ignore = true)
-  @Mapping(target = "accessToken", ignore = true)
+  @Mapping(target = "accessKey", ignore = true)
   Project create(CreateProjectParameter createProjectParameter);
 
   ProjectVo entity2Vo(Project project);
