@@ -55,7 +55,7 @@ quarkus-flyway = { group = "io.quarkus", name = "quarkus-flyway" }
 quarkus-jdbc-postgresql = { group = "io.quarkus", name = "quarkus-jdbc-postgresql" }
 quarkus-jdbc-mysql = { group = "io.quarkus", name = "quarkus-jdbc-mysql" }
 quarkus-jdbc-mariadb = { group = "io.quarkus", name = "quarkus-jdbc-mariadb" }
-quarkus-systemd-notifiy = { group = "io.quarkiverse.systemd.notify", name = "quarkus-systemd-notify", version = "1.0.1" }
+quarkus-systemd-notifiy = { group = "io.quarkiverse.systemd.notify", name = "quarkus-systemd-notify", version = "1.0.2" }
 quarkus-test-vertx = { group = "io.quarkus", name = "quarkus-test-vertx" }
 rest-assured = { group = "io.rest-assured", name = "rest-assured" }
 
