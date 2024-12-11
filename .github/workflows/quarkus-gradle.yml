@@ -56,14 +56,14 @@ jobs:
       - name: Cache Node modules
         uses: actions/cache@v4
         with:
-          path: src/main/webui/node_modules
-          key: ${{ runner.os }}-node-${{ hashFiles('src/main/webui/pnpm-lock.yaml') }}
+          path: server/src/main/webui/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('server/src/main/webui/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-node-
 
       # Step 8: 安装前端依赖并构建前端
       - name: Install and build frontend
-        working-directory: src/main/webui  # 进入前端目录
+        working-directory: server/src/main/webui  # 进入前端目录
         run: |
           pnpm install  # 安装前端依赖
           pnpm run build  # 构建前端
