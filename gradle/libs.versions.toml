@@ -3,7 +3,7 @@ record-builder = "44"
 mapstruct = "1.6.3"
 quarkus = "3.17.3"
 slf4j = "2.0.16"
-hutool = "5.8.33"
+hutool = "5.8.34"
 spring-boot = "3.4.0"
 
 [plugins]
