@@ -1,0 +1,34 @@
+mapit:
+  admin:
+    username: admin
+    password: ${quarkus.uuid}
+quarkus:
+  http:
+    enable-compression: true
+  console:
+    color: true
+  hibernate-orm:
+    log:
+      sql: true
+  datasource:
+    jdbc: false
+  log:
+    console:
+      json: false
+    level: INFO
+  quinoa:
+    build-dir: dist
+    enable-spa-routing: true
+  management:
+    enabled: true
+  live-reload:
+    instrumentation: true
+  package:
+    jar:
+      appcds:
+        enabled: true
+  websockets-next:
+    server:
+      auto-ping-interval: 1
+      traffic-logging:
+        enabled: true
