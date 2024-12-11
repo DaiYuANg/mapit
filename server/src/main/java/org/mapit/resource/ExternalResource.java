@@ -1,4 +1,4 @@
-package org.mapit.controller;
+package org.mapit.resource;
 
 import io.smallrye.mutiny.Uni;
 import jakarta.ws.rs.POST;

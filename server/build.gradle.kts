@@ -68,10 +68,12 @@ dependencies {
   implementation(libs.slf4j)
   implementation(libs.slf4jJulBridage)
   implementation(libs.slf4jJdkPlatform)
+  implementation(libs.data.faker)
   annotationProcessor(libs.hibernate.validator.annotation.processor)
   annotationProcessor(libs.hibernate.jpamodelgen)
   testImplementation(libs.quarkus.junit5)
   testImplementation(libs.rest.assured)
+  testImplementation(libs.quarkus.test.vertx)
 }
 
 java {

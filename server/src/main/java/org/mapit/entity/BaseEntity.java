@@ -8,10 +8,13 @@ import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
+
 import java.util.Date;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.Accessors;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.mapit.annotation.SnowflakeGenerator;
@@ -20,6 +23,7 @@ import org.mapit.annotation.SnowflakeGenerator;
 @Getter
 @Setter
 @ToString
+@Accessors(chain = true)
 public class BaseEntity extends PanacheEntityBase {
 
   @Id

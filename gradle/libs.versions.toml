@@ -56,6 +56,7 @@ quarkus-jdbc-postgresql = { group = "io.quarkus", name = "quarkus-jdbc-postgresq
 quarkus-jdbc-mysql = { group = "io.quarkus", name = "quarkus-jdbc-mysql" }
 quarkus-jdbc-mariadb = { group = "io.quarkus", name = "quarkus-jdbc-mariadb" }
 quarkus-systemd-notifiy = { group = "io.quarkiverse.systemd.notify", name = "quarkus-systemd-notify", version = "1.0.1" }
+quarkus-test-vertx = { group = "io.quarkus", name = "quarkus-test-vertx" }
 rest-assured = { group = "io.rest-assured", name = "rest-assured" }
 
 
@@ -87,6 +88,7 @@ jetbrainsAnnotation = { group = "org.jetbrains", name = "annotations", version =
 apache-common-lang3 = { group = "org.apache.commons", name = "commons-lang3", version = "3.17.0" }
 
 hutool-core = { group = "cn.hutool", name = "hutool-core", version.ref = "hutool" }
+data-faker = { group = "net.datafaker", name = "datafaker", version = "2.4.2" }
 
 spring-boot-starter = { group = "org.springframework.boot", name = "spring-boot-starter" }
 spring-boot-starter-web = { group = "org.springframework.boot", name = "spring-boot-starter-web" }

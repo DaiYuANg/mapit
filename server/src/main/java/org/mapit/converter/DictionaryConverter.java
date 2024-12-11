@@ -2,6 +2,7 @@ package org.mapit.converter;
 
 import java.util.List;
 import java.util.Set;
+
 import org.mapit.data.structure.DictionaryWithItem;
 import org.mapit.entity.Dictionary;
 import org.mapit.model.CreateDictionary;
@@ -13,6 +14,8 @@ import org.mapstruct.MappingConstants;
 @Mapper(componentModel = MappingConstants.ComponentModel.JAKARTA)
 public interface DictionaryConverter {
 
+  @Mapping(target = "meta", ignore = true)
+  @Mapping(target = "id", ignore = true)
   @Mapping(target = "project", ignore = true)
   @Mapping(target = "updateAt", ignore = true)
   @Mapping(target = "items", ignore = true)

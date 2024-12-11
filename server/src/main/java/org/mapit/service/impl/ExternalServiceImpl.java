@@ -24,10 +24,14 @@ public class ExternalServiceImpl implements ExternalService {
 
   @Override
   public Uni<VerifyAccessKeyResult> verifyAccessKey(@NotNull GetAccessToken getAccessToken) {
-    return projectQueryRepository.findProjectByAccessKey(getAccessToken.accessKey())
+    return projectQueryRepository
+      .findProjectByIdAndAccessKey(getAccessToken.projectId(), getAccessToken.accessKey())
       .onItem()
       .ifNull()
       .failWith(new AccessKeyNotFoundException("Invalid access key"))
-      .map(project -> VerifyAccessKeyResultBuilder.builder().build());
+      .map(project -> jwtBuilderHelper.buildJwt())
+      .map(
+        jwt -> VerifyAccessKeyResultBuilder.builder().accessToken(jwt).build()
+      );
   }
 }

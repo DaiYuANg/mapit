@@ -1,16 +1,15 @@
-import type {AuthProvider} from "@refinedev/core";
-import {login} from "../api/auth";
+import type { AuthProvider } from "@refinedev/core";
+import { login } from "../api/auth";
 
 export const TOKEN_KEY = "refine-auth";
 
 const authProvider: AuthProvider = {
-  login: async ({username, email, password}) => {
-
+  login: async ({ username, email, password }) => {
     if ((username || email) && password) {
       const result = await login({
         username,
-        password
-      })
+        password,
+      });
       localStorage.setItem(TOKEN_KEY, result.token);
       return {
         success: true,
@@ -31,6 +30,11 @@ const authProvider: AuthProvider = {
     return {
       success: true,
       redirectTo: "/login",
+    };
+  },
+  register: async () => {
+    return {
+      success: true,
     };
   },
   check: async () => {
@@ -60,8 +64,8 @@ const authProvider: AuthProvider = {
   },
   onError: async (error) => {
     console.error(error);
-    return {error};
+    return { error };
   },
 };
 
-export {authProvider}
+export { authProvider };

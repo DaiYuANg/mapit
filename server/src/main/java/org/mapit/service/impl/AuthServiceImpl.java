@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.mapit.config.MapitConfig;
+import org.mapit.converter.InternalUserConverter;
+import org.mapit.model.CreateUser;
 import org.mapit.model.LoginParameter;
 import org.mapit.model.LoginResult;
 import org.mapit.model.LoginResultBuilder;
@@ -20,11 +22,18 @@ import org.mapit.util.JwtBuilderHelper;
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
 
-  private final UserRepository userMoreRepository;
-
   private final MapitConfig mapitConfig;
 
+  private final InternalUserConverter internalUserConverter;
+
+  private final UserRepository userRepository;
+
   private final JwtBuilderHelper jwtBuilderHelper;
+
+  @Override
+  public Uni<Void> registerUser(CreateUser createUser) {
+    return Uni.createFrom().item(internalUserConverter.create(createUser)).map(userRepository::persist).replaceWithVoid();
+  }
 
   @Override
   public Uni<LoginResult> login(LoginParameter loginParameter) {

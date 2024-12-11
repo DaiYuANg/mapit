@@ -1,6 +1,7 @@
 package org.mapit.converter;
 
 import java.util.List;
+
 import org.mapit.entity.Project;
 import org.mapit.model.CreateProjectParameter;
 import org.mapit.model.Paged;
@@ -12,6 +13,7 @@ import org.mapstruct.MappingConstants;
 @Mapper(componentModel = MappingConstants.ComponentModel.JAKARTA)
 public interface ProjectConverter {
 
+  @Mapping(target = "id", ignore = true)
   @Mapping(target = "updateAt", ignore = true)
   @Mapping(target = "dictionaries", ignore = true)
   @Mapping(target = "createAt", ignore = true)

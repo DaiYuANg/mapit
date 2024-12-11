@@ -3,11 +3,15 @@ package org.mapit.entity;
 import static org.mapit.constant.TableNaming.PROJECT;
 
 import jakarta.persistence.*;
+
 import java.util.Set;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import org.mapit.constant.ProjectType;
+import org.mapit.converter.ProjectTypeConverter;
 
 @Table(
   uniqueConstraints = @UniqueConstraint(columnNames = "accessKey"),
@@ -26,6 +30,9 @@ public class Project extends BaseEntity {
 
   @Column
   private String accessKey;
+
+  @Convert(converter = ProjectTypeConverter.class)
+  private ProjectType type;
 
   @OneToMany
   private Set<Dictionary> dictionaries;

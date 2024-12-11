@@ -9,6 +9,8 @@ import org.mapstruct.MappingConstants;
 @Mapper(componentModel = MappingConstants.ComponentModel.JAKARTA)
 public interface DictionaryItemConverter {
 
+  @Mapping(target = "meta", ignore = true)
+  @Mapping(target = "id", ignore = true)
   @Mapping(target = "delete", ignore = true)
   @Mapping(target = "updateAt", ignore = true)
   @Mapping(target = "dictionary", ignore = true)

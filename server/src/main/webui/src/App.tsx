@@ -29,7 +29,6 @@ function App() {
               syncWithLocation: true,
               warnWhenUnsavedChanges: true,
               useNewQueryKeys: true,
-              // projectId: "OrunVQ-62vC1W-gYJY7u",
               title: { text: "Mapit", icon: <AppIcon /> },
             }}
           >

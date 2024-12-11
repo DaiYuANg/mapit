@@ -1,4 +1,6 @@
-const resource = [
+import { ResourceProps } from "@refinedev/core";
+
+const resource: ResourceProps[] = [
   {
     name: "project",
     list: "/blog-posts",
@@ -17,6 +19,7 @@ const resource = [
     show: "/categories/show/:id",
     meta: {
       canDelete: true,
+      hide: true,
     },
   },
 ];

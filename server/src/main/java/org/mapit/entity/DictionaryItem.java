@@ -7,6 +7,7 @@ import java.util.Map;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.Accessors;
 import org.hibernate.annotations.SoftDelete;
 import org.mapit.converter.JsonConverter;
 
@@ -14,6 +15,7 @@ import org.mapit.converter.JsonConverter;
 @Table(name = DICTIONARY_ITEM)
 @Getter
 @Setter
+@Accessors(chain = true)
 @ToString(callSuper = true, onlyExplicitlyIncluded = true)
 public class DictionaryItem extends BaseEntity {
 

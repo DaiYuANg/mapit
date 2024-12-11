@@ -9,5 +9,5 @@ import org.mapit.entity.Project;
 public interface ProjectQueryRepository {
 
   @Find
-  Uni<Project> findProjectByAccessKey(String accessKey);
+  Uni<Project> findProjectByIdAndAccessKey(Long id, String accessKey);
 }

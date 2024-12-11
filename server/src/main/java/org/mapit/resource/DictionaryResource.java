@@ -1,4 +1,4 @@
-package org.mapit.controller;
+package org.mapit.resource;
 
 import io.quarkus.security.Authenticated;
 import io.smallrye.mutiny.Uni;

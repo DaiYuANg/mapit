@@ -1,22 +1,27 @@
 package org.mapit.entity;
 
-import static org.mapit.constant.TableNaming.INTERNAL_USER;
-
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+import java.util.Set;
+
 @Entity
-@Table(name = INTERNAL_USER)
+@Table
 @Getter
 @Setter
 @ToString(callSuper = true, onlyExplicitlyIncluded = true)
 @Accessors(chain = true)
-public class InternalUser extends BaseEntity {
-  private String username;
+public class InternalUserGroup extends BaseEntity {
 
-  private String password;
+  @Column
+  private String name;
+
+  @OneToMany
+  private Set<InternalUser> users;
 }
