@@ -81,6 +81,13 @@ FROM registry.access.redhat.com/ubi8/openjdk-21:1.20
 
 ENV LANGUAGE='en_US:en'
 
+USER root
+RUN microdnf install -y openssl \
+    tzdata
+
+WORKDIR /secret
+RUN openssl genrsa -out privateKey.pem 4096 && chmod 644 /secret/privateKey.pem
+RUN openssl rsa -pubout -in privateKey.pem -out publicKey.pem && chmod 644 /secret/publicKey.pem
 
 # We make four distinct layers so if there are application changes the library layers can be re-used
 COPY --chown=185 build/quarkus-app/lib/ /deployments/lib/

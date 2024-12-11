@@ -8,8 +8,8 @@ services:
       - QUARKUS_DATASOURCE_USERNAME=mapit
       - QUARKUS_DATASOURCE_PASSWORD=mapit
       - QUARKUS_DATASOURCE_REACTIVE_URL=vertx-reactive:postgresql://postgres:5432/mapit?loggerLevel=OFF
-      - MP_JWT_VERIFY_PUBLICKEY_LOCATION=file://publicKey.pem
-      - SMALLRYE_JWT_SIGN_KEY_LOCATION=file://privateKey.pem
+      - MP_JWT_VERIFY_PUBLICKEY_LOCATION=file://secret/publicKey.pem
+      - SMALLRYE_JWT_SIGN_KEY_LOCATION=file://secret/privateKey.pem
       - QUARKUS_INFINISPAN_CLIENT_CLIENT_INTELLIGENCE=BASIC
       - QUARKUS_INFINISPAN_CLIENT_HOSTS=infinispan:11222
       - QUARKUS_INFINISPAN_CLIENT_PASSWORD=password
