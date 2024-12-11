@@ -11,8 +11,6 @@ quarkus:
   hibernate-orm:
     log:
       sql: true
-  datasource:
-    jdbc: false
   log:
     console:
       json: false

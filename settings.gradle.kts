@@ -34,3 +34,4 @@ develocity {
 rootProject.name = "mapit"
 include("spring-boot-sdk")
 include("shared-data-structure")
+include("server")
