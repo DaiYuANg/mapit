@@ -1,6 +1,5 @@
 package org.mapit.repository;
 
-import io.quarkus.hibernate.reactive.panache.PanacheRepository;
 import io.quarkus.hibernate.reactive.panache.PanacheRepositoryBase;
 import jakarta.enterprise.context.ApplicationScoped;
 import lombok.RequiredArgsConstructor;

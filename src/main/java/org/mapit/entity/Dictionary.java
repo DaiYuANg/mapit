@@ -1,6 +1,8 @@
 package org.mapit.entity;
 
 import jakarta.persistence.*;
+import java.util.Map;
+import java.util.Set;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -8,14 +10,11 @@ import org.hibernate.annotations.SoftDelete;
 import org.mapit.constant.TableNaming;
 import org.mapit.converter.JsonConverter;
 
-import java.util.Map;
-import java.util.Set;
-
 @Entity
 @Table(name = TableNaming.DICTIONARY)
 @Getter
 @Setter
-@ToString(callSuper = true, onlyExplicitlyIncluded = true)
+@ToString(callSuper = true)
 public class Dictionary extends BaseEntity {
 
   @Column
@@ -35,6 +34,9 @@ public class Dictionary extends BaseEntity {
 
   @OneToMany
   private Set<DictionaryItem> items;
+
+  @Column(insertable = false, updatable = false)
+  private Long projectId;
 
   @ManyToOne
   private Project project;

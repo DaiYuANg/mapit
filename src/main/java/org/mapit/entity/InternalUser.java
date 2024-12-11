@@ -1,12 +1,12 @@
 package org.mapit.entity;
 
+import static org.mapit.constant.TableNaming.INTERNAL_USER;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-
-import static org.mapit.constant.TableNaming.INTERNAL_USER;
 
 @Entity
 @Table(name = INTERNAL_USER)

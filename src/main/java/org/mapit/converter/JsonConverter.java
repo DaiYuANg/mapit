@@ -4,9 +4,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
-import lombok.SneakyThrows;
-
 import java.util.Map;
+import lombok.SneakyThrows;
 
 @Converter
 public class JsonConverter implements AttributeConverter<Map<String, Object>, String> {

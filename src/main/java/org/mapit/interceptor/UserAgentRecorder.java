@@ -1,17 +1,14 @@
 package org.mapit.interceptor;
 
-import io.smallrye.mutiny.Uni;
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.container.ContainerRequestFilter;
-import jakarta.ws.rs.container.ContainerResponseFilter;
 import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.ext.Provider;
+import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.jetbrains.annotations.NotNull;
-
-import java.io.IOException;
 
 @Provider
 @Slf4j

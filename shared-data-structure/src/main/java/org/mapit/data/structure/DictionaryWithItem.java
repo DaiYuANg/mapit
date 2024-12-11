@@ -1,10 +1,9 @@
 package org.mapit.data.structure;
 
 
+import java.util.Set;
 import lombok.experimental.SuperBuilder;
 import lombok.extern.jackson.Jacksonized;
-
-import java.util.Set;
 
 @SuperBuilder
 @Jacksonized

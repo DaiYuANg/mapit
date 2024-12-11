@@ -1,14 +1,13 @@
 package org.mapit.entity;
 
+import static org.mapit.constant.TableNaming.PROJECT;
+
 import jakarta.persistence.*;
+import java.util.Set;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
-
-import java.util.Set;
-
-import static org.mapit.constant.TableNaming.PROJECT;
 
 @Table(
   uniqueConstraints = @UniqueConstraint(columnNames = "accessKey"),

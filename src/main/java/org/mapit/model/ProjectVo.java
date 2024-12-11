@@ -1,9 +1,8 @@
 package org.mapit.model;
 
 import io.soabase.recordbuilder.core.RecordBuilder;
-import org.infinispan.protostream.annotations.Proto;
-
 import java.util.Date;
+import org.infinispan.protostream.annotations.Proto;
 
 @RecordBuilder
 @Proto

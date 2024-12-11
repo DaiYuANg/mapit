@@ -1,12 +1,12 @@
 package org.mapit.service.impl;
 
-import io.smallrye.jwt.build.Jwt;
+import static io.smallrye.mutiny.Uni.createFrom;
+
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
-import org.apache.commons.lang3.time.DateUtils;
 import org.mapit.config.MapitConfig;
 import org.mapit.model.LoginParameter;
 import org.mapit.model.LoginResult;
@@ -14,10 +14,6 @@ import org.mapit.model.LoginResultBuilder;
 import org.mapit.repository.UserRepository;
 import org.mapit.service.AuthService;
 import org.mapit.util.JwtBuilderHelper;
-
-import java.util.Date;
-
-import static io.smallrye.mutiny.Uni.createFrom;
 
 @ApplicationScoped
 @Slf4j

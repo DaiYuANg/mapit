@@ -1,28 +1,24 @@
 package org.mapit.entity;
 
-import io.quarkus.hibernate.reactive.panache.PanacheEntity;
+import static org.mapit.constant.FieldNaming.CREATE_AT;
+import static org.mapit.constant.FieldNaming.UPDATE_AT;
+
 import io.quarkus.hibernate.reactive.panache.PanacheEntityBase;
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
+import java.util.Date;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import lombok.experimental.Accessors;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.mapit.annotation.SnowflakeGenerator;
 
-import java.util.Date;
-
-import static org.mapit.constant.FieldNaming.CREATE_AT;
-import static org.mapit.constant.FieldNaming.UPDATE_AT;
-
 @MappedSuperclass
 @Getter
 @Setter
-@Accessors(chain = true)
 @ToString
 public class BaseEntity extends PanacheEntityBase {
 

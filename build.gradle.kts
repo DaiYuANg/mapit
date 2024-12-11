@@ -107,3 +107,13 @@ tasks.withType<JavaCompile> {
   options.encoding = "UTF-8"
   options.compilerArgs.add("-parameters")
 }
+
+spotless {
+  java {
+    target("**/*.java")
+    indentWithSpaces(2)
+    importOrder()
+    removeUnusedImports()
+    trimTrailingWhitespace()
+  }
+}

@@ -1,8 +1,6 @@
 package org.mapit.model;
 
 import io.soabase.recordbuilder.core.RecordBuilder;
-
-import java.util.ArrayList;
 import java.util.List;
 
 @RecordBuilder

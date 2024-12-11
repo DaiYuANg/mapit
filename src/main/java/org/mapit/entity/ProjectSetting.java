@@ -1,12 +1,12 @@
 package org.mapit.entity;
 
+import static org.mapit.constant.TableNaming.PROJECT_SETTINGS;
+
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.ToString;
 import org.mapit.converter.StringArrayConverter;
-
-import static org.mapit.constant.TableNaming.PROJECT_SETTINGS;
 
 @Table(name = PROJECT_SETTINGS)
 @Entity

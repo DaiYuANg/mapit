@@ -1,6 +1,5 @@
 package org.mapit.service.impl;
 
-import io.smallrye.jwt.build.impl.JwtBuildUtils;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
 import lombok.RequiredArgsConstructor;

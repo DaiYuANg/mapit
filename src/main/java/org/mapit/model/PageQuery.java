@@ -1,11 +1,10 @@
 package org.mapit.model;
 
 import jakarta.ws.rs.QueryParam;
+import java.util.Optional;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
-
-import java.util.Optional;
 
 @Data
 @Slf4j

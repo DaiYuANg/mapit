@@ -6,10 +6,8 @@ import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.mapit.model.CreateDictionary;
 import org.mapit.model.CreateDictionaryItem;
 import org.mapit.service.DictionaryItemService;
-import org.mapit.service.DictionaryService;
 
 @Path("/api/v1/dictionary/item")
 @RequiredArgsConstructor

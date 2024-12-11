@@ -1,15 +1,14 @@
 package org.mapit.converter;
 
-import org.mapit.data.structure.DictionaryItem;
+import java.util.List;
+import java.util.Set;
 import org.mapit.data.structure.DictionaryWithItem;
 import org.mapit.entity.Dictionary;
 import org.mapit.model.CreateDictionary;
+import org.mapit.schema.DictionaryCache;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
-
-import java.util.List;
-import java.util.Set;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.JAKARTA)
 public interface DictionaryConverter {
@@ -32,4 +31,6 @@ public interface DictionaryConverter {
   List<DictionaryWithItem> entity2WithItemVo(List<Dictionary> dictionary);
 
   Set<DictionaryWithItem> entity2WithItemVo(Set<Dictionary> dictionary);
+
+  DictionaryCache entity2Cache(Dictionary dictionary);
 }

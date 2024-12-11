@@ -1,5 +1,6 @@
 package org.mapit.converter;
 
+import java.util.List;
 import org.mapit.entity.Project;
 import org.mapit.model.CreateProjectParameter;
 import org.mapit.model.Paged;
@@ -7,8 +8,6 @@ import org.mapit.model.ProjectVo;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
-
-import java.util.List;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.JAKARTA)
 public interface ProjectConverter {

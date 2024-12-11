@@ -1,6 +1,7 @@
 package org.mapit.repository;
 
-import io.quarkus.hibernate.reactive.panache.PanacheRepository;
+import static io.smallrye.mutiny.Uni.combine;
+
 import io.quarkus.hibernate.reactive.panache.PanacheRepositoryBase;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -13,10 +14,6 @@ import org.mapit.entity.Project;
 import org.mapit.model.Paged;
 import org.mapit.model.PagedBuilder;
 import org.mapit.model.ProjectQuery;
-
-import java.util.ArrayList;
-
-import static io.smallrye.mutiny.Uni.combine;
 
 @Slf4j
 @RequiredArgsConstructor

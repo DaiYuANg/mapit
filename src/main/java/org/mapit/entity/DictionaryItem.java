@@ -1,15 +1,14 @@
 package org.mapit.entity;
 
+import static org.mapit.constant.TableNaming.DICTIONARY_ITEM;
+
 import jakarta.persistence.*;
+import java.util.Map;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.SoftDelete;
 import org.mapit.converter.JsonConverter;
-
-import java.util.Map;
-
-import static org.mapit.constant.TableNaming.DICTIONARY_ITEM;
 
 @Entity
 @Table(name = DICTIONARY_ITEM)
@@ -29,6 +28,9 @@ public class DictionaryItem extends BaseEntity {
 
   @Column
   private String remark;
+
+  @Column(insertable = false, updatable = false)
+  private Long dictionaryId;
 
   @ManyToOne
   private Dictionary dictionary;
