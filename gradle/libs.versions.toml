@@ -1,9 +1,9 @@
 [versions]
 record-builder = "44"
 mapstruct = "1.6.3"
-quarkus = "3.17.3"
+quarkus = "3.17.4"
 slf4j = "2.0.16"
-hutool = "5.8.33"
+hutool = "5.8.34"
 spring-boot = "3.4.0"
 
 [plugins]
@@ -14,7 +14,6 @@ maniftest = { id = "com.coditory.manifest", version = "1.1.0" }
 semver = { id = "com.xenoterracide.gradle.semver", version = "0.11.5" }
 quarkus = { id = "io.quarkus", version.ref = "quarkus" }
 lombok = { id = "name.remal.lombok", version = "2.2.13" }
-docker-compose = { id = "com.avast.gradle.docker-compose", version = "0.17.11" }
 spotless = { id = "com.diffplug.spotless", version = "7.0.0.BETA4" }
 spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
 spring-dependency-management = { id = "io.spring.dependency-management", version = "1.1.6" }
@@ -55,15 +54,14 @@ quarkus-flyway = { group = "io.quarkus", name = "quarkus-flyway" }
 quarkus-jdbc-postgresql = { group = "io.quarkus", name = "quarkus-jdbc-postgresql" }
 quarkus-jdbc-mysql = { group = "io.quarkus", name = "quarkus-jdbc-mysql" }
 quarkus-jdbc-mariadb = { group = "io.quarkus", name = "quarkus-jdbc-mariadb" }
-quarkus-systemd-notifiy = { group = "io.quarkiverse.systemd.notify", name = "quarkus-systemd-notify", version = "1.0.1" }
+quarkus-systemd-notifiy = { group = "io.quarkiverse.systemd.notify", name = "quarkus-systemd-notify", version = "1.0.2" }
 quarkus-test-vertx = { group = "io.quarkus", name = "quarkus-test-vertx" }
 rest-assured = { group = "io.rest-assured", name = "rest-assured" }
 
-
 hibernate-validator-annotation-processor = { group = "org.hibernate", name = "hibernate-validator-annotation-processor", version = "8.0.1.Final" }
-hibernate-jpamodelgen = { group = "org.hibernate.orm", name = "hibernate-jpamodelgen", version = "6.6.3.Final" }
+hibernate-jpamodelgen = { group = "org.hibernate.orm", name = "hibernate-jpamodelgen" }
 
-slf4j = { group = "org.slf4j", name = "slf4j-api", version.ref = "slf4j" }
+slf4j = { group = "org.slf4j", name = "slf4j-api" }
 slf4jJdkPlatform = { group = "org.slf4j", name = "slf4j-jdk-platform-logging", version.ref = "slf4j" }
 slf4jJulBridage = { group = "org.slf4j", name = "jul-to-slf4j", version.ref = "slf4j" }
 

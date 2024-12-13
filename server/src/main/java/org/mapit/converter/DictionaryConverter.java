@@ -3,7 +3,7 @@ package org.mapit.converter;
 import java.util.List;
 import java.util.Set;
 
-import org.mapit.data.structure.DictionaryWithItem;
+import org.mapit.model.DictionaryWithItem;
 import org.mapit.entity.Dictionary;
 import org.mapit.model.CreateDictionary;
 import org.mapit.schema.DictionaryCache;
@@ -23,11 +23,11 @@ public interface DictionaryConverter {
   @Mapping(target = "createAt", ignore = true)
   Dictionary create(CreateDictionary createDictionary);
 
-  org.mapit.data.structure.Dictionary entity2Vo(Dictionary dictionary);
+  org.mapit.model.Dictionary entity2Vo(Dictionary dictionary);
 
-  List<org.mapit.data.structure.Dictionary> entity2Vo(List<Dictionary> dictionaries);
+  List<org.mapit.model.Dictionary> entity2Vo(List<Dictionary> dictionaries);
 
-  Set<org.mapit.data.structure.Dictionary> entity2Vo(Set<Dictionary> dictionaries);
+  Set<org.mapit.model.Dictionary> entity2Vo(Set<Dictionary> dictionaries);
 
   DictionaryWithItem entity2WithItemVo(Dictionary dictionary);
 

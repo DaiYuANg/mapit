@@ -10,6 +10,7 @@ group = "org.mapit"
 
 dependencies {
   implementation(enforcedPlatform(libs.quarkus.bom))
+  annotationProcessor(enforcedPlatform(libs.quarkus.bom))
   implementation(libs.quarkus.hibernate.reactive)
   implementation(libs.quarkus.mutiny)
   implementation(libs.quarkus.rest)
@@ -50,8 +51,6 @@ dependencies {
 
   implementation(libs.mapstruct)
   annotationProcessor(libs.mapstruct.processor)
-
-  implementation(projects.sharedDataStructure)
 
   implementation(libs.agrona)
 
