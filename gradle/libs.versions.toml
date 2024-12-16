@@ -58,7 +58,7 @@ quarkus-systemd-notifiy = { group = "io.quarkiverse.systemd.notify", name = "qua
 quarkus-test-vertx = { group = "io.quarkus", name = "quarkus-test-vertx" }
 rest-assured = { group = "io.rest-assured", name = "rest-assured" }
 
-hibernate-validator-annotation-processor = { group = "org.hibernate", name = "hibernate-validator-annotation-processor", version = "8.0.1.Final" }
+hibernate-validator-annotation-processor = { group = "org.hibernate", name = "hibernate-validator-annotation-processor", version = "8.0.2.Final" }
 hibernate-jpamodelgen = { group = "org.hibernate.orm", name = "hibernate-jpamodelgen" }
 
 slf4j = { group = "org.slf4j", name = "slf4j-api" }
