@@ -1,22 +1,19 @@
 [versions]
 record-builder = "44"
 mapstruct = "1.6.3"
-quarkus = "3.17.4"
+quarkus = "3.21.1"
 slf4j = "2.0.16"
-hutool = "5.8.34"
-spring-boot = "3.4.0"
+hutool = "5.8.37"
 
 [plugins]
 dotenv = { id = "co.uzzu.dotenv.gradle", version = "4.0.0" }
-plantuml = { id = "io.gitlab.plunts.plantuml", version = "2.1.7" }
-version-check = { id = "com.github.ben-manes.versions", version = "0.51.0" }
+plantuml = { id = "io.gitlab.plunts.plantuml", version = "2.2.1" }
+version-check = { id = "com.github.ben-manes.versions", version = "0.52.0" }
 maniftest = { id = "com.coditory.manifest", version = "1.1.0" }
-semver = { id = "com.xenoterracide.gradle.semver", version = "0.11.5" }
+semver = { id = "com.xenoterracide.gradle.semver", version = "0.12.1" }
 quarkus = { id = "io.quarkus", version.ref = "quarkus" }
-lombok = { id = "name.remal.lombok", version = "2.2.13" }
-spotless = { id = "com.diffplug.spotless", version = "7.0.0.BETA4" }
-spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
-spring-dependency-management = { id = "io.spring.dependency-management", version = "1.1.6" }
+lombok = { id = "name.remal.lombok", version = "3.0.1" }
+spotless = { id = "com.diffplug.spotless", version = "7.0.2" }
 
 [libraries]
 quarkus-bom = { group = "io.quarkus.platform", name = "quarkus-bom", version.ref = "quarkus" }
@@ -40,10 +37,10 @@ quarkus-arc = { group = "io.quarkus", name = "quarkus-arc" }
 quarkus-junit5 = { group = "io.quarkus", name = "quarkus-junit5" }
 quarkus-reactive-pg-client = { group = "io.quarkus", name = "quarkus-reactive-pg-client" }
 quarkus-smallrye-jwt-build = { group = "io.quarkus", name = "quarkus-smallrye-jwt-build" }
-quarkus-quinoa = { group = "io.quarkiverse.quinoa", name = "quarkus-quinoa", version = "2.5.1" }
+quarkus-quinoa = { group = "io.quarkiverse.quinoa", name = "quarkus-quinoa", version = "2.5.3" }
 quarkus-reactive-mysql-client = { group = "io.quarkus", name = "quarkus-reactive-mysql-client" }
 quarkus-info = { group = "io.quarkus", name = "quarkus-info" }
-quarkus-logging-manager = { group = "io.quarkiverse.loggingmanager", name = "quarkus-logging-manager", version = "3.3.1" }
+quarkus-logging-manager = { group = "io.quarkiverse.loggingmanager", name = "quarkus-logging-manager", version = "3.3.2" }
 quarkus-infinispan-cache = { group = "io.quarkus", name = "quarkus-infinispan-cache" }
 quarkus-infinispan-client = { group = "io.quarkus", name = "quarkus-infinispan-client" }
 quarkus-graphql = { group = "io.quarkus", name = "quarkus-smallrye-graphql" }
@@ -65,7 +62,7 @@ slf4j = { group = "org.slf4j", name = "slf4j-api" }
 slf4jJdkPlatform = { group = "org.slf4j", name = "slf4j-jdk-platform-logging", version.ref = "slf4j" }
 slf4jJulBridage = { group = "org.slf4j", name = "jul-to-slf4j", version.ref = "slf4j" }
 
-agrona = { group = "org.agrona", name = "agrona", version = "1.23.1" }
+agrona = { group = "org.agrona", name = "agrona", version = "2.1.0" }
 
 vavr = { group = "io.vavr", name = "vavr", version = "1.0.0-alpha-4" }
 
@@ -81,19 +78,11 @@ semver4j = { group = "org.semver4j", name = "semver4j", version = "5.4.1" }
 
 guava = { group = "com.google.guava", name = "guava", version = "33.3.1-jre" }
 
-jetbrainsAnnotation = { group = "org.jetbrains", name = "annotations", version = "26.0.1" }
+jetbrainsAnnotation = { group = "org.jetbrains", name = "annotations", version = "26.0.2" }
 
 apache-common-lang3 = { group = "org.apache.commons", name = "commons-lang3", version = "3.17.0" }
 
 hutool-core = { group = "cn.hutool", name = "hutool-core", version.ref = "hutool" }
 data-faker = { group = "net.datafaker", name = "datafaker", version = "2.4.2" }
 
-spring-boot-starter = { group = "org.springframework.boot", name = "spring-boot-starter" }
-spring-boot-starter-web = { group = "org.springframework.boot", name = "spring-boot-starter-web" }
-spring-boot-configuration-processor = { group = "org.springframework.boot", name = "spring-boot-configuration-processor" }
-spring-boot-starter-test = { group = "org.springframework.boot", name = "spring-boot-starter-test" }
 junit-platform-launcher = { group = "org.junit.platform", name = "junit-platform-launcher" }
-spring-boot-starter-json = { group = "org.springframework.boot", name = "spring-boot-starter-json" }
-spring-boot-starter-aop = { group = "org.springframework.boot", name = "spring-boot-starter-aop" }
-spring-boot-starter-actuator = { group = "org.springframework.boot", name = "spring-boot-starter-actuator" }
-mica-auto = { group = "net.dreamlu", name = "mica-auto", version = "3.1.4" }

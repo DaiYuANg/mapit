@@ -32,4 +32,3 @@ develocity {
 }
 
 rootProject.name = "mapit"
-include("server")
