@@ -1,16 +1,12 @@
-package org.mapit.model;
+package org.mapit.model.query;
 
-import jakarta.ws.rs.QueryParam;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.mapit.model.query.PageQuery;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
 @ToString(callSuper = true)
-public class ProjectQuery extends PageQuery {
-
-  @QueryParam("name")
+public class DictionaryQuery extends PageQuery {
   private String name;
 }

@@ -1,7 +1,7 @@
 package org.mapit.converter;
 
 import org.mapit.entity.InternalUser;
-import org.mapit.model.CreateUser;
+import org.mapit.model.parameter.CreateUser;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;

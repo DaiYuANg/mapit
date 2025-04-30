@@ -1,4 +1,4 @@
-package org.mapit.model;
+package org.mapit.model.parameter;
 
 import io.soabase.recordbuilder.core.RecordBuilder;
 

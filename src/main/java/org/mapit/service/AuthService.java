@@ -1,9 +1,9 @@
 package org.mapit.service;
 
 import io.smallrye.mutiny.Uni;
-import org.mapit.model.CreateUser;
-import org.mapit.model.LoginParameter;
-import org.mapit.model.LoginResult;
+import org.mapit.model.parameter.CreateUser;
+import org.mapit.model.parameter.LoginParameter;
+import org.mapit.model.parameter.LoginResult;
 
 public interface AuthService {
     Uni<Void> registerUser(CreateUser createUser);

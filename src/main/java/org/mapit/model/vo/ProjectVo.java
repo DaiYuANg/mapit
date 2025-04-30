@@ -1,4 +1,4 @@
-package org.mapit.model;
+package org.mapit.model.vo;
 
 import io.soabase.recordbuilder.core.RecordBuilder;
 import java.util.Date;

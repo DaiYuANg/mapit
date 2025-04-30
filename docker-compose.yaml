@@ -8,6 +8,9 @@ services:
       - "11222:11222"
 
   postgres:
+    command:
+      - -c
+      - max_connections=200
     image: postgres:latest
     environment:
       - POSTGRES_USER=mapit

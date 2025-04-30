@@ -5,9 +5,9 @@ import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.mapit.model.CreateUser;
-import org.mapit.model.LoginParameter;
-import org.mapit.model.LoginResult;
+import org.mapit.model.parameter.CreateUser;
+import org.mapit.model.parameter.LoginParameter;
+import org.mapit.model.parameter.LoginResult;
 import org.mapit.service.AuthService;
 
 @Path("/api/v1/auth")

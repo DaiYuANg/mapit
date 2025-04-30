@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Set;
 
 import org.mapit.entity.Dictionary;
-import org.mapit.model.CreateDictionary;
+import org.mapit.model.Paged;
+import org.mapit.model.parameter.CreateDictionary;
+import org.mapit.model.vo.DictionaryVo;
 import org.mapit.schema.DictionaryCache;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -22,11 +24,13 @@ public interface DictionaryConverter {
   @Mapping(target = "createAt", ignore = true)
   Dictionary create(CreateDictionary createDictionary);
 
-  Dictionary entity2Vo(Dictionary dictionary);
+  DictionaryVo entity2Vo(Dictionary dictionary);
 
-  List<Dictionary> entity2Vo(List<Dictionary> dictionaries);
+  List<DictionaryVo> entity2Vo(List<Dictionary> dictionaries);
 
-  Set<Dictionary> entity2Vo(Set<Dictionary> dictionaries);
+  Set<DictionaryVo> entity2Vo(Set<Dictionary> dictionaries);
+
+  Paged<DictionaryVo> entity2Vo(Paged<Dictionary> dictionaries);
 
 //  DictionaryWithItem entity2WithItemVo(Dictionary dictionary);
 //

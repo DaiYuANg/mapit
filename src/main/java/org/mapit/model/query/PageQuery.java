@@ -1,4 +1,4 @@
-package org.mapit.model;
+package org.mapit.model.query;
 
 import jakarta.ws.rs.QueryParam;
 import java.util.Optional;

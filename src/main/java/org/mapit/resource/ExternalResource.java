@@ -5,7 +5,7 @@ import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.mapit.model.GetAccessToken;
+import org.mapit.model.parameter.GetAccessToken;
 import org.mapit.model.VerifyAccessKeyResult;
 import org.mapit.service.ExternalService;
 

@@ -1,6 +1,5 @@
 package org.mapit.service.impl;
 
-import io.quarkus.hibernate.reactive.panache.common.WithSession;
 import io.quarkus.hibernate.reactive.panache.common.WithTransaction;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -10,10 +9,10 @@ import lombok.val;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.mapit.constant.ProjectType;
 import org.mapit.converter.ProjectConverter;
-import org.mapit.model.CreateProjectParameter;
+import org.mapit.model.parameter.CreateProjectParameter;
 import org.mapit.model.Paged;
 import org.mapit.model.ProjectQuery;
-import org.mapit.model.ProjectVo;
+import org.mapit.model.vo.ProjectVo;
 import org.mapit.repository.ProjectRepository;
 import org.mapit.service.ProjectService;
 
@@ -26,8 +25,7 @@ public class ProjectServiceImpl implements ProjectService {
   private final ProjectConverter projectConverter;
 
   @Override
-  @WithSession
-  public Uni<Paged<ProjectVo>> list(ProjectQuery query) {
+  public Uni<Paged<ProjectVo>> page(ProjectQuery query) {
     return projectRepository.pagedUni(query).map(projectConverter::entity2Vo);
   }
 

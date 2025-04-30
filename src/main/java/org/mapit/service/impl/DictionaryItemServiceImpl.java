@@ -9,7 +9,7 @@ import lombok.val;
 import org.jetbrains.annotations.NotNull;
 import org.mapit.converter.DictionaryItemConverter;
 import org.mapit.exception.DictionaryNotFoundException;
-import org.mapit.model.CreateDictionaryItem;
+import org.mapit.model.parameter.CreateDictionaryItem;
 import org.mapit.repository.DictionaryItemRepository;
 import org.mapit.repository.DictionaryRepository;
 import org.mapit.service.DictionaryItemService;

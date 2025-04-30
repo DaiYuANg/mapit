@@ -4,7 +4,6 @@ import {CatchAllNavigate, NavigateToResource} from "@refinedev/react-router";
 import {ErrorComponent, ThemedLayoutV2} from "@refinedev/mui";
 import {Header} from "../components";
 import {BlogPostCreate, BlogPostEdit, BlogPostList, BlogPostShow} from "../pages/blog-posts";
-import {CategoryCreate, CategoryEdit, CategoryList, CategoryShow} from "../pages/categories";
 import {Login} from "../pages/login";
 import {Register} from "../pages/register";
 import {ForgotPassword} from "../pages/forgotPassword";

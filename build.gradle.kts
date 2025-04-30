@@ -1,9 +1,7 @@
-//import com.xenoterracide.gradle.semver.GitMetadataExtension
-
 plugins {
   alias(libs.plugins.dotenv)
   alias(libs.plugins.version.check)
-//  alias(libs.plugins.semver)
+  alias(libs.plugins.git)
   alias(libs.plugins.spotless)
   application
   java
@@ -24,15 +22,12 @@ allprojects {
   }
 }
 
-//val git: GitMetadataExtension = semver.git
-
 group = "org.mapit"
-//version = git.commitShort!!
+version = git.uniqueShort.get()
 
 spotless {
   java {
     target("**/*.java")
-    indentWithSpaces(2)
     importOrder()
     removeUnusedImports()
     trimTrailingWhitespace()
@@ -92,8 +87,6 @@ dependencies {
   implementation(libs.password4j)
 
   implementation(libs.apache.common.lang3)
-
-  implementation(libs.hutool.core)
 
   implementation(libs.slf4j)
   implementation(libs.slf4jJulBridage)

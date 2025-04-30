@@ -1,6 +1,5 @@
 package org.mapit.service.impl;
 
-import io.quarkus.hibernate.reactive.panache.common.WithSession;
 import io.quarkus.hibernate.reactive.panache.common.WithTransaction;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -8,7 +7,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.mapit.converter.DictionaryConverter;
-import org.mapit.model.CreateDictionary;
+import org.mapit.model.Paged;
+import org.mapit.model.parameter.CreateDictionary;
+import org.mapit.model.query.DictionaryQuery;
+import org.mapit.model.vo.DictionaryVo;
 import org.mapit.repository.DictionaryRepository;
 import org.mapit.repository.ProjectRepository;
 import org.mapit.service.DictionaryService;
@@ -23,6 +25,12 @@ public class DictionaryServiceImpl implements DictionaryService {
   private final DictionaryRepository dictionaryRepository;
 
   private final ProjectRepository projectRepository;
+
+  @Override
+  public Uni<Paged<DictionaryVo>> page(DictionaryQuery dictionaryQuery){
+    return dictionaryRepository.pagedUni(dictionaryQuery)
+      .map(dictionaryConverter::entity2Vo);
+  }
 
   @Override
   @WithTransaction

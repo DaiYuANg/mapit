@@ -3,7 +3,7 @@ package org.mapit.service;
 import io.quarkus.hibernate.reactive.panache.common.WithTransaction;
 import io.smallrye.mutiny.Uni;
 import org.jetbrains.annotations.NotNull;
-import org.mapit.model.CreateDictionaryItem;
+import org.mapit.model.parameter.CreateDictionaryItem;
 
 public interface DictionaryItemService {
   @WithTransaction

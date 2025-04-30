@@ -1,19 +1,18 @@
 [versions]
-record-builder = "44"
+record-builder = "45"
 mapstruct = "1.6.3"
-quarkus = "3.21.1"
+quarkus = "3.22.1"
 slf4j = "2.0.16"
-hutool = "5.8.37"
 
 [plugins]
 dotenv = { id = "co.uzzu.dotenv.gradle", version = "4.0.0" }
 plantuml = { id = "io.gitlab.plunts.plantuml", version = "2.2.1" }
 version-check = { id = "com.github.ben-manes.versions", version = "0.52.0" }
 maniftest = { id = "com.coditory.manifest", version = "1.1.0" }
-semver = { id = "com.xenoterracide.gradle.semver", version = "0.12.1" }
+git = { id = "com.xenoterracide.gradle.git", version = "0.12.1" }
 quarkus = { id = "io.quarkus", version.ref = "quarkus" }
 lombok = { id = "name.remal.lombok", version = "3.0.1" }
-spotless = { id = "com.diffplug.spotless", version = "7.0.2" }
+spotless = { id = "com.diffplug.spotless", version = "7.0.3" }
 
 [libraries]
 quarkus-bom = { group = "io.quarkus.platform", name = "quarkus-bom", version.ref = "quarkus" }
@@ -37,7 +36,7 @@ quarkus-arc = { group = "io.quarkus", name = "quarkus-arc" }
 quarkus-junit5 = { group = "io.quarkus", name = "quarkus-junit5" }
 quarkus-reactive-pg-client = { group = "io.quarkus", name = "quarkus-reactive-pg-client" }
 quarkus-smallrye-jwt-build = { group = "io.quarkus", name = "quarkus-smallrye-jwt-build" }
-quarkus-quinoa = { group = "io.quarkiverse.quinoa", name = "quarkus-quinoa", version = "2.5.3" }
+quarkus-quinoa = { group = "io.quarkiverse.quinoa", name = "quarkus-quinoa", version = "2.5.4" }
 quarkus-reactive-mysql-client = { group = "io.quarkus", name = "quarkus-reactive-mysql-client" }
 quarkus-info = { group = "io.quarkus", name = "quarkus-info" }
 quarkus-logging-manager = { group = "io.quarkiverse.loggingmanager", name = "quarkus-logging-manager", version = "3.3.2" }
@@ -76,13 +75,12 @@ immutables-value = { group = "org.immutables", name = "value", version = "2.10.1
 password4j = { group = "com.password4j", name = "password4j", version = "1.8.2" }
 semver4j = { group = "org.semver4j", name = "semver4j", version = "5.4.1" }
 
-guava = { group = "com.google.guava", name = "guava", version = "33.3.1-jre" }
+guava = { group = "com.google.guava", name = "guava", version = "33.4.8-jre" }
 
 jetbrainsAnnotation = { group = "org.jetbrains", name = "annotations", version = "26.0.2" }
 
 apache-common-lang3 = { group = "org.apache.commons", name = "commons-lang3", version = "3.17.0" }
 
-hutool-core = { group = "cn.hutool", name = "hutool-core", version.ref = "hutool" }
-data-faker = { group = "net.datafaker", name = "datafaker", version = "2.4.2" }
+data-faker = { group = "net.datafaker", name = "datafaker", version = "2.4.3" }
 
 junit-platform-launcher = { group = "org.junit.platform", name = "junit-platform-launcher" }

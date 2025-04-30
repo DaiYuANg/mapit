@@ -2,7 +2,7 @@ package org.mapit.schema;
 
 import org.infinispan.protostream.GeneratedSchema;
 import org.infinispan.protostream.annotations.ProtoSchema;
-import org.mapit.model.ProjectVo;
+import org.mapit.model.vo.ProjectVo;
 
 @ProtoSchema(includeClasses = ProjectVo.class)
 @SuppressWarnings("unused")

@@ -1,7 +1,7 @@
 package org.mapit.converter;
 
 import org.mapit.entity.DictionaryItem;
-import org.mapit.model.CreateDictionaryItem;
+import org.mapit.model.parameter.CreateDictionaryItem;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;

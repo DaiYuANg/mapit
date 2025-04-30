@@ -12,9 +12,10 @@ quarkus:
     log:
       sql: true
   log:
-    console:
-      json: false
     level: INFO
+    console:
+      json:
+        enabled: false
   quinoa:
     build-dir: dist
     enable-spa-routing: true

@@ -9,10 +9,10 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.mapit.config.MapitConfig;
 import org.mapit.converter.InternalUserConverter;
-import org.mapit.model.CreateUser;
-import org.mapit.model.LoginParameter;
-import org.mapit.model.LoginResult;
-import org.mapit.model.LoginResultBuilder;
+import org.mapit.model.parameter.CreateUser;
+import org.mapit.model.parameter.LoginParameter;
+import org.mapit.model.parameter.LoginResult;
+import org.mapit.model.parameter.LoginResultBuilder;
 import org.mapit.repository.UserRepository;
 import org.mapit.service.AuthService;
 import org.mapit.util.JwtBuilderHelper;
@@ -32,7 +32,7 @@ public class AuthServiceImpl implements AuthService {
 
   @Override
   public Uni<Void> registerUser(CreateUser createUser) {
-    return Uni.createFrom().item(internalUserConverter.create(createUser)).map(userRepository::persist).replaceWithVoid();
+    return createFrom().item(internalUserConverter.create(createUser)).map(userRepository::persist).replaceWithVoid();
   }
 
   @Override
