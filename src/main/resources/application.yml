@@ -16,6 +16,9 @@ quarkus:
     console:
       json:
         enabled: false
+    min-level: TRACE
+    category:
+      "org.hibernate.type.descriptor.sql": TRACE
   quinoa:
     build-dir: dist
     enable-spa-routing: true
