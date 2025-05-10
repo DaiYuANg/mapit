@@ -20,7 +20,11 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "docker:build": "docker build -t daiyuang/mapit:latest -t daiyuang/mapit:${npm_package_version} .",
-    "docker:push": "docker push daiyuang/mapit:latest && docker push daiyuang/mapit:${npm_package_version}"
+    "docker:push": "docker push daiyuang/mapit:latest && docker push daiyuang/mapit:${npm_package_version}",
+    "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
+    "migration:generate": "typeorm -- migration:generate -d src/data-source.ts src/migrations/init  --pretty --verbose",
+    "migration:run": "typeorm -- migration:run -d src/data-source.ts",
+    "migration:revert": "typeorm -- migration:revert -d src/data-source.ts"
   },
   "dependencies": {
     "@nestjs/axios": "^4.0.0",

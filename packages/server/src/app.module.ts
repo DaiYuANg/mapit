@@ -57,7 +57,6 @@ import { DataSource } from 'typeorm';
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => {
         const dbType = configService.getOrThrow<DatabaseType>('database.type');
-        console.log(dbType);
         switch (dbType) {
           case 'mysql':
             return {
