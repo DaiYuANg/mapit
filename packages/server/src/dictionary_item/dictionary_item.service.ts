@@ -1,26 +1,43 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateDictionaryItemDto } from './dto/create-dictionary_item.dto';
 import { UpdateDictionaryItemDto } from './dto/update-dictionary_item.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { DictionaryItem } from './entities/dictionary_item.entity';
 
 @Injectable()
 export class DictionaryItemService {
-  create(createDictionaryItemDto: CreateDictionaryItemDto) {
-    return 'This action adds a new dictionaryItem';
+  constructor(
+    @InjectRepository(DictionaryItem)
+    private readonly dictionaryItemRepository: Repository<DictionaryItem>,
+  ) {}
+
+  async create(createDictionaryItemDto: CreateDictionaryItemDto) {
+    const dictionary = this.dictionaryItemRepository.create(createDictionaryItemDto);
+    return this.dictionaryItemRepository.save(dictionary);
   }
 
-  findAll() {
-    return `This action returns all dictionaryItem`;
+  async findAll() {
+    return this.dictionaryItemRepository.find({ relations: ['items'] });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} dictionaryItem`;
+  async findOne(id: number) {
+    return this.dictionaryItemRepository.findOne({
+      where: { id },
+    });
   }
 
-  update(id: number, updateDictionaryItemDto: UpdateDictionaryItemDto) {
-    return `This action updates a #${id} dictionaryItem`;
+  async update(id: number, updateDictionaryItemDto: UpdateDictionaryItemDto) {
+    await this.dictionaryItemRepository.update(id, updateDictionaryItemDto);
+    return this.findOne(id);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} dictionaryItem`;
+  async remove(id: number) {
+    const toDelete = await this.findOne(id);
+    if (!toDelete) {
+      throw new NotFoundException(`Dictionary with id ${id} not found`);
+    }
+    await this.dictionaryItemRepository.delete(id);
+    return { success: true };
   }
 }

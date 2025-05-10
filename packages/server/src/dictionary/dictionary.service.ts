@@ -1,34 +1,45 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateDictionaryDto } from './dto/create-dictionary.dto';
 import { UpdateDictionaryDto } from './dto/update-dictionary.dto';
-import {InjectRepository} from "@nestjs/typeorm";
-import {Dictionary} from "./entities/dictionary.entity";
-import {Repository} from "typeorm";
+import { InjectRepository } from '@nestjs/typeorm';
+import { Dictionary } from './entities/dictionary.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class DictionaryService {
   constructor(
-      @InjectRepository(Dictionary)
-      private readonly dictionaryRepo: Repository<Dictionary>,
+    @InjectRepository(Dictionary)
+    private readonly dictionaryRepo: Repository<Dictionary>,
   ) {}
-  create(createDictionaryDto: CreateDictionaryDto) {
-    return 'This action adds a new dictionary';
+
+  async create(createDictionaryDto: CreateDictionaryDto) {
+    const dictionary = this.dictionaryRepo.create(createDictionaryDto);
+    return this.dictionaryRepo.save(dictionary);
   }
 
-  findAll() {
-    return `This action returns all dictionary`;
+  async findAll() {
+    return this.dictionaryRepo.find({ relations: ['items'] });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} dictionary`;
+  async findOne(id: number) {
+    return this.dictionaryRepo.findOne({
+      where: { id },
+      relations: ['items'],
+    });
   }
 
-  update(id: number, updateDictionaryDto: UpdateDictionaryDto) {
-    return `This action updates a #${id} dictionary`;
+  async update(id: number, updateDictionaryDto: UpdateDictionaryDto) {
+    await this.dictionaryRepo.update(id, updateDictionaryDto);
+    return this.findOne(id);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} dictionary`;
+  async remove(id: number) {
+    const toDelete = await this.findOne(id);
+    if (!toDelete) {
+      throw new NotFoundException(`Dictionary with id ${id} not found`);
+    }
+    await this.dictionaryRepo.delete(id);
+    return { success: true };
   }
 
   async findByCode(code: string) {

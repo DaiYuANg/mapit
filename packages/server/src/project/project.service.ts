@@ -1,30 +1,39 @@
-import {Injectable, NotFoundException} from '@nestjs/common';
-import {CreateProjectDto} from './dto/create-project.dto';
-import {UpdateProjectDto} from './dto/update-project.dto';
-import {InjectRepository} from "@nestjs/typeorm";
-import {Dictionary} from "../dictionary/entities/dictionary.entity";
-import {Repository} from "typeorm";
-import {Project} from "./entities/project.entity";
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { CreateProjectDto } from './dto/create-project.dto';
+import { UpdateProjectDto } from './dto/update-project.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Project } from './entities/project.entity';
+import { AccessKeyService } from '../access_key/access_key.service';
 
 @Injectable()
 export class ProjectService {
   constructor(
     @InjectRepository(Project)
     private readonly projectRepository: Repository<Project>,
-  ) {
-  }
+    private readonly accessKeyService: AccessKeyService, // 注入 AccessKeyService
+  ) {}
 
   async create(createProjectDto: CreateProjectDto) {
     const project = this.projectRepository.create(createProjectDto);
-    return this.projectRepository.save(project);
+
+    const savedProject = await this.projectRepository.save(project);
+
+    const accessKey = await this.accessKeyService.createAccessKey(savedProject);
+
+    console.log(accessKey);
+
+    return savedProject;
   }
 
   async findAll() {
-    return this.projectRepository.find();
+    return this.projectRepository.find({
+      relations: ['accessKeys'],
+    });
   }
 
   async findOne(id: number) {
-    const project = await this.projectRepository.findOne({where: {id}});
+    const project = await this.projectRepository.findOne({ where: { id }, relations: ['accessKeys'] });
     if (!project) throw new NotFoundException(`Project ${id} not found`);
     return project;
   }
@@ -42,6 +51,6 @@ export class ProjectService {
     if (result.affected === 0) {
       throw new NotFoundException(`Project ${id} not found`);
     }
-    return {deleted: true};
+    return { deleted: true };
   }
 }

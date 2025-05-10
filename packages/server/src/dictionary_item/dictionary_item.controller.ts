@@ -8,27 +8,27 @@ export class DictionaryItemController {
   constructor(private readonly dictionaryItemService: DictionaryItemService) {}
 
   @Post()
-  create(@Body() createDictionaryItemDto: CreateDictionaryItemDto) {
+  async create(@Body() createDictionaryItemDto: CreateDictionaryItemDto) {
     return this.dictionaryItemService.create(createDictionaryItemDto);
   }
 
   @Get()
-  findAll() {
+  async findAll() {
     return this.dictionaryItemService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string) {
     return this.dictionaryItemService.findOne(+id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateDictionaryItemDto: UpdateDictionaryItemDto) {
+  async update(@Param('id') id: string, @Body() updateDictionaryItemDto: UpdateDictionaryItemDto) {
     return this.dictionaryItemService.update(+id, updateDictionaryItemDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
     return this.dictionaryItemService.remove(+id);
   }
 }
