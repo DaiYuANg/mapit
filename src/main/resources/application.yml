@@ -19,7 +19,9 @@ quarkus:
     min-level: TRACE
     category:
       "org.hibernate.type.descriptor.sql": TRACE
-#  quinoa:
+  quinoa:
+    dev-server:
+      port: 4173
 #    build-dir: dist
 #    enable-spa-routing: true
   management:

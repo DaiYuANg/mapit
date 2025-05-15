@@ -38,6 +38,7 @@ dependencies {
   implementation(enforcedPlatform(libs.quarkus.bom))
   annotationProcessor(enforcedPlatform(libs.quarkus.bom))
   implementation(libs.quarkus.hibernate)
+  implementation(libs.quarkus.hibernate.envers)
   implementation(libs.quarkus.mutiny)
   implementation(libs.quarkus.rest)
   implementation(libs.quarkus.hibernate.panache)

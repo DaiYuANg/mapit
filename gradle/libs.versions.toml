@@ -1,5 +1,5 @@
 [versions]
-record-builder = "45"
+record-builder = "47"
 mapstruct = "1.6.3"
 quarkus = "3.22.3"
 slf4j = "2.0.16"
@@ -19,6 +19,7 @@ spotless = { id = "com.diffplug.spotless", version = "7.0.3" }
 [libraries]
 quarkus-bom = { group = "io.quarkus.platform", name = "quarkus-bom", version.ref = "quarkus" }
 quarkus-hibernate = { group = "io.quarkus", name = "quarkus-hibernate-orm" }
+quarkus-hibernate-envers = { group = "io.quarkus", name = "quarkus-hibernate-envers" }
 quarkus-mutiny = { group = "io.quarkus", name = "quarkus-mutiny" }
 quarkus-rest = { group = "io.quarkus", name = "quarkus-rest" }
 quarkus-hibernate-panache = { group = "io.quarkus", name = "quarkus-hibernate-orm-panache" }
@@ -39,7 +40,7 @@ quarkus-junit5 = { group = "io.quarkus", name = "quarkus-junit5" }
 quarkus-smallrye-jwt-build = { group = "io.quarkus", name = "quarkus-smallrye-jwt-build" }
 quarkus-quinoa = { group = "io.quarkiverse.quinoa", name = "quarkus-quinoa", version = "2.5.4" }
 quarkus-info = { group = "io.quarkus", name = "quarkus-info" }
-quarkus-logging-manager = { group = "io.quarkiverse.loggingmanager", name = "quarkus-logging-manager", version = "3.3.2" }
+quarkus-logging-manager = { group = "io.quarkiverse.loggingmanager", name = "quarkus-logging-manager", version = "3.3.4" }
 quarkus-infinispan-cache = { group = "io.quarkus", name = "quarkus-infinispan-cache" }
 quarkus-infinispan-client = { group = "io.quarkus", name = "quarkus-infinispan-client" }
 quarkus-graphql = { group = "io.quarkus", name = "quarkus-smallrye-graphql" }
@@ -74,7 +75,7 @@ mapstruct = { group = "org.mapstruct", name = "mapstruct", version.ref = "mapstr
 mapstruct-processor = { group = "org.mapstruct", name = "mapstruct-processor", version.ref = "mapstruct" }
 immutables-value = { group = "org.immutables", name = "value", version = "2.10.1" }
 
-password4j = { group = "com.password4j", name = "password4j", version = "1.8.2" }
+password4j = { group = "com.password4j", name = "password4j", version = "1.8.3" }
 semver4j = { group = "org.semver4j", name = "semver4j", version = "5.4.1" }
 
 guava = { group = "com.google.guava", name = "guava", version = "33.4.8-jre" }
