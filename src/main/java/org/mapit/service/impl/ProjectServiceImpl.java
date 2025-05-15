@@ -1,6 +1,5 @@
 package org.mapit.service.impl;
 
-import io.quarkus.hibernate.reactive.panache.common.WithTransaction;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
 import lombok.RequiredArgsConstructor;
@@ -30,18 +29,18 @@ public class ProjectServiceImpl implements ProjectService {
   }
 
   @Override
-  @WithTransaction
   public Uni<Void> create(CreateProjectParameter projectParameter) {
-    return Uni.createFrom()
-      .item(projectConverter.create(projectParameter))
-      .invoke(project -> {
-        project.setType(ProjectType.OWNED);
-      })
-      .invoke(entity -> {
-        val token = RandomStringUtils.secure().nextNumeric(20);
-        entity.setAccessKey(token);
-      })
-      .flatMap(projectRepository::persist)
-      .replaceWithVoid();
+    return Uni.createFrom().nullItem();
+//    return Uni.createFrom()
+//      .item(projectConverter.create(projectParameter))
+//      .invoke(project -> {
+//        project.setType(ProjectType.OWNED);
+//      })
+//      .invoke(entity -> {
+//        val token = RandomStringUtils.secure().nextNumeric(20);
+//        entity.setAccessKey(token);
+//      })
+//      .flatMap(projectRepository::persist)
+//      .replaceWithVoid();
   }
 }

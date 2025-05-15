@@ -9,7 +9,7 @@ import {Register} from "../pages/register";
 import {ForgotPassword} from "../pages/forgotPassword";
 
 const MapitRoute = () => {
-
+  console.log(123)
   return <>
     <Routes>
       <Route

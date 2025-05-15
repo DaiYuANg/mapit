@@ -1,8 +1,10 @@
 [versions]
 record-builder = "45"
 mapstruct = "1.6.3"
-quarkus = "3.22.1"
+quarkus = "3.22.3"
 slf4j = "2.0.16"
+queryDsl = "6.11"
+blaze-persistence = "1.6.15"
 
 [plugins]
 dotenv = { id = "co.uzzu.dotenv.gradle", version = "4.0.0" }
@@ -16,11 +18,11 @@ spotless = { id = "com.diffplug.spotless", version = "7.0.3" }
 
 [libraries]
 quarkus-bom = { group = "io.quarkus.platform", name = "quarkus-bom", version.ref = "quarkus" }
-quarkus-hibernate-reactive = { group = "io.quarkus", name = "quarkus-hibernate-reactive" }
+quarkus-hibernate = { group = "io.quarkus", name = "quarkus-hibernate-orm" }
 quarkus-mutiny = { group = "io.quarkus", name = "quarkus-mutiny" }
 quarkus-rest = { group = "io.quarkus", name = "quarkus-rest" }
-quarkus-hibernate-reactive-panache = { group = "io.quarkus", name = "quarkus-hibernate-reactive-panache" }
-quarkus-hibernate-reactive-rest-data-panache = { group = "io.quarkus", name = "quarkus-hibernate-reactive-rest-data-panache" }
+quarkus-hibernate-panache = { group = "io.quarkus", name = "quarkus-hibernate-orm-panache" }
+quarkus-hibernate-rest-data-panache = { group = "io.quarkus", name = "quarkus-hibernate-orm-rest-data-panache" }
 quarkus-config-yaml = { group = "io.quarkus", name = "quarkus-config-yaml" }
 quarkus-scheduler = { group = "io.quarkus", name = "quarkus-scheduler" }
 quarkus-smallrye-jwt = { group = "io.quarkus", name = "quarkus-smallrye-jwt" }
@@ -34,10 +36,8 @@ quarkus-jackson = { group = "io.quarkus", name = "quarkus-jackson" }
 quarkus-mailer = { group = "io.quarkus", name = "quarkus-mailer" }
 quarkus-arc = { group = "io.quarkus", name = "quarkus-arc" }
 quarkus-junit5 = { group = "io.quarkus", name = "quarkus-junit5" }
-quarkus-reactive-pg-client = { group = "io.quarkus", name = "quarkus-reactive-pg-client" }
 quarkus-smallrye-jwt-build = { group = "io.quarkus", name = "quarkus-smallrye-jwt-build" }
 quarkus-quinoa = { group = "io.quarkiverse.quinoa", name = "quarkus-quinoa", version = "2.5.4" }
-quarkus-reactive-mysql-client = { group = "io.quarkus", name = "quarkus-reactive-mysql-client" }
 quarkus-info = { group = "io.quarkus", name = "quarkus-info" }
 quarkus-logging-manager = { group = "io.quarkiverse.loggingmanager", name = "quarkus-logging-manager", version = "3.3.2" }
 quarkus-infinispan-cache = { group = "io.quarkus", name = "quarkus-infinispan-cache" }
@@ -50,6 +50,8 @@ quarkus-flyway = { group = "io.quarkus", name = "quarkus-flyway" }
 quarkus-jdbc-postgresql = { group = "io.quarkus", name = "quarkus-jdbc-postgresql" }
 quarkus-jdbc-mysql = { group = "io.quarkus", name = "quarkus-jdbc-mysql" }
 quarkus-jdbc-mariadb = { group = "io.quarkus", name = "quarkus-jdbc-mariadb" }
+quarkus-jdbc-h2 = { group = "io.quarkus", name = "quarkus-jdbc-h2" }
+quarkus-jdbc-sqlite = { group = "io.quarkiverse.jdbc", name = "quarkus-jdbc-sqlite", version = "3.0.11" }
 quarkus-systemd-notifiy = { group = "io.quarkiverse.systemd.notify", name = "quarkus-systemd-notify", version = "1.0.2" }
 quarkus-test-vertx = { group = "io.quarkus", name = "quarkus-test-vertx" }
 rest-assured = { group = "io.rest-assured", name = "rest-assured" }
@@ -84,3 +86,24 @@ apache-common-lang3 = { group = "org.apache.commons", name = "commons-lang3", ve
 data-faker = { group = "net.datafaker", name = "datafaker", version = "2.4.3" }
 
 junit-platform-launcher = { group = "org.junit.platform", name = "junit-platform-launcher" }
+
+#QueryDSL
+querydsl-jpa = { group = "io.github.openfeign.querydsl", name = "querydsl-jpa", version.ref = "queryDsl" }
+querydsl-apt = { group = "io.github.openfeign.querydsl", name = "querydsl-apt", version.ref = "queryDsl" }
+querydsl-spatial = { group = "io.github.openfeign.querydsl", name = "querydsl-spatial", version.ref = "queryDsl" }
+querydsl-guava = { group = "io.github.openfeign.querydsl", name = "querydsl-guava", version.ref = "queryDsl" }
+querydsl-collection = { group = "io.github.openfeign.querydsl", name = "querydsl-collections", version.ref = "queryDsl" }
+querydsl-core = { group = "io.github.openfeign.querydsl", name = "querydsl-core", version.ref = "queryDsl" }
+
+blaze-persistence-integration-hibernate = { group = "com.blazebit", name = "blaze-persistence-integration-hibernate-6.2", version.ref = "blaze-persistence" }
+blaze-persistence-core-api = { group = "com.blazebit", name = "blaze-persistence-core-api-jakarta", version.ref = "blaze-persistence" }
+blaze-persistence-core-impl = { group = "com.blazebit", name = "blaze-persistence-core-impl-jakarta", version.ref = "blaze-persistence" }
+blaze-persistence-integration-querydsl-expressions = { group = "com.blazebit", name = "blaze-persistence-integration-querydsl-expressions-jakarta", version.ref = "blaze-persistence" }
+blaze-persistence-entity-view-api-jakarta = { group = "com.blazebit", name = "blaze-persistence-entity-view-api-jakarta", version.ref = "blaze-persistence" }
+blaze-persistence-jpa-criteria-api-jakarta = { group = "com.blazebit", name = "blaze-persistence-jpa-criteria-api-jakarta", version.ref = "blaze-persistence" }
+blaze-persistence-jpa-criteria-impl-jakarta = { group = "com.blazebit", name = "blaze-persistence-jpa-criteria-impl-jakarta", version.ref = "blaze-persistence" }
+blaze-persistence-entity-view-impl-jakarta = { group = "com.blazebit", name = "blaze-persistence-entity-view-impl-jakarta", version.ref = "blaze-persistence" }
+blaze-persistence-integration-entity-view-spring = { group = "com.blazebit", name = "blaze-persistence-integration-entity-view-spring-6.0", version.ref = "blaze-persistence" }
+blaze-persistence-entity-view-processor-jakarta = { group = "com.blazebit", name = "blaze-persistence-entity-view-processor-jakarta", version.ref = "blaze-persistence" }
+
+jakarta-persistence = { group = "jakarta.persistence", name = "jakarta.persistence-api" }

@@ -1,6 +1,5 @@
 package org.mapit.service.impl;
 
-import io.quarkus.hibernate.reactive.panache.common.WithTransaction;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
 import lombok.RequiredArgsConstructor;
@@ -25,19 +24,19 @@ public class DictionaryItemServiceImpl implements DictionaryItemService {
 
   private final DictionaryItemConverter dictionaryItemConverter;
 
-  @WithTransaction
   @Override
   public Uni<Void> create(@NotNull CreateDictionaryItem dictionaryItem) {
-    return dictionaryRepository.findById(dictionaryItem.dictionaryId())
-      .onItem()
-      .ifNull()
-      .failWith(new DictionaryNotFoundException("Dictionary not found"))
-      .map(dictionary -> {
-        val entity = dictionaryItemConverter.create(dictionaryItem);
-        entity.setDictionary(dictionary);
-        return entity;
-      })
-      .flatMap(dictionaryItemRepository::persist)
-      .replaceWithVoid();
+//    return dictionaryRepository.findById(dictionaryItem.dictionaryId())
+//      .onItem()
+//      .ifNull()
+//      .failWith(new DictionaryNotFoundException("Dictionary not found"))
+//      .map(dictionary -> {
+//        val entity = dictionaryItemConverter.create(dictionaryItem);
+//        entity.setDictionary(dictionary);
+//        return entity;
+//      })
+//      .flatMap(dictionaryItemRepository::persist)
+//      .replaceWithVoid();
+    return null;
   }
 }

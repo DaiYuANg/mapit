@@ -19,9 +19,9 @@ quarkus:
     min-level: TRACE
     category:
       "org.hibernate.type.descriptor.sql": TRACE
-  quinoa:
-    build-dir: dist
-    enable-spa-routing: true
+#  quinoa:
+#    build-dir: dist
+#    enable-spa-routing: true
   management:
     enabled: true
   live-reload:
@@ -38,3 +38,5 @@ quarkus:
   container-image:
     group: mapit
     name: server
+  datasource:
+    db-kind: mysql

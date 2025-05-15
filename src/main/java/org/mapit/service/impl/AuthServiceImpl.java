@@ -32,7 +32,8 @@ public class AuthServiceImpl implements AuthService {
 
   @Override
   public Uni<Void> registerUser(CreateUser createUser) {
-    return createFrom().item(internalUserConverter.create(createUser)).map(userRepository::persist).replaceWithVoid();
+    return null;
+//    return createFrom().item(internalUserConverter.create(createUser)).map(userRepository::persist).replaceWithVoid();
   }
 
   @Override

@@ -37,24 +37,22 @@ spotless {
 dependencies {
   implementation(enforcedPlatform(libs.quarkus.bom))
   annotationProcessor(enforcedPlatform(libs.quarkus.bom))
-  implementation(libs.quarkus.hibernate.reactive)
+  implementation(libs.quarkus.hibernate)
   implementation(libs.quarkus.mutiny)
   implementation(libs.quarkus.rest)
-  implementation(libs.quarkus.hibernate.reactive.panache)
-  implementation(libs.quarkus.hibernate.reactive.rest.data.panache)
+  implementation(libs.quarkus.hibernate.panache)
+  implementation(libs.quarkus.hibernate.rest.data.panache)
   implementation(libs.quarkus.config.yaml)
   implementation(libs.quarkus.scheduler)
   implementation(libs.quarkus.smallrye.jwt)
   implementation(libs.quarkus.logging.json)
   implementation(libs.quarkus.vertx)
-  implementation(libs.quarkus.reactive.mysql.client)
   implementation(libs.quarkus.hibernate.validator)
   implementation(libs.quarkus.websockets.next)
   implementation(libs.quarkus.rest.jackson)
   implementation(libs.quarkus.quartz)
   implementation(libs.quarkus.jackson)
   implementation(libs.quarkus.mailer)
-  implementation(libs.quarkus.reactive.pg.client)
   implementation(libs.quarkus.smallrye.jwt.build)
   implementation(libs.quarkus.quinoa)
   implementation(libs.quarkus.arc)
@@ -72,6 +70,8 @@ dependencies {
   implementation(libs.quarkus.jdbc.mysql)
   implementation(libs.quarkus.jdbc.mariadb)
   implementation(libs.quarkus.jdbc.postgresql)
+  implementation(libs.quarkus.jdbc.sqlite)
+  implementation(libs.quarkus.jdbc.h2)
   implementation(libs.quarkus.systemd.notifiy)
 
   implementation(libs.record.builder.core)
@@ -99,6 +99,16 @@ dependencies {
   testImplementation(libs.quarkus.junit5)
   testImplementation(libs.rest.assured)
   testImplementation(libs.quarkus.test.vertx)
+
+  val queryDSLApt = variantOf(libs.querydsl.apt) { classifier(JAKARTA) }
+  compileOnly(queryDSLApt)
+  annotationProcessor(queryDSLApt)
+  implementation(libs.querydsl.jpa)
+  implementation(libs.querydsl.core)
+  implementation(libs.querydsl.collection)
+  implementation(libs.querydsl.spatial)
+  implementation(libs.querydsl.guava)
+  annotationProcessor(libs.jakarta.persistence)
 }
 
 java {

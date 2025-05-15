@@ -1,6 +1,5 @@
 package org.mapit.service.impl;
 
-import io.quarkus.hibernate.reactive.panache.common.WithTransaction;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
 import lombok.RequiredArgsConstructor;
@@ -33,21 +32,21 @@ public class DictionaryServiceImpl implements DictionaryService {
   }
 
   @Override
-  @WithTransaction
   public Uni<Void> createDictionary(CreateDictionary dictionary) {
     log.atInfo().log("Create dictionary:{}", dictionary);
-    return Uni.createFrom()
-      .item(() -> projectRepository.findById(dictionary.projectId()))
-      .onItem()
-      .ifNotNull()
-      .transformToUni(uniProject ->
-        uniProject.log().map(project -> {
-          val dict = dictionaryConverter.create(dictionary);
-          dict.setProject(project);
-          return dict;
-        })
-      )
-      .flatMap(dictionaryRepository::persist)
-      .replaceWithVoid();
+//    return Uni.createFrom()
+//      .item(() -> projectRepository.findById(dictionary.projectId()))
+//      .onItem()
+//      .ifNotNull()
+//      .transformToUni(uniProject ->
+//        uniProject.log().map(project -> {
+//          val dict = dictionaryConverter.create(dictionary);
+//          dict.setProject(project);
+//          return dict;
+//        })
+//      )
+//      .flatMap(dictionaryRepository::persist)
+//      .replaceWithVoid();
+    return null;
   }
 }

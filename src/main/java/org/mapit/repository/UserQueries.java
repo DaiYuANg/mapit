@@ -9,5 +9,5 @@ import org.mapit.entity.InternalUser;
 public interface UserQueries {
 
   @Find
-  Uni<InternalUser> findUserByUsername(String username);
+  InternalUser findUserByUsername(String username);
 }
