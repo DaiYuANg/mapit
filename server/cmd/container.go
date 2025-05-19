@@ -10,7 +10,6 @@ import (
 	"mapit/module/database"
 	"mapit/module/http"
 	"mapit/module/logger"
-	"mapit/module/repository"
 	"mapit/module/service"
 )
 
@@ -20,7 +19,6 @@ func container() *fx.App {
 		config.Module,
 		cache.Module,
 		database.Module,
-		repository.Module,
 		service.Module,
 		controller.Module,
 		http.Module,

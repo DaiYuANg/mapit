@@ -2,23 +2,19 @@ package entity
 
 import (
 	"github.com/google/uuid"
-	"github.com/uptrace/bun"
+	"gorm.io/gorm"
 	"time"
 )
 
 type AccessKey struct {
-	bun.BaseModel `bun:"table:project_access_keys"`
+	gorm.Model
+	ProjectID int64      `gorm:"not null;index"`        // 外键字段
+	Key       string     `gorm:"not null;uniqueIndex"`  // 唯一 key，用于鉴权
+	Name      string     `gorm:"not null"`              // 命名标识，方便管理
+	Enabled   bool       `gorm:"not null;default:true"` // 启用状态
+	ExpiresAt *time.Time `gorm:"default:null"`          // 可空，表示永不过期
 
-	ID        int64      `bun:",pk,autoincrement"`
-	ProjectID int64      `bun:",notnull"`              // 外键关联 Project
-	Key       string     `bun:",notnull,unique"`       // 可使用 UUID 或短码
-	Name      string     `bun:",notnull"`              // 例如："默认访问密钥"、"外部系统A"
-	Enabled   bool       `bun:",notnull,default:true"` // 是否启用
-	ExpiresAt *time.Time `bun:",nullzero"`             // 可选：过期时间
-	CreatedAt time.Time  `bun:",nullzero,notnull,default:current_timestamp"`
-	UpdatedAt time.Time  `bun:",nullzero,notnull,default:current_timestamp"`
-
-	Project *Project `bun:"rel:belongs-to,join:project_id=id"`
+	Project Project `gorm:"foreignKey:ProjectID"` // 外键关联
 }
 
 func GenerateAccessKey() AccessKey {

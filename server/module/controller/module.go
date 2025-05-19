@@ -10,11 +10,6 @@ import (
 var Module = fx.Module("controller",
 	fx.Provide(
 		fx.Annotate(
-			controller.NewViewController,
-			fx.As(new(Controller)),
-			fx.ResultTags(`group:"controllers"`),
-		),
-		fx.Annotate(
 			controller.NewProjectController,
 			fx.As(new(Controller)),
 			fx.ResultTags(`group:"controllers"`),
