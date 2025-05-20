@@ -8,13 +8,17 @@ import { DictionaryModule } from './dictionary/dictionary.module';
 import { DictionaryItemModule } from './dictionary_item/dictionary_item.module';
 import { AccessKeyModule } from './access_key/access_key.module';
 import { CacheModule } from '@nestjs/cache-manager';
+import configuration from './config/configuration';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+      load: [configuration],
     }),
-    CacheModule.register(),
+    CacheModule.register({
+      isGlobal: true,
+    }),
     TypeOrmModule.forRoot({
       type: 'better-sqlite3',
       database: ':memory:', // 👈 内存 SQLite 的关键配置
