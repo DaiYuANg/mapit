@@ -8,7 +8,14 @@
   },
   "private": true,
   "devDependencies": {
+    "concurrently": "^9.1.2",
+    "prettier": "^3.5.3",
     "rimraf": "^6.0.1"
+  },
+  "scripts": {
+    "deploy:server": "pnpm --filter=@mapit/server deploy dist/server",
+    "deploy:ui": "pnpm --filter=@mapit/ui deploy dist/ui",
+    "clean:deploy": "rimraf dist && concurrently \"pnpm deploy:server\" \"pnpm deploy:ui\""
   },
   "packageManager": "pnpm@9.10.0"
 }
