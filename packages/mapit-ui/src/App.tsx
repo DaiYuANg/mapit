@@ -7,15 +7,16 @@ import "@refinedev/antd/dist/reset.css";
 
 import dataProvider from "@refinedev/simple-rest";
 import {App as AntdApp} from "antd";
-import {BrowserRouter, Outlet, Route, Routes} from "react-router";
+import {BrowserRouter, Outlet, Route, Routes} from "react-router-dom";
 import routerBindings, {
-    CatchAllNavigate,
-    DocumentTitleHandler,
-    NavigateToResource,
-    UnsavedChangesNotifier,
+  CatchAllNavigate,
+  DocumentTitleHandler,
+  NavigateToResource,
+  UnsavedChangesNotifier,
 } from "@refinedev/react-router";
-import {BlogPostCreate, BlogPostEdit, BlogPostList, BlogPostShow,} from "./pages/blog-posts";
-import {CategoryCreate, CategoryEdit, CategoryList, CategoryShow,} from "./pages/categories";
+import { ProjectList ,ProjectCreate,ProjectEdit,ProjectShow } from "./pages/project";
+import { DictionaryList,DictionaryCreate,DictionaryEdit,DictionaryShow } from "./pages/dictionary";
+import { DictionaryItemList,DictionaryItemEdit,DictionaryItemCreate,DictionaryItemShow } from "./pages/dictionary-item";
 import {AppIcon} from "./components/app-icon";
 import {ColorModeContextProvider} from "./contexts/color-mode";
 import {Header} from "./components";
@@ -32,7 +33,7 @@ function App() {
                     <AntdApp>
                         <DevtoolsProvider>
                             <Refine
-                                dataProvider={dataProvider("/api")}
+                                dataProvider={dataProvider("/api/v1")}
                                 notificationProvider={useNotificationProvider}
                                 authProvider={authProvider}
                                 routerProvider={routerBindings}
@@ -48,11 +49,21 @@ function App() {
                                         },
                                     },
                                     {
-                                        name: "categories",
-                                        list: "/categories",
-                                        create: "/categories/create",
-                                        edit: "/categories/edit/:id",
-                                        show: "/categories/show/:id",
+                                        name: "dictionary",
+                                        list: "/dictionary",
+                                        create: "/dictionary/create",
+                                        edit: "/dictionary/edit/:id",
+                                        show: "/dictionary/show/:id",
+                                        meta: {
+                                            canDelete: true,
+                                        },
+                                    },
+                                    {
+                                        name: "dictionary-item",
+                                        list: "/dictionary-item",
+                                        create: "/dictionary-item/create",
+                                        edit: "/dictionary-item/edit/:id",
+                                        show: "/dictionary-item/show/:id",
                                         meta: {
                                             canDelete: true,
                                         },
@@ -84,19 +95,25 @@ function App() {
                                     >
                                         <Route
                                             index
-                                            element={<NavigateToResource resource="blog_posts"/>}
+                                            element={<NavigateToResource resource="project"/>}
                                         />
                                         <Route path="/project">
-                                            <Route index element={<BlogPostList/>}/>
-                                            <Route path="create" element={<BlogPostCreate/>}/>
-                                            <Route path="edit/:id" element={<BlogPostEdit/>}/>
-                                            <Route path="show/:id" element={<BlogPostShow/>}/>
+                                            <Route index element={<ProjectList/>}/>
+                                            <Route path="create" element={<ProjectCreate/>}/>
+                                            <Route path="edit/:id" element={<ProjectEdit/>}/>
+                                            <Route path="show/:id" element={<ProjectShow/>}/>
                                         </Route>
-                                        <Route path="/categories">
-                                            <Route index element={<CategoryList/>}/>
-                                            <Route path="create" element={<CategoryCreate/>}/>
-                                            <Route path="edit/:id" element={<CategoryEdit/>}/>
-                                            <Route path="show/:id" element={<CategoryShow/>}/>
+                                        <Route path="/dictionary">
+                                            <Route index element={<DictionaryList/>}/>
+                                            <Route path="create" element={<DictionaryCreate/>}/>
+                                            <Route path="edit/:id" element={<DictionaryEdit/>}/>
+                                            <Route path="show/:id" element={<DictionaryShow/>}/>
+                                        </Route>
+                                        <Route path="/dictionary-item">
+                                            <Route index element={<DictionaryItemList/>}/>
+                                            <Route path="create" element={<DictionaryItemCreate/>}/>
+                                            <Route path="edit/:id" element={<DictionaryItemEdit/>}/>
+                                            <Route path="show/:id" element={<DictionaryItemShow/>}/>
                                         </Route>
                                         <Route path="*" element={<ErrorComponent/>}/>
                                     </Route>

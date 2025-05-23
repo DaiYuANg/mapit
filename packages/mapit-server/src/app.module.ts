@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ConfigModule } from '@nestjs/config';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { ProjectModule } from './project/project.module';
 import { DictionaryModule } from './dictionary/dictionary.module';
 import { DictionaryItemModule } from './dictionary_item/dictionary_item.module';
@@ -48,13 +48,22 @@ import { HealthModule } from './health/health.module';
     CacheModule.register({
       isGlobal: true,
     }),
-    TypeOrmModule.forRoot({
-      logging: 'all',
-      logger: 'simple-console',
-      type: 'better-sqlite3',
-      database: ':memory:',
-      entities: [__dirname + '/**/*.entity{.ts,.js}'],
-      synchronize: true, // 自动建表（开发阶段可用）
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (config: ConfigService) =>
+        ({
+          type: config.get<'mysql' | 'postgres' | 'sqlite' | 'better-sqlite3'>('DB_TYPE', 'better-sqlite3'),
+          host: config.get('DB_HOST', 'localhost'),
+          port: parseInt(config.get('DB_PORT', '3306'), 10),
+          username: config.get('DB_USERNAME', 'root'),
+          password: config.get('DB_PASSWORD', ''),
+          database: config.get('DB_DATABASE', ':memory:'),
+          entities: [__dirname + '/**/*.entity{.ts,.js}'],
+          synchronize: true, // 生产环境建议 false
+          logging: 'all',
+          logger: 'simple-console',
+        }) as TypeOrmModuleOptions,
+      inject: [ConfigService],
     }),
     ProjectModule,
     DictionaryModule,

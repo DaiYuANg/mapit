@@ -1,11 +1,12 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import * as compression from 'compression'
-import helmet from "helmet";
+import * as compression from 'compression';
+import helmet from 'helmet';
 
 const bootstrap = async () => {
   const app = await NestFactory.create(AppModule);
+  app.setGlobalPrefix('api/v1');
   const config = new DocumentBuilder()
     .setTitle('Map it')
     .setDescription('The mapit API description')

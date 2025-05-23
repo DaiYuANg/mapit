@@ -9,16 +9,21 @@ import type { BaseRecord } from "@refinedev/core";
 import { Space, Table } from "antd";
 import React from "react";
 
-export const CategoryList = () => {
-  const { tableProps } = useTable({
-    syncWithLocation: true,
-  });
+export const DictionaryItemList = () => {
+  const { tableProps } = useTable();
 
   return (
     <List>
       <Table {...tableProps} rowKey="id">
-        <Table.Column dataIndex="id" title={"ID"} />
-        <Table.Column dataIndex="title" title={"title"} />
+        <Table.Column dataIndex="name" title="名称" />
+        <Table.Column dataIndex="code" title="编码" />
+        <Table.Column dataIndex="description" title="描述" />
+        <Table.Column dataIndex="sort" title="排序" />
+        <Table.Column
+          dataIndex={["dictionary", "name"]}
+          title="所属字典"
+          render={(_, record) => record.dictionary?.name || "-"}
+        />
         <Table.Column
           title={"Actions"}
           dataIndex="actions"

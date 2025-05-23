@@ -1,34 +1,41 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { ProjectService } from './project.service';
 import { CreateProjectDto } from './dto/create-project.dto';
-import { UpdateProjectDto } from './dto/update-project.dto';
+import { Project } from './entities/project.entity';
+import { ApiTags, ApiOperation } from '@nestjs/swagger';
 
+@ApiTags('项目管理')
 @Controller('project')
 export class ProjectController {
   constructor(private readonly projectService: ProjectService) {}
 
+  @ApiOperation({ summary: '创建项目' })
   @Post()
-  create(@Body() createProjectDto: CreateProjectDto) {
-    return this.projectService.create(createProjectDto);
+  async create(@Body() createProjectDto: CreateProjectDto): Promise<Project> {
+    return await this.projectService.create(createProjectDto);
   }
 
+  @ApiOperation({ summary: '获取所有项目' })
   @Get()
-  findAll() {
-    return this.projectService.findAll();
+  async findAll(): Promise<Project[]> {
+    return await this.projectService.findAll();
   }
 
+  @ApiOperation({ summary: '根据ID获取项目' })
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.projectService.findOne(+id);
+  async findOne(@Param('id') id: string): Promise<Project> {
+    return await this.projectService.findOne(id);
   }
 
+  @ApiOperation({ summary: '更新项目' })
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateProjectDto: UpdateProjectDto) {
-    return this.projectService.update(+id, updateProjectDto);
+  async update(@Param('id') id: string, @Body() updateProjectDto: CreateProjectDto): Promise<Project> {
+    return await this.projectService.update(id, updateProjectDto);
   }
 
+  @ApiOperation({ summary: '删除项目' })
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.projectService.remove(+id);
+  async remove(@Param('id') id: string): Promise<Project> {
+    return await this.projectService.remove(id);
   }
 }
