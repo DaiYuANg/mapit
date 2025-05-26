@@ -24,6 +24,7 @@ import {Login} from "./pages/login";
 import {Register} from "./pages/register";
 import {ForgotPassword} from "./pages/forgotPassword";
 import {authProvider} from "./authProvider";
+import { Dashboard } from "./pages/dashboard";
 
 function App() {
     return (
@@ -40,6 +41,14 @@ function App() {
                                 i18nProvider={i18nProvider}
                                 resources={[
                                     {
+                                        name: "dashboard",
+                                        list: "/",
+                                        meta: {
+                                            canDelete: false,
+                                        },
+                                        options: { label: "首页" },
+                                    },
+                                    {
                                         name: "project",
                                         list: "/project",
                                         create: "/project/create",
@@ -48,7 +57,7 @@ function App() {
                                         meta: {
                                             canDelete: true,
                                         },
-                                      options: { label: "项目管理" },
+                                        options: { label: "项目管理" },
                                     },
                                     {
                                         name: "dictionary",
@@ -99,7 +108,7 @@ function App() {
                                     >
                                         <Route
                                             index
-                                            element={<NavigateToResource resource="project"/>}
+                                            element={<Dashboard/>}
                                         />
                                         <Route path="/project">
                                             <Route index element={<ProjectList/>}/>

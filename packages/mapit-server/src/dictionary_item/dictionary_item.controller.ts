@@ -53,5 +53,4 @@ export class DictionaryItemController {
   findPaginated(@Query() paginationDto: PaginationDto) {
     return this.service.findPaginated(paginationDto);
   }
-
 }

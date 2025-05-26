@@ -23,24 +23,29 @@ export class DictionaryController {
     return await this.dictionaryService.create(createDictionaryDto);
   }
 
-  /**
-   * 获取所有字典
-   */
+  @ApiOperation({ summary: '分页查询所有字典' })
+  @ApiQuery({ name: 'page', required: false, description: '页码，默认1' })
+  @ApiQuery({ name: 'pageSize', required: false, description: '每页数量，默认10' })
+  @Get('paginated')
+  findPaginated(@Query() paginationDto: PaginationDto) {
+    return this.dictionaryService.findPaginated(paginationDto);
+  }
+
   @ApiOperation({ summary: '获取所有字典' })
   @Get()
   async findAll(): Promise<Dictionary[]> {
     return await this.dictionaryService.findAll();
   }
 
-  // @ApiOperation({ summary: '根据ID获取字典' })
-  // @Get(':id')
-  // async findOne(@Param('id') id: string): Promise<Dictionary> {
-  //   const dictionary = await this.dictionaryService.findOne(id);
-  //   if (!dictionary) {
-  //     throw new NotFoundException(`Dictionary with ID ${id} not found`);
-  //   }
-  //   return dictionary;
-  // }
+  @ApiOperation({ summary: '根据ID获取字典' })
+  @Get(':id')
+  async findOne(@Param('id') id: string): Promise<Dictionary> {
+    const dictionary = await this.dictionaryService.findOne(id);
+    if (!dictionary) {
+      throw new NotFoundException(`Dictionary with ID ${id} not found`);
+    }
+    return dictionary;
+  }
 
   /**
    * 更新字典
@@ -69,13 +74,5 @@ export class DictionaryController {
       throw new NotFoundException(`Dictionary with ID ${id} not found`);
     }
     return dictionary;
-  }
-
-  @ApiOperation({ summary: '分页查询所有字典' })
-  @ApiQuery({ name: 'page', required: false, description: '页码，默认1' })
-  @ApiQuery({ name: 'pageSize', required: false, description: '每页数量，默认10' })
-  @Get('paginated')
-  findPaginated(@Query() paginationDto: PaginationDto) {
-    return this.dictionaryService.findPaginated(paginationDto);
   }
 }

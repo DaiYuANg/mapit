@@ -1,0 +1,28 @@
+.fade-slide-enter {
+  opacity: 0;
+  transform: translateY(-24px) scale(0.98);
+  filter: blur(2px);
+}
+.fade-slide-enter-active {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+  transition:
+    opacity 350ms cubic-bezier(.4,0,.2,1),
+    transform 350ms cubic-bezier(.4,0,.2,1),
+    filter 350ms cubic-bezier(.4,0,.2,1);
+}
+.fade-slide-exit {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+}
+.fade-slide-exit-active {
+  opacity: 0;
+  transform: translateY(-24px) scale(0.98);
+  filter: blur(2px);
+  transition:
+    opacity 350ms cubic-bezier(.4,0,.2,1),
+    transform 350ms cubic-bezier(.4,0,.2,1),
+    filter 350ms cubic-bezier(.4,0,.2,1);
+}

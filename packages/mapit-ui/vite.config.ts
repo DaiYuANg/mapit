@@ -4,8 +4,8 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
   plugins: [react()],
   server: {
+    host:'0.0.0.0',
     proxy: {
-      host:'0.0.0.0',
       // 代理 /api/v1 开头的请求到后端
       '/api': {
         target: 'http://localhost:3000',

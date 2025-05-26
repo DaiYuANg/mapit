@@ -5,12 +5,35 @@ import {
   ShowButton,
   useTable,
 } from "@refinedev/antd";
-import type { BaseRecord } from "@refinedev/core";
+import type { BaseRecord, CrudFilter } from "@refinedev/core";
 import { Space, Table } from "antd";
 import React from "react";
 
-export const DictionaryItemList = () => {
-  const { tableProps } = useTable();
+interface DictionaryItemListProps {
+  projectId: string;
+  selectedDictionaryId: string | null;
+}
+
+export const DictionaryItemList: React.FC<DictionaryItemListProps> = ({ 
+  projectId,
+  selectedDictionaryId 
+}) => {
+  const { tableProps } = useTable({
+    resource: 'dictionary-item',
+    pagination: {
+      current: 1,
+      pageSize: 10,
+    },
+    filters: {
+      permanent: [
+        {
+          field: "dictionaryId",
+          operator: "eq",
+          value: selectedDictionaryId,
+        } as CrudFilter,
+      ],
+    },
+  });
 
   return (
     <List title={"字典项列表"}>

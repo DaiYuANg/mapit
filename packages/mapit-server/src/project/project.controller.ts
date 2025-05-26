@@ -10,10 +10,12 @@ import { PaginationDto } from '../dictionary_item/dto/pagination.dto';
 export class ProjectController {
   constructor(private readonly projectService: ProjectService) {}
 
-  @ApiOperation({ summary: '创建项目' })
-  @Post()
-  async create(@Body() createProjectDto: CreateProjectDto): Promise<Project> {
-    return await this.projectService.create(createProjectDto);
+  @ApiOperation({ summary: '分页查询所有项目' })
+  @ApiQuery({ name: 'page', required: false, description: '页码，默认1' })
+  @ApiQuery({ name: 'pageSize', required: false, description: '每页数量，默认10' })
+  @Get('paginated')
+  findPaginated(@Query() paginationDto: PaginationDto) {
+    return this.projectService.findPaginated(paginationDto);
   }
 
   @ApiOperation({ summary: '获取所有项目' })
@@ -22,11 +24,17 @@ export class ProjectController {
     return await this.projectService.findAll();
   }
 
-  // @ApiOperation({ summary: '根据ID获取项目' })
-  // @Get(':id')
-  // async findOne(@Param('id') id: string): Promise<Project> {
-  //   return await this.projectService.findOne(id);
-  // }
+  @ApiOperation({ summary: '获取单个项目' })
+  @Get('detail/:id')
+  async findOne(@Param('id') id: string): Promise<Project> {
+    return await this.projectService.findOne(id);
+  }
+
+  @ApiOperation({ summary: '创建项目' })
+  @Post()
+  async create(@Body() createProjectDto: CreateProjectDto): Promise<Project> {
+    return await this.projectService.create(createProjectDto);
+  }
 
   @ApiOperation({ summary: '更新项目' })
   @Patch(':id')
@@ -38,13 +46,5 @@ export class ProjectController {
   @Delete(':id')
   async remove(@Param('id') id: string): Promise<Project> {
     return await this.projectService.remove(id);
-  }
-
-  @ApiOperation({ summary: '分页查询所有项目' })
-  @ApiQuery({ name: 'page', required: false, description: '页码，默认1' })
-  @ApiQuery({ name: 'pageSize', required: false, description: '每页数量，默认10' })
-  @Get('paginated')
-  findPaginated(@Query() paginationDto: PaginationDto) {
-    return this.projectService.findPaginated(paginationDto);
   }
 }

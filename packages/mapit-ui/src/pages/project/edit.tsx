@@ -2,9 +2,11 @@ import { Edit, useForm } from "@refinedev/antd";
 import { Form, Input } from "antd";
 import React from "react";
 
-export const ProjectEdit = () => {
-  const { formProps, saveButtonProps, formLoading } = useForm({});
 
+export const ProjectEdit = () => {
+  const { formProps, saveButtonProps, formLoading } = useForm({
+    resource: "project",
+  });
   return (
     <Edit saveButtonProps={saveButtonProps} isLoading={formLoading}>
       <Form {...formProps} layout="vertical">
