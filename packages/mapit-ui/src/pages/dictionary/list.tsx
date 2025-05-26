@@ -10,10 +10,16 @@ import { Space, Table } from "antd";
 import React from "react";
 
 export const DictionaryList = () => {
-  const { tableProps } = useTable();
+  const { tableProps } = useTable({
+    resource: 'dictionary',
+    pagination: {
+      current: 1,
+      pageSize: 10,
+    },
+  });
 
   return (
-    <List>
+    <List title={"字典列表"}>
       <Table {...tableProps} rowKey="id">
         <Table.Column dataIndex="name" title="名称" />
         <Table.Column dataIndex="code" title="编码" />
@@ -24,7 +30,7 @@ export const DictionaryList = () => {
           render={(_, record) => record.project?.name || "-"}
         />
         <Table.Column
-          title={"Actions"}
+          title={"操作"}
           dataIndex="actions"
           render={(_, record: BaseRecord) => (
             <Space>

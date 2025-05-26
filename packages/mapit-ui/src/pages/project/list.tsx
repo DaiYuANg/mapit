@@ -13,7 +13,11 @@ import React from "react";
 
 export const ProjectList = () => {
   const { tableProps } = useTable({
-    syncWithLocation: true,
+    resource: 'project',
+    pagination: {
+      current: 1,
+      pageSize: 10,
+    },
   });
 
   const { data: categoryData, isLoading: categoryIsLoading } = useMany({
@@ -28,12 +32,12 @@ export const ProjectList = () => {
   });
 
   return (
-    <List>
+    <List title={"项目列表"}>
       <Table {...tableProps} rowKey="id">
         <Table.Column dataIndex="name" title={"项目名称"} />
         <Table.Column dataIndex="id" title={"ID"} />
         <Table.Column
-          title={"Actions"}
+          title={"操作"}
           dataIndex="actions"
           render={(_, record: BaseRecord) => (
             <Space>

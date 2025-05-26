@@ -1,10 +1,11 @@
 // packages/mapit-server/src/dictionary/dictionary.controller.ts
-import { Controller, Get, Post, Body, Patch, Param, Delete, NotFoundException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, NotFoundException, Query } from '@nestjs/common';
 import { DictionaryService } from './dictionary.service';
 import { CreateDictionaryDto } from './dto/create-dictionary.dto';
 import { UpdateDictionaryDto } from './dto/update-dictionary.dto';
 import { Dictionary } from './entities/dictionary.entity';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiQuery } from '@nestjs/swagger';
+import { PaginationDto } from '../dictionary_item/dto/pagination.dto';
 
 @ApiTags('字典管理')
 @Controller('dictionary')
@@ -31,19 +32,15 @@ export class DictionaryController {
     return await this.dictionaryService.findAll();
   }
 
-  /**
-   * 根据ID获取字典
-   * @param id 字典ID
-   */
-  @ApiOperation({ summary: '根据ID获取字典' })
-  @Get(':id')
-  async findOne(@Param('id') id: string): Promise<Dictionary> {
-    const dictionary = await this.dictionaryService.findOne(id);
-    if (!dictionary) {
-      throw new NotFoundException(`Dictionary with ID ${id} not found`);
-    }
-    return dictionary;
-  }
+  // @ApiOperation({ summary: '根据ID获取字典' })
+  // @Get(':id')
+  // async findOne(@Param('id') id: string): Promise<Dictionary> {
+  //   const dictionary = await this.dictionaryService.findOne(id);
+  //   if (!dictionary) {
+  //     throw new NotFoundException(`Dictionary with ID ${id} not found`);
+  //   }
+  //   return dictionary;
+  // }
 
   /**
    * 更新字典
@@ -72,5 +69,13 @@ export class DictionaryController {
       throw new NotFoundException(`Dictionary with ID ${id} not found`);
     }
     return dictionary;
+  }
+
+  @ApiOperation({ summary: '分页查询所有字典' })
+  @ApiQuery({ name: 'page', required: false, description: '页码，默认1' })
+  @ApiQuery({ name: 'pageSize', required: false, description: '每页数量，默认10' })
+  @Get('paginated')
+  findPaginated(@Query() paginationDto: PaginationDto) {
+    return this.dictionaryService.findPaginated(paginationDto);
   }
 }

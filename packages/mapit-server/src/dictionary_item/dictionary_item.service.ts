@@ -1,10 +1,12 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, Inject } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Cache, CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Repository } from 'typeorm';
 import { DictionaryItem } from './entities/dictionary_item.entity';
 import { CreateDictionaryItemDto } from './dto/create-dictionary_item.dto';
 import { UpdateDictionaryItemDto } from './dto/update-dictionary_item.dto';
 import { Dictionary } from '../dictionary/entities/dictionary.entity';
+import { PaginationDto } from './dto/pagination.dto';
 
 @Injectable()
 export class DictionaryItemService {
@@ -13,15 +15,19 @@ export class DictionaryItemService {
     private dictionaryItemRepository: Repository<DictionaryItem>,
     @InjectRepository(Dictionary)
     private dictionaryRepository: Repository<Dictionary>,
+    @Inject(CACHE_MANAGER)
+    private cacheManager: Cache,
   ) {}
 
   /** 创建字典项 */
-  create(createDto: CreateDictionaryItemDto) {
+  async create(createDto: CreateDictionaryItemDto) {
     const item = this.dictionaryItemRepository.create({
       ...createDto,
       dictionary: { id: createDto.dictionaryId },
     });
-    return this.dictionaryItemRepository.save(item);
+    const result = await this.dictionaryItemRepository.save(item);
+    await this.cacheManager.del(`dictionary_item:by_dict:${createDto.dictionaryId}`);
+    return result;
   }
 
   /** 获取所有字典项 */
@@ -42,6 +48,9 @@ export class DictionaryItemService {
     });
     const updated = await this.findOne(id);
     if (!updated) throw new NotFoundException(`DictionaryItem with ID ${id} not found`);
+    if (updateDto.dictionaryId) {
+      await this.cacheManager.del(`dictionary_item:by_dict:${updateDto.dictionaryId}`);
+    }
     return updated;
   }
 
@@ -49,16 +58,24 @@ export class DictionaryItemService {
   async remove(id: string) {
     const item = await this.findOne(id);
     if (!item) throw new NotFoundException(`DictionaryItem with ID ${id} not found`);
+    await this.cacheManager.del(`dictionary_item:by_dict:${item.dictionary.id}`);
     return this.dictionaryItemRepository.remove(item);
   }
 
   /** 根据字典ID获取所有字典项 */
-  findByDictionaryId(dictionaryId: string) {
-    return this.dictionaryItemRepository.find({
+  async findByDictionaryId(dictionaryId: string) {
+    const cacheKey = `dictionary_item:by_dict:${dictionaryId}`;
+    const cache = await this.cacheManager.get<string>(cacheKey);
+    if (cache) {
+      return JSON.parse(cache) as DictionaryItem[];
+    }
+    const data = await this.dictionaryItemRepository.find({
       where: { dictionary: { id: dictionaryId } },
       order: { sort: 'ASC' },
       relations: ['dictionary'],
     });
+    await this.cacheManager.set(cacheKey, JSON.stringify(data), 3600);
+    return data;
   }
 
   /** 通过字典 code 查询所有字典项 */
@@ -66,5 +83,26 @@ export class DictionaryItemService {
     const dict = await this.dictionaryRepository.findOne({ where: { code } });
     if (!dict) throw new NotFoundException(`未找到编码为${code}的字典`);
     return this.findByDictionaryId(dict.id);
+  }
+
+  /** 分页查询所有字典项 */
+  async findPaginated(paginationDto: PaginationDto) {
+    const { page = 1, pageSize = 10 } = paginationDto;
+    const skip = (page - 1) * pageSize;
+
+    const [items, total] = await this.dictionaryItemRepository.findAndCount({
+      order: { sort: 'ASC' },
+      skip,
+      take: pageSize,
+      relations: ['dictionary'],
+    });
+
+    return {
+      data: items,
+      total,
+      page,
+      pageSize,
+      totalPages: Math.ceil(total / pageSize),
+    };
   }
 }

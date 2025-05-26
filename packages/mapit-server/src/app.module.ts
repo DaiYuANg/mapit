@@ -20,6 +20,8 @@ import { AuthModule } from './auth/auth.module';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { HealthController } from './health/health.controller';
 import { HealthModule } from './health/health.module';
+// @ts-expect-error: No type definitions for 'cache-manager-ioredis'
+import * as redisStore from 'cache-manager-ioredis';
 
 @Module({
   imports: [
@@ -46,7 +48,11 @@ import { HealthModule } from './health/health.module';
       load: [configuration],
     }),
     CacheModule.register({
-      isGlobal: true,
+      store: redisStore,
+      host: 'localhost',
+      port: 6379,
+      // password: 'yourpassword', // 如有密码可取消注释
+      ttl: 3600, // 默认缓存1小时
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],

@@ -1,11 +1,11 @@
 import {Authenticated, Refine,} from "@refinedev/core";
 import {DevtoolsPanel, DevtoolsProvider} from "@refinedev/devtools";
 import {RefineKbar, RefineKbarProvider} from "@refinedev/kbar";
-
+import "../i18n";
 import {ErrorComponent, ThemedLayoutV2, ThemedSiderV2, useNotificationProvider,} from "@refinedev/antd";
 import "@refinedev/antd/dist/reset.css";
-
-import dataProvider from "@refinedev/simple-rest";
+import { i18nProvider } from "./i18nProvider";
+import { customDataProvider } from "./dataProvider";
 import {App as AntdApp} from "antd";
 import {BrowserRouter, Outlet, Route, Routes} from "react-router-dom";
 import routerBindings, {
@@ -33,10 +33,11 @@ function App() {
                     <AntdApp>
                         <DevtoolsProvider>
                             <Refine
-                                dataProvider={dataProvider("/api/v1")}
+                                dataProvider={customDataProvider}
                                 notificationProvider={useNotificationProvider}
                                 authProvider={authProvider}
                                 routerProvider={routerBindings}
+                                i18nProvider={i18nProvider}
                                 resources={[
                                     {
                                         name: "project",
@@ -47,6 +48,7 @@ function App() {
                                         meta: {
                                             canDelete: true,
                                         },
+                                      options: { label: "项目管理" },
                                     },
                                     {
                                         name: "dictionary",
@@ -57,6 +59,7 @@ function App() {
                                         meta: {
                                             canDelete: true,
                                         },
+                                      options: { label: "字典管理" },
                                     },
                                     {
                                         name: "dictionary-item",
@@ -67,6 +70,7 @@ function App() {
                                         meta: {
                                             canDelete: true,
                                         },
+                                      options: { label: "字典项管理" },
                                     },
                                 ]}
                                 options={{
@@ -74,7 +78,7 @@ function App() {
                                     warnWhenUnsavedChanges: true,
                                     useNewQueryKeys: true,
                                     projectId: "KyjpGR-yYuDqq-poutkI",
-                                    title: {text: "Refine Project", icon: <AppIcon/>},
+                                    title: {text: "字典服务管理平台", icon: <AppIcon/>},
                                 }}
                             >
                                 <Routes>

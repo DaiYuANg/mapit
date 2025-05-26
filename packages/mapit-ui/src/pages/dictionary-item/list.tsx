@@ -13,7 +13,7 @@ export const DictionaryItemList = () => {
   const { tableProps } = useTable();
 
   return (
-    <List>
+    <List title={"字典项列表"}>
       <Table {...tableProps} rowKey="id">
         <Table.Column dataIndex="name" title="名称" />
         <Table.Column dataIndex="code" title="编码" />
@@ -25,7 +25,7 @@ export const DictionaryItemList = () => {
           render={(_, record) => record.dictionary?.name || "-"}
         />
         <Table.Column
-          title={"Actions"}
+          title={"操作"}
           dataIndex="actions"
           render={(_, record: BaseRecord) => (
             <Space>
