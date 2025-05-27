@@ -280,9 +280,6 @@ importers:
       '@ant-design/icons':
         specifier: ^5.5.1
         version: 5.6.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@nestjs/cache-manager':
-        specifier: ^3.0.1
-        version: 3.0.1(@nestjs/common@11.1.1(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.1(@nestjs/common@11.1.1(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/platform-express@11.1.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(cache-manager@6.4.3)(keyv@5.3.3)(rxjs@7.8.2)
       '@refinedev/antd':
         specifier: ^5.44.0
         version: 5.46.1(@refinedev/core@4.57.9(@tanstack/react-query@4.36.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@types/react-dom@18.3.7(@types/react@18.3.21))(@types/react@18.3.21)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@types/react-dom@18.3.7(@types/react@18.3.21))(@types/react@18.3.21)(antd@5.25.2(luxon@3.6.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(dayjs@1.11.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -310,9 +307,6 @@ importers:
       antd:
         specifier: ^5.17.0
         version: 5.25.2(luxon@3.6.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      cache-manager:
-        specifier: ^6.4.3
-        version: 6.4.3
       i18next:
         specifier: ^25.2.1
         version: 25.2.1(typescript@5.8.3)
