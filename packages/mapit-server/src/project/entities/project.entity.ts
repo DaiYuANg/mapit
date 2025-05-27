@@ -1,11 +1,11 @@
 // Project.ts
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Entity, PrimaryColumn, Column, OneToMany } from 'typeorm';
 import { AccessKey } from '../../access_key/entities/access_key.entity';
 import { Dictionary } from '../../dictionary/entities/dictionary.entity';
 
 @Entity('project')
 export class Project {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryColumn('bigint')
   id: string;
 
   @Column({ unique: true })

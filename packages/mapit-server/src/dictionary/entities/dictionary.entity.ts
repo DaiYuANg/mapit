@@ -1,11 +1,11 @@
 // packages/mapit-server/src/dictionary/entities/dictionary.entity.ts
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
+import { Entity, PrimaryColumn, Column, ManyToOne, OneToMany } from 'typeorm';
 import { Project } from '../../project/entities/project.entity';
 import { DictionaryItem } from '../../dictionary_item/entities/dictionary_item.entity';
 
 @Entity('dictionary') // 明确指定表名
 export class Dictionary {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryColumn('bigint')
   id: string;
 
   @Column()

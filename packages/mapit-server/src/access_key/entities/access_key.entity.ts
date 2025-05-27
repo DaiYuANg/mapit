@@ -1,10 +1,10 @@
 // AccessKey.ts
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { Entity, PrimaryColumn, Column, ManyToOne } from 'typeorm';
 import { Project } from '../../project/entities/project.entity';
 
 @Entity()
 export class AccessKey {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryColumn('bigint')
   id: string;
 
   @Column({ unique: true })
