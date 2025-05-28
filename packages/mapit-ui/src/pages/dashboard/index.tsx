@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Card, Row, Col, Typography, Space, Button, Popconfirm, Modal, Pagination } from "antd";
-import { DictionaryList } from "../dictionary";
-import { DictionaryItemList } from "../dictionary-item";
-import { CSSTransition } from "react-transition-group";
+import { DictionaryList } from "./components/dictionary";
+import { DictionaryItemList } from "./components/dictionary-item";
 import "./dashboard-animate.css";
 import { useNavigate } from "react-router-dom";
 import { EditOutlined, DeleteOutlined, PlusOutlined } from "@ant-design/icons";
