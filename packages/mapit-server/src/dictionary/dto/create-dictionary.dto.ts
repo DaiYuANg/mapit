@@ -10,6 +10,6 @@ export class CreateDictionaryDto {
   @ApiProperty({ description: '字典描述', required: false })
   description?: string;
 
-  @ApiProperty({ description: '项目ID' })
-  projectId: string;
+  @ApiProperty({ description: '命名空间/分组', required: false })
+  namespace?: string;
 }

@@ -25,4 +25,7 @@ export class CreateDictionaryItemDto {
   @IsUUID()
   @IsNotEmpty()
   dictionaryId: string;
+
+  @ApiProperty({ description: '命名' })
+  namespace: string;
 }

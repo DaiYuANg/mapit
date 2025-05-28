@@ -74,10 +74,10 @@ export const Dashboard: React.FC = () => {
               setProjects(Array.isArray(data) ? data : data.data || []);
               setLoading(false);
             });
-          if (selectedProjectId === id) {
-            setSelectedProjectId(null);
-            setSelectedDictionaryId(null);
-          }
+      if (selectedProjectId === id) {
+        setSelectedProjectId(null);
+        setSelectedDictionaryId(null);
+      }
         },
         onError: () => {
           message.error("删除失败");
@@ -99,64 +99,64 @@ export const Dashboard: React.FC = () => {
       <Row gutter={[12, 32]} style={{ display: "flex", flexWrap: "wrap" }}>
         {pagedProjects.map((project) => (
           <Col key={project.id} style={{ flex: "0 0 20%", maxWidth: "20%" }}>
-            <Card
-              hoverable
-              style={{
+              <Card
+                hoverable
+                style={{
                 cursor: "pointer",
                 position: "relative",
-                minHeight: 120,
+                  minHeight: 120,
                 ...(selectedProjectId === project.id ? { boxShadow: "0 0 0 2px #1890ff" } : {}),
-              }}
-              bodyStyle={{ paddingTop: 24, paddingBottom: 16 }}
+                }}
+                bodyStyle={{ paddingTop: 24, paddingBottom: 16 }}
               onClick={() => handleCardClick(project)}
-            >
+              >
               <Space style={{ position: "absolute", top: 8, right: 8, zIndex: 2 }}>
-                <Button
-                  className="card-action-btn"
-                  icon={<EditOutlined />}
-                  size="small"
-                  type="text"
+                  <Button
+                    className="card-action-btn"
+                    icon={<EditOutlined />}
+                    size="small"
+                    type="text"
                   onClick={(e) => {
                     e.stopPropagation();
                     navigate(`/project/edit/${project.id}`);
                   }}
-                />
-                <Popconfirm
-                  title="确定要删除该项目吗？"
+                  />
+                  <Popconfirm
+                    title="确定要删除该项目吗？"
                   onConfirm={(e) => {
                     e?.stopPropagation();
                     handleDelete(project.id);
                   }}
-                  okText="删除"
-                  cancelText="取消"
-                >
-                  <Button
-                    className="card-action-btn"
-                    icon={<DeleteOutlined />}
-                    size="small"
-                    type="text"
-                    danger
+                    okText="删除"
+                    cancelText="取消"
+                  >
+                    <Button
+                      className="card-action-btn"
+                      icon={<DeleteOutlined />}
+                      size="small"
+                      type="text"
+                      danger
                     onClick={(e) => e.stopPropagation()}
-                  />
-                </Popconfirm>
-              </Space>
+                    />
+                  </Popconfirm>
+                </Space>
               <Space direction="vertical" size={4} style={{ width: "100%" }}>
-                <Typography.Title level={4} style={{ marginBottom: 0 }}>
-                  {project.name}
-                </Typography.Title>
-                <Typography.Text type="secondary" style={{ fontSize: 12 }}>
+                  <Typography.Title level={4} style={{ marginBottom: 0 }}>
+                    {project.name}
+                  </Typography.Title>
+                  <Typography.Text type="secondary" style={{ fontSize: 12 }}>
                   ID:{" "}
                   <Typography.Text copyable style={{ fontSize: 12 }}>
                     {project.id}
                   </Typography.Text>
-                </Typography.Text>
-                <Typography.Paragraph ellipsis={{ rows: 2 }} style={{ marginBottom: 0, marginTop: 4 }}>
+                  </Typography.Text>
+                  <Typography.Paragraph ellipsis={{ rows: 2 }} style={{ marginBottom: 0, marginTop: 4 }}>
                   {project.description || "暂无描述"}
-                </Typography.Paragraph>
-              </Space>
-            </Card>
-          </Col>
-        ))}
+                  </Typography.Paragraph>
+                </Space>
+              </Card>
+            </Col>
+          ))}
         {/* 补齐空白Col */}
         {Array.from({ length: emptyCount }).map((_, idx) => (
           <Col key={`empty-${idx}`} style={{ flex: "0 0 20%", maxWidth: "20%" }} />
@@ -164,7 +164,7 @@ export const Dashboard: React.FC = () => {
       </Row>
       <Row justify="center" style={{ margin: "16px 0" }}>
         <Pagination current={page} pageSize={pageSize} total={total} onChange={setPage} showSizeChanger={false} />
-      </Row>
+        </Row>
       <Modal
         open={modalVisible}
         onCancel={() => setModalVisible(false)}
@@ -190,12 +190,12 @@ export const Dashboard: React.FC = () => {
             bodyStyle={{ flex: 1, minHeight: 400, display: "flex", flexDirection: "column" }}
           >
             {selectedProjectId && (
-              <DictionaryList
+                <DictionaryList
                 projectId={selectedProjectId}
-                onDictionarySelect={setSelectedDictionaryId}
-              />
+                  onDictionarySelect={setSelectedDictionaryId}
+                />
             )}
-          </Card>
+              </Card>
           {/* 右侧 */}
           <Card
             title="字典项列表"
@@ -203,12 +203,12 @@ export const Dashboard: React.FC = () => {
             bodyStyle={{ flex: 1, minHeight: 400, display: "flex", flexDirection: "column" }}
           >
             {selectedProjectId && (
-              <DictionaryItemList
+                <DictionaryItemList
                 projectId={selectedProjectId}
-                selectedDictionaryId={selectedDictionaryId}
-              />
+                  selectedDictionaryId={selectedDictionaryId}
+                />
             )}
-          </Card>
+              </Card>
         </div>
       </Modal>
       <Draggable defaultPosition={{ x: window.innerWidth - 120, y: window.innerHeight - 120 }}>
@@ -269,4 +269,4 @@ export const Dashboard: React.FC = () => {
       </Modal>
     </>
   );
-};
+}; 
