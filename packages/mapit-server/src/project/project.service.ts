@@ -7,6 +7,7 @@ import { Project } from './entities/project.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { PaginationDto } from '../dictionary_item/dto/pagination.dto';
+import { generateId } from '../common/utils/id-generator';
 
 @Injectable()
 export class ProjectService {
@@ -17,7 +18,10 @@ export class ProjectService {
   ) {}
 
   async create(createProjectDto: CreateProjectDto): Promise<Project> {
-    const project = this.projectRepository.create(createProjectDto);
+    const project = this.projectRepository.create({
+      ...createProjectDto,
+      id: generateId(),
+    });
     return await this.projectRepository.save(project);
   }
 
