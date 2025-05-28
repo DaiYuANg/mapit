@@ -29,7 +29,7 @@ export const DictionaryList: React.FC<DictionaryListProps> = ({
     filters: {
       permanent: [
         {
-          field: "projectId",
+          field: "namespace",
           operator: "eq",
           value: projectId,
         } as CrudFilter,
@@ -59,6 +59,7 @@ export const DictionaryList: React.FC<DictionaryListProps> = ({
         <Table.Column dataIndex="name" title="名称" />
         <Table.Column dataIndex="code" title="编码" />
         <Table.Column dataIndex="description" title="描述" />
+        {/*<Table.Column dataIndex="namespace" title="命名空间" />*/}
         <Table.Column
           dataIndex={["project", "name"]}
           title="所属项目"

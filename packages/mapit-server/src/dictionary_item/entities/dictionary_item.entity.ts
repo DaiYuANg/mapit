@@ -19,6 +19,9 @@ export class DictionaryItem {
   @Column()
   sort: number;
 
+  @Column({ nullable: true })
+  namespace: string;
+
   @ManyToOne(() => Dictionary, dictionary => dictionary.items, { onDelete: 'CASCADE' })
   @JoinColumn()
   dictionary: Dictionary;

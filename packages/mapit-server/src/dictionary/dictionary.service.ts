@@ -23,14 +23,15 @@ export class DictionaryService {
     const dictionary = this.dictionaryRepository.create({
       ...createDictionaryDto,
       id: generateId(),
-      project: { id: createDictionaryDto.projectId },
     });
     return await this.dictionaryRepository.save(dictionary);
   }
 
-  async findAll() {
+  async findAll(namespace?: string) {
+    const where = namespace ? { namespace } : {};
     return await this.dictionaryRepository.find({
-      relations: ['items', 'project'],
+      where,
+      relations: ['items'],
     });
   }
 
@@ -42,7 +43,7 @@ export class DictionaryService {
     }
     const dictionary = await this.dictionaryRepository.findOne({
       where: { id },
-      relations: ['items', 'project'],
+      relations: ['items'],
     });
     if (!dictionary) {
       throw new NotFoundException(`Dictionary with ID ${id} not found`);
@@ -52,10 +53,8 @@ export class DictionaryService {
   }
 
   async update(id: string, updateDictionaryDto: UpdateDictionaryDto) {
-    const { projectId, ...updateData } = updateDictionaryDto;
     await this.dictionaryRepository.update(id, {
-      ...updateData,
-      project: projectId ? { id: projectId } : undefined,
+      ...updateDictionaryDto,
     });
     await this.cacheManager.del(`dictionary:${id}`);
     return await this.findOne(id);
@@ -72,9 +71,11 @@ export class DictionaryService {
 
   /** 分页查询所有字典 */
   async findPaginated(paginationDto: PaginationDto) {
-    const { page = 1, pageSize = 10 } = paginationDto;
+    const { page = 1, pageSize = 10, namespace } = paginationDto;
     const skip = (page - 1) * pageSize;
+    const where = namespace ? { namespace } : {};
     const [items, total] = await this.dictionaryRepository.findAndCount({
+      where,
       skip,
       take: pageSize,
       order: { id: 'ASC' },

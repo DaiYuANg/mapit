@@ -1,6 +1,5 @@
 // packages/mapit-server/src/dictionary/entities/dictionary.entity.ts
-import { Entity, PrimaryColumn, Column, ManyToOne, OneToMany } from 'typeorm';
-import { Project } from '../../project/entities/project.entity';
+import { Entity, PrimaryColumn, Column, OneToMany } from 'typeorm';
 import { DictionaryItem } from '../../dictionary_item/entities/dictionary_item.entity';
 
 @Entity('dictionary') // 明确指定表名
@@ -17,8 +16,8 @@ export class Dictionary {
   @Column({ nullable: true })
   description: string;
 
-  @ManyToOne(() => Project, (project) => project.dictionaries, { onDelete: 'CASCADE' })
-  project: Project;
+  @Column({ nullable: true })
+  namespace: string;
 
   @OneToMany(() => DictionaryItem, (item) => item.dictionary)
   items: DictionaryItem[];

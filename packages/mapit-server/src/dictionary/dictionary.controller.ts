@@ -24,17 +24,19 @@ export class DictionaryController {
   }
 
   @ApiOperation({ summary: '分页查询所有字典' })
+  @ApiQuery({ name: 'namespace', required: false, description: '命名空间/分组' })
   @ApiQuery({ name: 'page', required: false, description: '页码，默认1' })
   @ApiQuery({ name: 'pageSize', required: false, description: '每页数量，默认10' })
   @Get('paginated')
-  findPaginated(@Query() paginationDto: PaginationDto) {
-    return this.dictionaryService.findPaginated(paginationDto);
+  findPaginated(@Query() paginationDto: PaginationDto, @Query('namespace') namespace?: string) {
+    return this.dictionaryService.findPaginated({ ...paginationDto, namespace });
   }
 
   @ApiOperation({ summary: '获取所有字典' })
+  @ApiQuery({ name: 'namespace', required: false, description: '命名空间/分组' })
   @Get()
-  async findAll(): Promise<Dictionary[]> {
-    return await this.dictionaryService.findAll();
+  async findAll(@Query('namespace') namespace?: string): Promise<Dictionary[]> {
+    return await this.dictionaryService.findAll(namespace);
   }
 
   @ApiOperation({ summary: '根据ID获取字典' })
