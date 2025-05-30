@@ -9,10 +9,9 @@ import { message } from "antd";
 import Draggable from "react-draggable";
 import { useDelete, useCreate } from "@refinedev/core";
 import { ProjectCreateForm } from "./components/project/create";
+import {ProjectEdit} from "./components/project/edit";
 
-const { Title } = Typography;
-
-interface Project {
+export  interface Project {
   id: string;
   name: string;
   description?: string;
@@ -24,15 +23,14 @@ export const Dashboard: React.FC = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [currentProject, setCurrentProject] = useState<Project | null>(null);
   const [page, setPage] = useState(1);
-  const columnsPerRow = 5;
+
   const pageSize = 20;
-  const rowsPerPage = 4;
+
   const navigate = useNavigate();
-  const [fabPosition, setFabPosition] = useState({ x: window.innerWidth - 96, y: window.innerHeight - 136 });
-  const [fabTransition, setFabTransition] = useState(false);
+
   const [projects, setProjects] = useState<Project[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [, setLoading] = useState(true);
+  const [, setError] = useState<string | null>(null);
   const { mutate: deleteProject } = useDelete();
   const [createModalVisible, setCreateModalVisible] = useState(false);
   const { mutate: createProject, isLoading: createLoading } = useCreate();
@@ -45,7 +43,7 @@ export const Dashboard: React.FC = () => {
         setProjects(Array.isArray(data) ? data : data.data || []);
         setLoading(false);
       })
-      .catch((err) => {
+      .catch(() => {
         setError("获取项目失败");
         setLoading(false);
       });
@@ -73,10 +71,10 @@ export const Dashboard: React.FC = () => {
               setProjects(Array.isArray(data) ? data : data.data || []);
               setLoading(false);
             });
-      if (selectedProjectId === id) {
-        setSelectedProjectId(null);
-        setSelectedDictionaryId(null);
-      }
+          if (selectedProjectId === id) {
+            setSelectedProjectId(null);
+            setSelectedDictionaryId(null);
+          }
         },
         onError: () => {
           message.error("删除失败");
@@ -86,91 +84,94 @@ export const Dashboard: React.FC = () => {
   };
 
   const handleCardClick = (project: Project) => {
+    console.log("我点击了项目");
     setCurrentProject(project);
     setSelectedProjectId(project.id);
     setSelectedDictionaryId(null);
     setModalVisible(true);
   };
 
+  const [editModalVisible, setEditModalVisible] = useState(false);
+  const [editProject, setEditProject] = useState<Project | null>(null);
   return (
     <>
       <Typography.Title level={4}>项目列表</Typography.Title>
       <Row gutter={[12, 32]} style={{ display: "flex", flexWrap: "wrap" }}>
         {pagedProjects.map((project) => (
           <Col key={project.id} style={{ flex: "0 0 20%", maxWidth: "20%" }}>
-              <Card
-                hoverable
-                style={{
+            <Card
+              hoverable
+              style={{
                 cursor: "pointer",
                 position: "relative",
-                  minHeight: 120,
+                minHeight: 120,
                 ...(selectedProjectId === project.id ? { boxShadow: "0 0 0 2px #1890ff" } : {}),
-                }}
-                bodyStyle={{ paddingTop: 24, paddingBottom: 16 }}
+              }}
+              styles={{ body: { paddingTop: 24, paddingBottom: 16 } }}
               onClick={() => handleCardClick(project)}
-              >
+            >
               <Space style={{ position: "absolute", top: 8, right: 8, zIndex: 2 }}>
-                  <Button
-                    className="card-action-btn"
-                    icon={<EditOutlined />}
-                    size="small"
-                    type="text"
+                <Button
+                  className="card-action-btn"
+                  icon={<EditOutlined />}
+                  size="small"
+                  type="text"
                   onClick={(e) => {
                     e.stopPropagation();
-                    navigate(`/project/edit/${project.id}`);
+                    setEditProject(project);
+                    setEditModalVisible(true);
                   }}
-                  />
-                  <Popconfirm
-                    title="确定要删除该项目吗？"
+                />
+                <Popconfirm
+                  title="确定要删除该项目吗？"
                   onConfirm={(e) => {
                     e?.stopPropagation();
                     handleDelete(project.id);
                   }}
-                    okText="删除"
-                    cancelText="取消"
-                  >
-                    <Button
-                      className="card-action-btn"
-                      icon={<DeleteOutlined />}
-                      size="small"
-                      type="text"
-                      danger
+                  okText="删除"
+                  cancelText="取消"
+                >
+                  <Button
+                    className="card-action-btn"
+                    icon={<DeleteOutlined />}
+                    size="small"
+                    type="text"
+                    danger
                     onClick={(e) => e.stopPropagation()}
-                    />
-                  </Popconfirm>
-                </Space>
+                  />
+                </Popconfirm>
+              </Space>
               <Space direction="vertical" size={4} style={{ width: "100%" }}>
-                  <Typography.Title level={4} style={{ marginBottom: 0 }}>
-                    {project.name}
-                  </Typography.Title>
-                  <Typography.Text type="secondary" style={{ fontSize: 12 }}>
+                <Typography.Title level={4} style={{ marginBottom: 0 }}>
+                  {project.name}
+                </Typography.Title>
+                <Typography.Text type="secondary" style={{ fontSize: 12 }}>
                   ID:{" "}
                   <Typography.Text copyable style={{ fontSize: 12 }}>
                     {project.id}
                   </Typography.Text>
-                  </Typography.Text>
-                  <Typography.Paragraph ellipsis={{ rows: 2 }} style={{ marginBottom: 0, marginTop: 4 }}>
+                </Typography.Text>
+                <Typography.Paragraph ellipsis={{ rows: 2 }} style={{ marginBottom: 0, marginTop: 4 }}>
                   {project.description || "暂无描述"}
-                  </Typography.Paragraph>
-                </Space>
-              </Card>
-            </Col>
-          ))}
-        {/* 补齐空白Col */}
+                </Typography.Paragraph>
+              </Space>
+            </Card>
+          </Col>
+        ))}
         {Array.from({ length: emptyCount }).map((_, idx) => (
           <Col key={`empty-${idx}`} style={{ flex: "0 0 20%", maxWidth: "20%" }} />
         ))}
       </Row>
       <Row justify="center" style={{ margin: "16px 0" }}>
         <Pagination current={page} pageSize={pageSize} total={total} onChange={setPage} showSizeChanger={false} />
-        </Row>
+      </Row>
       <Modal
         open={modalVisible}
         onCancel={() => setModalVisible(false)}
         title={currentProject?.name}
         width={1200}
         footer={null}
-        bodyStyle={{ padding: 0 }}
+        styles={{ body: { padding: 0 } }}
       >
         <div
           style={{
@@ -179,35 +180,26 @@ export const Dashboard: React.FC = () => {
             gap: 24,
             padding: 24,
             minHeight: 600,
-            background: "#fafbfc",
           }}
         >
           {/* 左侧 */}
           <Card
-            title="字典列表"
-            style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column" }}
-            bodyStyle={{ flex: 1, minHeight: 400, display: "flex", flexDirection: "column" }}
+            style={{ flex: 1, minWidth: 0,  height: 500, display: "flex", flexDirection: "column" }}
+            styles={{ body: { flex: 1, minHeight: 400, display: "flex", flexDirection: "column" } }}
           >
             {selectedProjectId && (
-                <DictionaryList
-                projectId={selectedProjectId}
-                  onDictionarySelect={setSelectedDictionaryId}
-                />
+              <DictionaryList projectId={selectedProjectId} onDictionarySelect={setSelectedDictionaryId} />
             )}
-              </Card>
+          </Card>
           {/* 右侧 */}
           <Card
-            title="字典项列表"
-            style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column" }}
-            bodyStyle={{ flex: 1, minHeight: 400, display: "flex", flexDirection: "column" }}
+            style={{ flex: 1, minWidth: 0,  height: 500, display: "flex", flexDirection: "column" }}
+            styles={{ body: { flex: 1, minHeight: 400, display: "flex", flexDirection: "column" } }}
           >
             {selectedProjectId && (
-                <DictionaryItemList
-                projectId={selectedProjectId}
-                  selectedDictionaryId={selectedDictionaryId}
-                />
+              <DictionaryItemList projectId={selectedProjectId} selectedDictionaryId={selectedDictionaryId} />
             )}
-              </Card>
+          </Card>
         </div>
       </Modal>
       <Draggable defaultPosition={{ x: window.innerWidth - 120, y: window.innerHeight - 120 }}>
@@ -240,11 +232,11 @@ export const Dashboard: React.FC = () => {
         onCancel={() => setCreateModalVisible(false)}
         footer={null}
         title="新建项目"
-        destroyOnClose
+        destroyOnHidden
       >
         <ProjectCreateForm
           loading={createLoading}
-          onFinish={values => {
+          onFinish={(values) => {
             createProject(
               { resource: "project", values },
               {
@@ -254,18 +246,42 @@ export const Dashboard: React.FC = () => {
                   // 刷新项目列表
                   setLoading(true);
                   fetch("/api/v1/project")
-                    .then(res => res.json())
-                    .then(data => {
+                    .then((res) => res.json())
+                    .then((data) => {
                       setProjects(Array.isArray(data) ? data : data.data || []);
                       setLoading(false);
                     });
                 },
-              }
+              },
             );
           }}
           onCancel={() => setCreateModalVisible(false)}
         />
       </Modal>
+      <Modal
+        open={editModalVisible}
+        onCancel={() => setEditModalVisible(false)}
+        footer={null}
+        title="编辑项目"
+        destroyOnHidden
+      >
+        {editProject && (
+          <ProjectEdit
+            project={editProject}
+            onSuccess={() => {
+              setEditModalVisible(false);
+              setLoading(true);
+              fetch("/api/v1/project")
+                .then((res) => res.json())
+                .then((data) => {
+                  setProjects(Array.isArray(data) ? data : data.data || []);
+                  setLoading(false);
+                });
+            }}
+            onCancel={() => setEditModalVisible(false)}
+          />
+        )}
+      </Modal>
     </>
   );
-}; 
+};

@@ -24,19 +24,19 @@ export class DictionaryController {
   }
 
   @ApiOperation({ summary: '分页查询所有字典' })
-  @ApiQuery({ name: 'namespace', required: false, description: '命名空间/分组' })
+  @ApiQuery({ name: 'projectId', required: false, description: '项目ID' })
   @ApiQuery({ name: 'page', required: false, description: '页码，默认1' })
   @ApiQuery({ name: 'pageSize', required: false, description: '每页数量，默认10' })
   @Get('paginated')
-  findPaginated(@Query() paginationDto: PaginationDto, @Query('namespace') namespace?: string) {
-    return this.dictionaryService.findPaginated({ ...paginationDto, namespace });
+  findPaginated(@Query() paginationDto: PaginationDto & { projectId?: string }) {
+    return this.dictionaryService.findPaginated(paginationDto);
   }
 
   @ApiOperation({ summary: '获取所有字典' })
-  @ApiQuery({ name: 'namespace', required: false, description: '命名空间/分组' })
+  @ApiQuery({ name: 'projectId', required: false, description: '项目ID' })
   @Get()
-  async findAll(@Query('namespace') namespace?: string): Promise<Dictionary[]> {
-    return await this.dictionaryService.findAll(namespace);
+  async findAll(@Query('projectId') projectId?: string): Promise<Dictionary[]> {
+    return await this.dictionaryService.findAll(projectId);
   }
 
   @ApiOperation({ summary: '根据ID获取字典' })
@@ -76,5 +76,12 @@ export class DictionaryController {
       throw new NotFoundException(`Dictionary with ID ${id} not found`);
     }
     return dictionary;
+  }
+
+  @Get('project/:projectId')
+  @ApiOperation({ summary: '获取项目下的所有字典' })
+  @ApiResponse({ status: 200, description: '返回项目下的所有字典' })
+  findByProjectId(@Param('projectId') projectId: string) {
+    return this.dictionaryService.findByProjectId(projectId);
   }
 }

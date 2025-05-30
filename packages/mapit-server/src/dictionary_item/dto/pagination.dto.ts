@@ -13,7 +13,4 @@ export class PaginationDto {
   @Min(1)
   @IsOptional()
   pageSize?: number = 10;
-
-  @IsOptional()
-  namespace?: string;
 }

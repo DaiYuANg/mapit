@@ -1,6 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { ProjectService } from './project.service';
 import { CreateProjectDto } from './dto/create-project.dto';
+import { UpdateProjectDto } from './dto/update-project.dto';
 import { Project } from './entities/project.entity';
 import { ApiTags, ApiOperation, ApiQuery } from '@nestjs/swagger';
 import { PaginationDto } from '../dictionary_item/dto/pagination.dto';
@@ -37,8 +38,13 @@ export class ProjectController {
   }
 
   @ApiOperation({ summary: '更新项目' })
+  // @Patch(':id')
+  // async update(@Param('id') id: string, @Body() updateProjectDto: updateProjectDto): Promise<Project> {
+  //   return await this.projectService.update(id, updateProjectDto);
+  // }
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateProjectDto: CreateProjectDto): Promise<Project> {
+  async update(@Param('id') id: string, @Body() updateProjectDto: UpdateProjectDto): Promise<Project> {
+    console.log('收到的 updateProjectDto:', updateProjectDto);
     return await this.projectService.update(id, updateProjectDto);
   }
 

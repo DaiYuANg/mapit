@@ -1,18 +1,29 @@
 import { DataProvider } from "@refinedev/core";
 
 export const dataProvider = (apiUrl: string): DataProvider => ({
-  getList: async ({ resource, pagination, filters, sorters }) => {
+  getList: async ({ resource, pagination, filters, }) => {
     const { current = 1, pageSize = 10 } = pagination ?? {};
-    const url = `${apiUrl}/${resource}?page=${current}&pageSize=${pageSize}`;
+    // 处理 filters
+    let filterQuery = "";
+    if (filters && filters.length > 0) {
+      filterQuery = filters
+        .filter((filter: any) => filter.field)
+        .map((filter: any) => `${encodeURIComponent(filter.field)}=${encodeURIComponent(filter.value)}`)
+        .join("&");
+    }
+    const url = `${apiUrl}/${resource}?page=${current}&pageSize=${pageSize}${filterQuery ? `&${filterQuery}` : ""}`;
     const response = await fetch(url);
     const result = await response.json();
     return {
-      data: result.data,
-      total: result.total,
+      data: Array.isArray(result) ? result : result.data,
+      total: Array.isArray(result) ? result.length : result.total,
     };
   },
   getOne: async ({ resource, id }) => {
-    const url = `${apiUrl}/${resource}/${id}`;
+    let url = `${apiUrl}/${resource}/${id}`;
+    if (resource === "project") {
+      url = `${apiUrl}/project/detail/${id}`;
+    }
     const response = await fetch(url);
     const result = await response.json();
     return { data: result };
@@ -39,7 +50,11 @@ export const dataProvider = (apiUrl: string): DataProvider => ({
   },
   deleteOne: async ({ resource, id }) => {
     const url = `${apiUrl}/${resource}/${id}`;
-    const response = await fetch(url, { method: "DELETE" });
+    const response = await fetch(url, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id }),
+    });
     const result = await response.json();
     return { data: result };
   },

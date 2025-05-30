@@ -1,9 +1,23 @@
+import React from "react";
 import { Create, useForm, useSelect } from "@refinedev/antd";
 import { Form, Input, InputNumber, Select } from "antd";
-import React from "react";
 
-export const DictionaryItemCreate = () => {
-  const { formProps, saveButtonProps } = useForm({});
+interface DictionaryItemCreateProps {
+  selectedDictionaryId: string | null;
+  onSuccess: () => void;
+  onCancel: () => void;
+}
+
+export const DictionaryItemCreate: React.FC<DictionaryItemCreateProps> = ({
+  selectedDictionaryId,
+  onSuccess,
+  onCancel,
+}) => {
+  const { formProps, saveButtonProps } = useForm({
+    resource: "dictionary-item",
+    action: "create",
+    onMutationSuccess: onSuccess,
+  });
   const { selectProps: dictionarySelectProps } = useSelect({
     resource: "dictionary",
     optionLabel: "name",
@@ -12,7 +26,13 @@ export const DictionaryItemCreate = () => {
 
   return (
     <Create saveButtonProps={saveButtonProps}>
-      <Form {...formProps} layout="vertical">
+      <Form
+        {...formProps}
+        layout="vertical"
+        initialValues={{
+          dictionaryId: selectedDictionaryId || undefined,
+        }}
+      >
         <Form.Item
           label="名称"
           name="name"

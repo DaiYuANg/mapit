@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as compression from 'compression';
 import helmet from 'helmet';
+import { ValidationPipe } from '@nestjs/common';
 
 const bootstrap = async () => {
   const app = await NestFactory.create(AppModule);
@@ -17,6 +18,7 @@ const bootstrap = async () => {
   SwaggerModule.setup('api', app, documentFactory);
   app.use(compression());
   app.use(helmet());
+  app.useGlobalPipes(new ValidationPipe());
   await app.listen(process.env.PORT ?? 3000, '0.0.0.0');
 };
 

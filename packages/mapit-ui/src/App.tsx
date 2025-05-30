@@ -1,5 +1,4 @@
 import { Authenticated, Refine } from "@refinedev/core";
-// import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { DevtoolsPanel, DevtoolsProvider } from "@refinedev/devtools";
 import { RefineKbar, RefineKbarProvider } from "@refinedev/kbar";
 import "../i18n";
@@ -26,10 +25,8 @@ import { Dashboard } from "./pages/dashboard";
 import {  HomeOutlined } from "@ant-design/icons";
 
 function App() {
-  // const queryClient = new QueryClient();
 
   return (
-    // <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <RefineKbarProvider>
           <ColorModeContextProvider>
@@ -93,7 +90,6 @@ function App() {
           </ColorModeContextProvider>
         </RefineKbarProvider>
       </BrowserRouter>
-    // </QueryClientProvider>
   );
 }
 

@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNotEmpty, IsOptional, IsUUID, IsNumber } from 'class-validator';
+import { IsString, IsNotEmpty, IsOptional, IsNumber } from 'class-validator';
 
 export class CreateDictionaryItemDto {
   @ApiProperty({ description: '字典项名称' })
@@ -22,10 +22,7 @@ export class CreateDictionaryItemDto {
   sort: number;
 
   @ApiProperty({ description: '所属字典ID' })
-  @IsUUID()
+  @IsString()
   @IsNotEmpty()
   dictionaryId: string;
-
-  @ApiProperty({ description: '命名' })
-  namespace: string;
 }
