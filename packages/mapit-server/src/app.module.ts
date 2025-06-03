@@ -22,6 +22,7 @@ import { HealthController } from './health/health.controller';
 import { HealthModule } from './health/health.module';
 // @ts-expect-error: No type definitions for 'cache-manager-ioredis'
 import * as redisStore from 'cache-manager-ioredis';
+import { DictionaryService } from './dictionary/dictionary.service';
 
 @Module({
   imports: [
@@ -49,6 +50,7 @@ import * as redisStore from 'cache-manager-ioredis';
       load: [configuration],
     }),
     CacheModule.register({
+      isGlobal: true,
       store: redisStore,
       host: 'localhost',
       port: 6379,

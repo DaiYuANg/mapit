@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable, LoggerService } from '@nestjs/common';
+import { DictionaryService } from './dictionary/dictionary.service';
 
 @Injectable()
 export class AppService {
-  getHello(): string {
+  queryLabel(projectId: string, dictionaryCode: string, itemValue: string): string {
     return 'Hello World!';
   }
 }
