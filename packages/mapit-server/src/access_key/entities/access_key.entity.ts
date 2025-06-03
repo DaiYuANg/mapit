@@ -1,9 +1,10 @@
 // AccessKey.ts
+import { Project } from 'src/project/entities/project.entity';
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity('access_key')
 export class AccessKey {
-  @PrimaryGeneratedColumn({ type: 'bigint' })
+  @PrimaryGeneratedColumn({ type: 'int' })
   id: string;
 
   @Column({ default: true })
@@ -21,10 +22,12 @@ export class AccessKey {
   @Column({ nullable: true })
   project_name: string;
 
-  @CreateDateColumn({ type: 'timestamp' })
+  project: Project;
+
+  @CreateDateColumn({ type: 'date' })
   created_at: Date;
 
-  @UpdateDateColumn({ type: 'timestamp' })
+  @UpdateDateColumn({ type: 'date' })
   updated_at: Date;
 
   @Column({ nullable: true })

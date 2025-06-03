@@ -5,7 +5,7 @@ import { Project } from '../../project/entities/project.entity';
 
 @Entity('dictionary') // 明确指定表名
 export class Dictionary {
-  @PrimaryColumn('bigint')
+  @PrimaryColumn('bigint', { generated: false })
   id: string;
 
   @Column()
@@ -27,6 +27,6 @@ export class Dictionary {
   @JoinColumn({ name: 'projectId' })
   project: Project;
 
-  @Column({ type: 'timestamp', nullable: true })
+  @Column({ type: 'date', nullable: true })
   updated_at: Date;
 }

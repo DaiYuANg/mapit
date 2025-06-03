@@ -4,7 +4,7 @@ import { Dictionary } from '../../dictionary/entities/dictionary.entity';
 
 @Entity('dictionary_item') // 明确指定表名
 export class DictionaryItem {
-  @PrimaryColumn('bigint')
+  @PrimaryColumn('bigint', { generated: false })
   id: string;
 
   @Column()
@@ -26,6 +26,6 @@ export class DictionaryItem {
   @JoinColumn({ name: 'dictionaryId' })
   dictionary: Dictionary;
 
-  @Column({ type: 'timestamp', nullable: true })
+  @Column({ type: 'date', nullable: true })
   updated_at: Date;
 }

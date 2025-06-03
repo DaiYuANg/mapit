@@ -5,7 +5,7 @@ import { Dictionary } from '../../dictionary/entities/dictionary.entity';
 
 @Entity('project')
 export class Project {
-  @PrimaryColumn('bigint')
+  @PrimaryColumn('bigint', { generated: false })
   id: string;
 
   @Column({ unique: true })
@@ -17,6 +17,6 @@ export class Project {
   @OneToMany(() => Dictionary, (dictionary) => dictionary.project)
   dictionaries: Dictionary[];
 
-  @Column({ type: 'timestamp', nullable: true })
+  @Column({ type: 'date', nullable: true })
   updated_at: Date;
 }

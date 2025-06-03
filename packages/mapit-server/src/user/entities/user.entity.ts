@@ -1,8 +1,8 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, Column, CreateDateColumn, UpdateDateColumn, PrimaryColumn } from 'typeorm';
 
 @Entity('user')
 export class User {
-  @PrimaryGeneratedColumn('increment', { type: 'bigint' })
+  @PrimaryColumn('bigint', { generated: false })
   id: number;
 
   @Column({ length: 64, unique: true })
