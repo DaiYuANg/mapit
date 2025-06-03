@@ -4,11 +4,12 @@
 
 project 作为 namespace 命名空间
 accesskey 作为外部访问 命名空间凭证
-一个 project ->  多个 accesskey
+一个 project -> 多个 accesskey
 一个 dictionary -> 多个 dictionary_item
 
 可通过外部接口
 `/api/v1/project/${projectId}/dictionaries/${dictionaryCode}/mapping?itemValue=${value}`
+
 > 此接口中header 需要包含
 > `Mapit-Access-Key=${accessKey}`
 
