@@ -1,5 +1,5 @@
-import { Form, Input, Button } from "antd";
-import React from "react";
+import { Form, Input, Button } from 'antd';
+import React from 'react';
 
 export const ProjectCreateForm: React.FC<{
   onFinish: (values: any) => void;
@@ -10,11 +10,7 @@ export const ProjectCreateForm: React.FC<{
 
   return (
     <Form form={form} layout="vertical" onFinish={onFinish}>
-      <Form.Item
-        label="项目名称"
-        name="name"
-        rules={[{ required: true, message: "请输入项目名称" }]}
-      >
+      <Form.Item label="项目名称" name="name" rules={[{ required: true, message: '请输入项目名称' }]}>
         <Input />
       </Form.Item>
       <Form.Item>

@@ -1,1 +1,1 @@
-export * from './HelloWorld.vue'
+export * from './HelloWorld.vue';

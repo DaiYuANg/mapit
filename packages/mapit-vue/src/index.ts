@@ -1,10 +1,10 @@
-import MyButton from './components/HelloWorld.vue'
-import type {App} from 'vue'
+import MyButton from './components/HelloWorld.vue';
+import type { App } from 'vue';
 
-export {MyButton}
+export { MyButton };
 
 export default {
   install(app: App) {
-    app.component('MyButton', MyButton)
-  }
-}
+    app.component('MyButton', MyButton);
+  },
+};

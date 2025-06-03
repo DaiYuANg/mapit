@@ -1,10 +1,10 @@
-import { CreateButton, DeleteButton, EditButton, List, ShowButton, useTable } from "@refinedev/antd";
-import type { BaseRecord, CrudFilter } from "@refinedev/core";
-import { Space, Table, Modal, Empty } from "antd";
-import React, { useState } from "react";
-import { DictionaryItemCreate } from "./create";
-import { DictionaryItemEdit } from "./edit";
-import { DictionaryItemShow } from "./show";
+import { CreateButton, DeleteButton, EditButton, List, ShowButton, useTable } from '@refinedev/antd';
+import type { BaseRecord, CrudFilter } from '@refinedev/core';
+import { Space, Table, Modal, Empty } from 'antd';
+import React, { useState } from 'react';
+import { DictionaryItemCreate } from './create';
+import { DictionaryItemEdit } from './edit';
+import { DictionaryItemShow } from './show';
 
 interface DictionaryItemListProps {
   projectId: string;
@@ -17,7 +17,7 @@ export const DictionaryItemList: React.FC<DictionaryItemListProps> = ({ projectI
   const [showId, setShowId] = useState<string | null>(null);
 
   const { tableProps, tableQueryResult } = useTable({
-    resource: "dictionary-item/paginated",
+    resource: 'dictionary-item/paginated',
     pagination: {
       current: 1,
       pageSize: 10,
@@ -26,8 +26,8 @@ export const DictionaryItemList: React.FC<DictionaryItemListProps> = ({ projectI
       permanent: selectedDictionaryId
         ? [
             {
-              field: "dictionaryId",
-              operator: "eq",
+              field: 'dictionaryId',
+              operator: 'eq',
               value: selectedDictionaryId,
             } as CrudFilter,
           ]
@@ -40,23 +40,20 @@ export const DictionaryItemList: React.FC<DictionaryItemListProps> = ({ projectI
 
   if (!selectedDictionaryId) {
     return (
-      <List title={"字典项列表"}>
+      <List title={'字典项列表'}>
         <Empty description="请先选择字典" style={{ margin: '48px 0' }} />
       </List>
     );
   }
 
   return (
-    <List
-      title={"字典项列表"}
-      headerButtons={<CreateButton onClick={() => setCreateModalVisible(true)} />}
-    >
+    <List title={'字典项列表'} headerButtons={<CreateButton onClick={() => setCreateModalVisible(true)} />}>
       <Table {...tableProps} rowKey="id" scroll={{ y: 300 }} size="small">
         <Table.Column dataIndex="name" title="名称" width={120} />
         <Table.Column dataIndex="description" title="描述" width={80} />
         <Table.Column
           width={120}
-          title={"操作"}
+          title={'操作'}
           dataIndex="actions"
           render={(_, record: BaseRecord) => (
             <Space>
@@ -73,12 +70,7 @@ export const DictionaryItemList: React.FC<DictionaryItemListProps> = ({ projectI
         />
       </Table>
       {/* 新建弹窗 */}
-      <Modal
-        open={createModalVisible}
-        onCancel={() => setCreateModalVisible(false)}
-        footer={null}
-        destroyOnClose
-      >
+      <Modal open={createModalVisible} onCancel={() => setCreateModalVisible(false)} footer={null} destroyOnClose>
         <DictionaryItemCreate
           selectedDictionaryId={selectedDictionaryId}
           onSuccess={() => {
@@ -90,12 +82,7 @@ export const DictionaryItemList: React.FC<DictionaryItemListProps> = ({ projectI
       </Modal>
 
       {/* 编辑弹窗 */}
-      <Modal
-        open={!!editId}
-        onCancel={() => setEditId(null)}
-        footer={null}
-        destroyOnClose
-      >
+      <Modal open={!!editId} onCancel={() => setEditId(null)} footer={null} destroyOnClose>
         {editId && (
           <DictionaryItemEdit
             id={editId}
@@ -110,15 +97,8 @@ export const DictionaryItemList: React.FC<DictionaryItemListProps> = ({ projectI
       </Modal>
 
       {/* 查看弹窗 */}
-      <Modal
-        open={!!showId}
-        onCancel={() => setShowId(null)}
-        footer={null}
-        destroyOnClose
-      >
-        {showId && (
-          <DictionaryItemShow id={showId} onCancel={() => setShowId(null)} />
-        )}
+      <Modal open={!!showId} onCancel={() => setShowId(null)} footer={null} destroyOnClose>
+        {showId && <DictionaryItemShow id={showId} onCancel={() => setShowId(null)} />}
       </Modal>
     </List>
   );

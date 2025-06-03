@@ -1,23 +1,14 @@
-import {
-  DeleteButton,
-  EditButton,
-  List,
-  ShowButton,
-  useTable,
-} from "@refinedev/antd";
-import type { BaseRecord, CrudFilter } from "@refinedev/core";
-import { Space, Table } from "antd";
-import React, { useState } from "react";
+import { DeleteButton, EditButton, List, ShowButton, useTable } from '@refinedev/antd';
+import type { BaseRecord, CrudFilter } from '@refinedev/core';
+import { Space, Table } from 'antd';
+import React, { useState } from 'react';
 
 interface DictionaryListProps {
   projectId: string;
   onDictionarySelect: (dictionaryId: string | null) => void;
 }
 
-export const DictionaryList: React.FC<DictionaryListProps> = ({ 
-  projectId,
-  onDictionarySelect 
-}) => {
+export const DictionaryList: React.FC<DictionaryListProps> = ({ projectId, onDictionarySelect }) => {
   const [selectedDictionaryId, setSelectedDictionaryId] = useState<string | null>(null);
 
   const { tableProps } = useTable({
@@ -29,8 +20,8 @@ export const DictionaryList: React.FC<DictionaryListProps> = ({
     filters: {
       permanent: [
         {
-          field: "projectId",
-          operator: "eq",
+          field: 'projectId',
+          operator: 'eq',
           value: projectId,
         } as CrudFilter,
       ],
@@ -44,9 +35,9 @@ export const DictionaryList: React.FC<DictionaryListProps> = ({
   };
 
   return (
-    <List title={"字典列表"}>
-      <Table 
-        {...tableProps} 
+    <List title={'字典列表'}>
+      <Table
+        {...tableProps}
         rowKey="id"
         onRow={(record) => ({
           onClick: () => handleRowClick(record),
@@ -60,12 +51,12 @@ export const DictionaryList: React.FC<DictionaryListProps> = ({
         <Table.Column dataIndex="code" title="编码" />
         <Table.Column dataIndex="description" title="描述" />
         <Table.Column
-          dataIndex={["project", "name"]}
+          dataIndex={['project', 'name']}
           title="所属项目"
-          render={(_, record) => record.project?.name || "-"}
+          render={(_, record) => record.project?.name || '-'}
         />
         <Table.Column
-          title={"操作"}
+          title={'操作'}
           dataIndex="actions"
           render={(_, record: BaseRecord) => (
             <Space>

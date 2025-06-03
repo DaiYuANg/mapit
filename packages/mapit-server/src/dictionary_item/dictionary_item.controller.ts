@@ -3,7 +3,7 @@ import { DictionaryItemService } from './dictionary_item.service';
 import { CreateDictionaryItemDto } from './dto/create-dictionary_item.dto';
 import { UpdateDictionaryItemDto } from './dto/update-dictionary_item.dto';
 import { PaginationDto } from './dto/pagination.dto';
-import {ApiTags, ApiOperation, ApiQuery, ApiBearerAuth} from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiQuery, ApiBearerAuth } from '@nestjs/swagger';
 
 @ApiTags('字典项管理')
 @Controller('dictionary-item')

@@ -1,10 +1,10 @@
-import { CreateButton, DeleteButton, EditButton, List, ShowButton, useTable } from "@refinedev/antd";
-import type { BaseRecord, CrudFilter } from "@refinedev/core";
-import { Button, Modal, Space, Table } from "antd";
-import React, { useState } from "react";
-import { DictionaryCreate } from "./create";
-import {DictionaryEdit} from "./edit";
-import {DictionaryShow} from "./show";
+import { CreateButton, DeleteButton, EditButton, List, ShowButton, useTable } from '@refinedev/antd';
+import type { BaseRecord, CrudFilter } from '@refinedev/core';
+import { Button, Modal, Space, Table } from 'antd';
+import React, { useState } from 'react';
+import { DictionaryCreate } from './create';
+import { DictionaryEdit } from './edit';
+import { DictionaryShow } from './show';
 
 interface DictionaryListProps {
   projectId: string;
@@ -18,19 +18,19 @@ export const DictionaryList: React.FC<DictionaryListProps> = ({ projectId, onDic
   const [showDictionaryId, setShowDictionaryId] = useState<string | null>(null);
 
   const { tableProps, tableQueryResult } = useTable({
-    resource: "dictionary/paginated",
+    resource: 'dictionary/paginated',
     pagination: { current: 1, pageSize: 10 },
     filters: {
       permanent: [
         {
-          field: "projectId",
-          operator: "eq",
+          field: 'projectId',
+          operator: 'eq',
           value: projectId,
         } as CrudFilter,
       ],
     },
     queryOptions: {
-      queryKey: ["dictionary/paginated", projectId],
+      queryKey: ['dictionary/paginated', projectId],
       enabled: !!projectId,
     },
   });
@@ -43,7 +43,7 @@ export const DictionaryList: React.FC<DictionaryListProps> = ({ projectId, onDic
 
   return (
     <List
-      title={"字典列表"}
+      title={'字典列表'}
       headerButtons={
         <Button type="primary" onClick={() => setCreateModalVisible(true)}>
           新建
@@ -58,7 +58,7 @@ export const DictionaryList: React.FC<DictionaryListProps> = ({ projectId, onDic
         onRow={(record) => ({
           onClick: () => handleRowClick(record),
           style: {
-            cursor: "pointer",
+            cursor: 'pointer',
           },
         })}
       >
@@ -67,7 +67,7 @@ export const DictionaryList: React.FC<DictionaryListProps> = ({ projectId, onDic
         <Table.Column dataIndex="description" title="描述" width={80} />
         <Table.Column
           width={120}
-          title={"操作"}
+          title={'操作'}
           dataIndex="actions"
           render={(_, record: BaseRecord) => (
             <Space>
@@ -110,12 +110,7 @@ export const DictionaryList: React.FC<DictionaryListProps> = ({ projectId, onDic
           onCancel={() => setCreateModalVisible(false)}
         />
       </Modal>
-      <Modal
-        open={!!editDictionaryId}
-        onCancel={() => setEditDictionaryId(null)}
-        footer={null}
-        destroyOnHidden
-      >
+      <Modal open={!!editDictionaryId} onCancel={() => setEditDictionaryId(null)} footer={null} destroyOnHidden>
         {editDictionaryId && (
           <DictionaryEdit
             id={editDictionaryId}
@@ -128,15 +123,8 @@ export const DictionaryList: React.FC<DictionaryListProps> = ({ projectId, onDic
         )}
       </Modal>
 
-      <Modal
-        open={!!showDictionaryId}
-        onCancel={() => setShowDictionaryId(null)}
-        footer={null}
-        destroyOnHidden
-      >
-        {showDictionaryId && (
-          <DictionaryShow id={showDictionaryId} onCancel={() => setShowDictionaryId(null)} />
-        )}
+      <Modal open={!!showDictionaryId} onCancel={() => setShowDictionaryId(null)} footer={null} destroyOnHidden>
+        {showDictionaryId && <DictionaryShow id={showDictionaryId} onCancel={() => setShowDictionaryId(null)} />}
       </Modal>
     </List>
   );

@@ -7,6 +7,6 @@ packages:
 catalog:
   react: ^18.0.0
   react-dom: ^18.0.0
-  "@types/node": ^18.16.2
-  "@types/react": ^18.0.0
-  "@types/react-dom": ^18.0.0
+  '@types/node': ^18.16.2
+  '@types/react': ^18.0.0
+  '@types/react-dom': ^18.0.0

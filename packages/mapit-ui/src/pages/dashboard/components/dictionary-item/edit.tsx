@@ -1,6 +1,6 @@
-import React from "react";
-import { Edit, useForm, useSelect } from "@refinedev/antd";
-import { Form, Input, InputNumber, Select } from "antd";
+import React from 'react';
+import { Edit, useForm, useSelect } from '@refinedev/antd';
+import { Form, Input, InputNumber, Select } from 'antd';
 
 interface DictionaryItemEditProps {
   id: string;
@@ -16,20 +16,20 @@ export const DictionaryItemEdit: React.FC<DictionaryItemEditProps> = ({
   onCancel,
 }) => {
   const { formProps, saveButtonProps } = useForm({
-    resource: "dictionary-item",
+    resource: 'dictionary-item',
     id,
-    action: "edit",
+    action: 'edit',
     onMutationSuccess: onSuccess,
   });
 
   const { selectProps: dictionarySelectProps } = useSelect({
-    resource: "dictionary",
-    optionLabel: "name",
-    optionValue: "id",
+    resource: 'dictionary',
+    optionLabel: 'name',
+    optionValue: 'id',
   });
 
   return (
-    <Edit saveButtonProps={saveButtonProps}  headerButtons={[]}>
+    <Edit saveButtonProps={saveButtonProps} headerButtons={[]}>
       <Form {...formProps} layout="vertical">
         <Form.Item
           label="字典项名称"
@@ -37,7 +37,7 @@ export const DictionaryItemEdit: React.FC<DictionaryItemEditProps> = ({
           rules={[
             {
               required: true,
-              message: "请输入字典项名称",
+              message: '请输入字典项名称',
             },
           ]}
         >
@@ -50,17 +50,14 @@ export const DictionaryItemEdit: React.FC<DictionaryItemEditProps> = ({
           rules={[
             {
               required: true,
-              message: "请输入字典项编码",
+              message: '请输入字典项编码',
             },
           ]}
         >
           <Input placeholder="请输入字典项编码" />
         </Form.Item>
 
-        <Form.Item
-          label="字典项描述"
-          name="description"
-        >
+        <Form.Item label="字典项描述" name="description">
           <Input.TextArea placeholder="请输入字典项描述" />
         </Form.Item>
 
@@ -70,7 +67,7 @@ export const DictionaryItemEdit: React.FC<DictionaryItemEditProps> = ({
           rules={[
             {
               required: true,
-              message: "请输入排序值",
+              message: '请输入排序值',
             },
           ]}
         >
@@ -83,14 +80,11 @@ export const DictionaryItemEdit: React.FC<DictionaryItemEditProps> = ({
           rules={[
             {
               required: true,
-              message: "请选择所属字典",
+              message: '请选择所属字典',
             },
           ]}
         >
-          <Select 
-            {...dictionarySelectProps} 
-            placeholder="请选择所属字典"
-          />
+          <Select {...dictionarySelectProps} placeholder="请选择所属字典" />
         </Form.Item>
       </Form>
     </Edit>

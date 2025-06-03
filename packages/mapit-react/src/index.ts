@@ -1,1 +1,1 @@
-export * from './mapit.tsx'
+export * from './mapit.tsx';

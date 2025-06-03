@@ -1,32 +1,36 @@
-import { Edit, useForm, useSelect } from "@refinedev/antd";
-import { Form, Input, InputNumber, Select } from "antd";
-import React from "react";
+import { Edit, useForm, useSelect } from '@refinedev/antd';
+import { Form, Input, InputNumber, Select } from 'antd';
+import React from 'react';
 
 export const DictionaryItemEdit = () => {
   const { formProps, saveButtonProps } = useForm({});
 
   const { selectProps: dictionarySelectProps } = useSelect({
-    resource: "dictionary",
-    optionLabel: "name",
-    optionValue: "id",
+    resource: 'dictionary',
+    optionLabel: 'name',
+    optionValue: 'id',
   });
 
   return (
     <Edit saveButtonProps={saveButtonProps}>
-      <Form {...formProps} layout="vertical" initialValues={{
-        name: "",
-        code: "",
-        description: "",
-        sort: 0,
-        dictionaryId: ""
-      }}>
+      <Form
+        {...formProps}
+        layout="vertical"
+        initialValues={{
+          name: '',
+          code: '',
+          description: '',
+          sort: 0,
+          dictionaryId: '',
+        }}
+      >
         <Form.Item
           label="字典项名称"
           name="name"
           rules={[
             {
               required: true,
-              message: "请输入字典项名称",
+              message: '请输入字典项名称',
             },
           ]}
         >
@@ -39,17 +43,14 @@ export const DictionaryItemEdit = () => {
           rules={[
             {
               required: true,
-              message: "请输入字典项编码",
+              message: '请输入字典项编码',
             },
           ]}
         >
           <Input placeholder="请输入字典项编码" />
         </Form.Item>
 
-        <Form.Item
-          label="字典项描述"
-          name="description"
-        >
+        <Form.Item label="字典项描述" name="description">
           <Input.TextArea placeholder="请输入字典项描述" />
         </Form.Item>
 
@@ -59,7 +60,7 @@ export const DictionaryItemEdit = () => {
           rules={[
             {
               required: true,
-              message: "请输入排序值",
+              message: '请输入排序值',
             },
           ]}
         >
@@ -72,14 +73,11 @@ export const DictionaryItemEdit = () => {
           rules={[
             {
               required: true,
-              message: "请选择所属字典",
+              message: '请选择所属字典',
             },
           ]}
         >
-          <Select 
-            {...dictionarySelectProps} 
-            placeholder="请选择所属字典"
-          />
+          <Select {...dictionarySelectProps} placeholder="请选择所属字典" />
         </Form.Item>
       </Form>
     </Edit>

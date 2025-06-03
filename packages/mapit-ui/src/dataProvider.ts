@@ -1,17 +1,17 @@
-import { DataProvider } from "@refinedev/core";
+import { DataProvider } from '@refinedev/core';
 
 export const dataProvider = (apiUrl: string): DataProvider => ({
-  getList: async ({ resource, pagination, filters, }) => {
+  getList: async ({ resource, pagination, filters }) => {
     const { current = 1, pageSize = 10 } = pagination ?? {};
     // 处理 filters
-    let filterQuery = "";
+    let filterQuery = '';
     if (filters && filters.length > 0) {
       filterQuery = filters
         .filter((filter: any) => filter.field)
         .map((filter: any) => `${encodeURIComponent(filter.field)}=${encodeURIComponent(filter.value)}`)
-        .join("&");
+        .join('&');
     }
-    const url = `${apiUrl}/${resource}?page=${current}&pageSize=${pageSize}${filterQuery ? `&${filterQuery}` : ""}`;
+    const url = `${apiUrl}/${resource}?page=${current}&pageSize=${pageSize}${filterQuery ? `&${filterQuery}` : ''}`;
     const response = await fetch(url);
     const result = await response.json();
     return {
@@ -21,7 +21,7 @@ export const dataProvider = (apiUrl: string): DataProvider => ({
   },
   getOne: async ({ resource, id }) => {
     let url = `${apiUrl}/${resource}/${id}`;
-    if (resource === "project") {
+    if (resource === 'project') {
       url = `${apiUrl}/project/detail/${id}`;
     }
     const response = await fetch(url);
@@ -31,8 +31,8 @@ export const dataProvider = (apiUrl: string): DataProvider => ({
   create: async ({ resource, variables }) => {
     const url = `${apiUrl}/${resource}`;
     const response = await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(variables),
     });
     const result = await response.json();
@@ -41,8 +41,8 @@ export const dataProvider = (apiUrl: string): DataProvider => ({
   update: async ({ resource, id, variables }) => {
     const url = `${apiUrl}/${resource}/${id}`;
     const response = await fetch(url, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(variables),
     });
     const result = await response.json();
@@ -51,8 +51,8 @@ export const dataProvider = (apiUrl: string): DataProvider => ({
   deleteOne: async ({ resource, id }) => {
     const url = `${apiUrl}/${resource}/${id}`;
     const response = await fetch(url, {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id }),
     });
     const result = await response.json();

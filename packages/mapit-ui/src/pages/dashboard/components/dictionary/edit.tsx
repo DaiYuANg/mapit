@@ -1,6 +1,6 @@
-import { Edit, useForm, useSelect } from "@refinedev/antd";
-import { Form, Input, Select } from "antd";
-import React from "react";
+import { Edit, useForm, useSelect } from '@refinedev/antd';
+import { Form, Input, Select } from 'antd';
+import React from 'react';
 
 interface DictionaryEditProps {
   id: string;
@@ -10,32 +10,28 @@ interface DictionaryEditProps {
 
 export const DictionaryEdit: React.FC<DictionaryEditProps> = ({ id, onSuccess, onCancel }) => {
   const { formProps, saveButtonProps } = useForm({
-    resource: "dictionary",
+    resource: 'dictionary',
     id,
-    action: "edit",
+    action: 'edit',
     onMutationSuccess: onSuccess,
   });
 
   const { selectProps: projectSelectProps } = useSelect({
-    resource: "project",
-    optionLabel: "name",
-    optionValue: "id",
+    resource: 'project',
+    optionLabel: 'name',
+    optionValue: 'id',
   });
 
   return (
-    <Edit
-      saveButtonProps={saveButtonProps}
-      title={"编辑字典"}
-      headerButtons={[]}
-    >
+    <Edit saveButtonProps={saveButtonProps} title={'编辑字典'} headerButtons={[]}>
       <Form
         {...formProps}
         layout="vertical"
         initialValues={{
-          name: "",
-          code: "",
-          description: "",
-          projectId: "",
+          name: '',
+          code: '',
+          description: '',
+          projectId: '',
         }}
       >
         <Form.Item
@@ -44,7 +40,7 @@ export const DictionaryEdit: React.FC<DictionaryEditProps> = ({ id, onSuccess, o
           rules={[
             {
               required: true,
-              message: "请输入字典名称",
+              message: '请输入字典名称',
             },
           ]}
         >
@@ -57,7 +53,7 @@ export const DictionaryEdit: React.FC<DictionaryEditProps> = ({ id, onSuccess, o
           rules={[
             {
               required: true,
-              message: "请输入字典编码",
+              message: '请输入字典编码',
             },
           ]}
         >
@@ -74,7 +70,7 @@ export const DictionaryEdit: React.FC<DictionaryEditProps> = ({ id, onSuccess, o
           rules={[
             {
               required: true,
-              message: "请选择所属项目",
+              message: '请选择所属项目',
             },
           ]}
         >

@@ -1,15 +1,7 @@
-import {
-  DateField,
-  DeleteButton,
-  EditButton,
-  List,
-  MarkdownField,
-  ShowButton,
-  useTable,
-} from "@refinedev/antd";
-import { type BaseRecord, useMany } from "@refinedev/core";
-import { Space, Table } from "antd";
-import React from "react";
+import { DateField, DeleteButton, EditButton, List, MarkdownField, ShowButton, useTable } from '@refinedev/antd';
+import { type BaseRecord, useMany } from '@refinedev/core';
+import { Space, Table } from 'antd';
+import React from 'react';
 
 export const ProjectList = () => {
   const { tableProps } = useTable({
@@ -21,23 +13,20 @@ export const ProjectList = () => {
   });
 
   const { data: categoryData, isLoading: categoryIsLoading } = useMany({
-    resource: "project",
-    ids:
-      tableProps?.dataSource
-        ?.map((item) => item?.category?.id)
-        .filter(Boolean) ?? [],
+    resource: 'project',
+    ids: tableProps?.dataSource?.map((item) => item?.category?.id).filter(Boolean) ?? [],
     queryOptions: {
       enabled: !!tableProps?.dataSource,
     },
   });
 
   return (
-    <List title={"项目列表"}>
+    <List title={'项目列表'}>
       <Table {...tableProps} rowKey="id">
-        <Table.Column dataIndex="name" title={"项目名称"} />
-        <Table.Column dataIndex="id" title={"ID"} />
+        <Table.Column dataIndex="name" title={'项目名称'} />
+        <Table.Column dataIndex="id" title={'ID'} />
         <Table.Column
-          title={"操作"}
+          title={'操作'}
           dataIndex="actions"
           render={(_, record: BaseRecord) => (
             <Space>

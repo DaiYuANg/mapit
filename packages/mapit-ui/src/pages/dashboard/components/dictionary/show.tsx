@@ -1,7 +1,7 @@
-import { NumberField, Show, TextField } from "@refinedev/antd";
-import { useShow } from "@refinedev/core";
-import { Typography } from "antd";
-import React from "react";
+import { NumberField, Show, TextField } from '@refinedev/antd';
+import { useShow } from '@refinedev/core';
+import { Typography } from 'antd';
+import React from 'react';
 
 const { Title } = Typography;
 
@@ -12,7 +12,7 @@ interface DictionaryShowProps {
 
 export const DictionaryShow: React.FC<DictionaryShowProps> = ({ id, onCancel }) => {
   const { queryResult } = useShow({
-    resource: "dictionary",
+    resource: 'dictionary',
     id,
   });
   const { data, isLoading } = queryResult;
@@ -20,7 +20,7 @@ export const DictionaryShow: React.FC<DictionaryShowProps> = ({ id, onCancel }) 
   const record = data?.data;
 
   return (
-    <Show isLoading={isLoading}  headerButtons={[]} title={"字典信息"}>
+    <Show isLoading={isLoading} headerButtons={[]} title={'字典信息'}>
       <Title level={5}>ID</Title>
       <TextField value={record?.id} />
       <Title level={5}>字典名称</Title>

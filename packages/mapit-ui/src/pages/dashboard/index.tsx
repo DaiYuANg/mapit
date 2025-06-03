@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from "react";
-import { Card, Row, Col, Typography, Space, Button, Popconfirm, Modal, Pagination } from "antd";
-import { DictionaryList } from "./components/dictionary";
-import { DictionaryItemList } from "./components/dictionary-item";
-import "./dashboard-animate.css";
-import { useNavigate } from "react-router-dom";
-import { EditOutlined, DeleteOutlined, PlusOutlined } from "@ant-design/icons";
-import { message } from "antd";
-import Draggable from "react-draggable";
-import { useDelete, useCreate } from "@refinedev/core";
-import { ProjectCreateForm } from "./components/project/create";
-import {ProjectEdit} from "./components/project/edit";
+import React, { useState, useEffect } from 'react';
+import { Card, Row, Col, Typography, Space, Button, Popconfirm, Modal, Pagination } from 'antd';
+import { DictionaryList } from './components/dictionary';
+import { DictionaryItemList } from './components/dictionary-item';
+import './dashboard-animate.css';
+import { useNavigate } from 'react-router-dom';
+import { EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
+import { message } from 'antd';
+import Draggable from 'react-draggable';
+import { useDelete, useCreate } from '@refinedev/core';
+import { ProjectCreateForm } from './components/project/create';
+import { ProjectEdit } from './components/project/edit';
 
-export  interface Project {
+export interface Project {
   id: string;
   name: string;
   description?: string;
@@ -37,14 +37,14 @@ export const Dashboard: React.FC = () => {
 
   useEffect(() => {
     setLoading(true);
-    fetch("/api/v1/project")
+    fetch('/api/v1/project')
       .then((res) => res.json())
       .then((data) => {
         setProjects(Array.isArray(data) ? data : data.data || []);
         setLoading(false);
       })
       .catch(() => {
-        setError("获取项目失败");
+        setError('获取项目失败');
         setLoading(false);
       });
   }, []);
@@ -57,15 +57,15 @@ export const Dashboard: React.FC = () => {
   const handleDelete = (id: string) => {
     deleteProject(
       {
-        resource: "project",
+        resource: 'project',
         id,
       },
       {
         onSuccess: () => {
-          message.success("删除成功");
+          message.success('删除成功');
           // 重新获取全部数据
           setLoading(true);
-          fetch("/api/v1/project")
+          fetch('/api/v1/project')
             .then((res) => res.json())
             .then((data) => {
               setProjects(Array.isArray(data) ? data : data.data || []);
@@ -77,14 +77,14 @@ export const Dashboard: React.FC = () => {
           }
         },
         onError: () => {
-          message.error("删除失败");
+          message.error('删除失败');
         },
       },
     );
   };
 
   const handleCardClick = (project: Project) => {
-    console.log("我点击了项目");
+    console.log('我点击了项目');
     setCurrentProject(project);
     setSelectedProjectId(project.id);
     setSelectedDictionaryId(null);
@@ -96,21 +96,21 @@ export const Dashboard: React.FC = () => {
   return (
     <>
       <Typography.Title level={4}>项目列表</Typography.Title>
-      <Row gutter={[12, 32]} style={{ display: "flex", flexWrap: "wrap" }}>
+      <Row gutter={[12, 32]} style={{ display: 'flex', flexWrap: 'wrap' }}>
         {pagedProjects.map((project) => (
-          <Col key={project.id} style={{ flex: "0 0 20%", maxWidth: "20%" }}>
+          <Col key={project.id} style={{ flex: '0 0 20%', maxWidth: '20%' }}>
             <Card
               hoverable
               style={{
-                cursor: "pointer",
-                position: "relative",
+                cursor: 'pointer',
+                position: 'relative',
                 minHeight: 120,
-                ...(selectedProjectId === project.id ? { boxShadow: "0 0 0 2px #1890ff" } : {}),
+                ...(selectedProjectId === project.id ? { boxShadow: '0 0 0 2px #1890ff' } : {}),
               }}
               styles={{ body: { paddingTop: 24, paddingBottom: 16 } }}
               onClick={() => handleCardClick(project)}
             >
-              <Space style={{ position: "absolute", top: 8, right: 8, zIndex: 2 }}>
+              <Space style={{ position: 'absolute', top: 8, right: 8, zIndex: 2 }}>
                 <Button
                   className="card-action-btn"
                   icon={<EditOutlined />}
@@ -141,28 +141,28 @@ export const Dashboard: React.FC = () => {
                   />
                 </Popconfirm>
               </Space>
-              <Space direction="vertical" size={4} style={{ width: "100%" }}>
+              <Space direction="vertical" size={4} style={{ width: '100%' }}>
                 <Typography.Title level={4} style={{ marginBottom: 0 }}>
                   {project.name}
                 </Typography.Title>
                 <Typography.Text type="secondary" style={{ fontSize: 12 }}>
-                  ID:{" "}
+                  ID:{' '}
                   <Typography.Text copyable style={{ fontSize: 12 }}>
                     {project.id}
                   </Typography.Text>
                 </Typography.Text>
                 <Typography.Paragraph ellipsis={{ rows: 2 }} style={{ marginBottom: 0, marginTop: 4 }}>
-                  {project.description || "暂无描述"}
+                  {project.description || '暂无描述'}
                 </Typography.Paragraph>
               </Space>
             </Card>
           </Col>
         ))}
         {Array.from({ length: emptyCount }).map((_, idx) => (
-          <Col key={`empty-${idx}`} style={{ flex: "0 0 20%", maxWidth: "20%" }} />
+          <Col key={`empty-${idx}`} style={{ flex: '0 0 20%', maxWidth: '20%' }} />
         ))}
       </Row>
-      <Row justify="center" style={{ margin: "16px 0" }}>
+      <Row justify="center" style={{ margin: '16px 0' }}>
         <Pagination current={page} pageSize={pageSize} total={total} onChange={setPage} showSizeChanger={false} />
       </Row>
       <Modal
@@ -175,8 +175,8 @@ export const Dashboard: React.FC = () => {
       >
         <div
           style={{
-            display: "flex",
-            flexDirection: "row",
+            display: 'flex',
+            flexDirection: 'row',
             gap: 24,
             padding: 24,
             minHeight: 600,
@@ -184,8 +184,8 @@ export const Dashboard: React.FC = () => {
         >
           {/* 左侧 */}
           <Card
-            style={{ flex: 1, minWidth: 0,  height: 500, display: "flex", flexDirection: "column" }}
-            styles={{ body: { flex: 1, minHeight: 400, display: "flex", flexDirection: "column" } }}
+            style={{ flex: 1, minWidth: 0, height: 500, display: 'flex', flexDirection: 'column' }}
+            styles={{ body: { flex: 1, minHeight: 400, display: 'flex', flexDirection: 'column' } }}
           >
             {selectedProjectId && (
               <DictionaryList projectId={selectedProjectId} onDictionarySelect={setSelectedDictionaryId} />
@@ -193,8 +193,8 @@ export const Dashboard: React.FC = () => {
           </Card>
           {/* 右侧 */}
           <Card
-            style={{ flex: 1, minWidth: 0,  height: 500, display: "flex", flexDirection: "column" }}
-            styles={{ body: { flex: 1, minHeight: 400, display: "flex", flexDirection: "column" } }}
+            style={{ flex: 1, minWidth: 0, height: 500, display: 'flex', flexDirection: 'column' }}
+            styles={{ body: { flex: 1, minHeight: 400, display: 'flex', flexDirection: 'column' } }}
           >
             {selectedProjectId && (
               <DictionaryItemList projectId={selectedProjectId} selectedDictionaryId={selectedDictionaryId} />
@@ -210,19 +210,19 @@ export const Dashboard: React.FC = () => {
           size="large"
           icon={<PlusOutlined />}
           style={{
-            position: "fixed",
+            position: 'fixed',
             left: 0,
             top: 0,
             zIndex: 1000,
-            boxShadow: "0 4px 16px #1890ff44",
+            boxShadow: '0 4px 16px #1890ff44',
             width: 56,
             height: 56,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
             fontSize: 28,
-            cursor: "grab",
-            transition: "transform 0.1s",
+            cursor: 'grab',
+            transition: 'transform 0.1s',
           }}
           onClick={() => setCreateModalVisible(true)}
         />
@@ -238,14 +238,14 @@ export const Dashboard: React.FC = () => {
           loading={createLoading}
           onFinish={(values) => {
             createProject(
-              { resource: "project", values },
+              { resource: 'project', values },
               {
                 onSuccess: () => {
-                  message.success("创建成功");
+                  message.success('创建成功');
                   setCreateModalVisible(false);
                   // 刷新项目列表
                   setLoading(true);
-                  fetch("/api/v1/project")
+                  fetch('/api/v1/project')
                     .then((res) => res.json())
                     .then((data) => {
                       setProjects(Array.isArray(data) ? data : data.data || []);
@@ -271,7 +271,7 @@ export const Dashboard: React.FC = () => {
             onSuccess={() => {
               setEditModalVisible(false);
               setLoading(true);
-              fetch("/api/v1/project")
+              fetch('/api/v1/project')
                 .then((res) => res.json())
                 .then((data) => {
                   setProjects(Array.isArray(data) ? data : data.data || []);

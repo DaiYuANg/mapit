@@ -1,7 +1,5 @@
 function Mapit() {
-  return <>
-    mapit
-  </>
+  return <>mapit</>;
 }
 
-export default Mapit
+export default Mapit;
