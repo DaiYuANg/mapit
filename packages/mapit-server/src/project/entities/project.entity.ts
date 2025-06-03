@@ -16,4 +16,7 @@ export class Project {
 
   @OneToMany(() => Dictionary, (dictionary) => dictionary.project)
   dictionaries: Dictionary[];
+
+  @Column({ type: 'timestamp', nullable: true })
+  updated_at: Date;
 }

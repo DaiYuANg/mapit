@@ -1,9 +1,26 @@
+import React from "react";
 import { Edit, useForm, useSelect } from "@refinedev/antd";
 import { Form, Input, InputNumber, Select } from "antd";
-import React from "react";
 
-export const DictionaryItemEdit = () => {
-  const { formProps, saveButtonProps } = useForm({});
+interface DictionaryItemEditProps {
+  id: string;
+  selectedDictionaryId: string | null;
+  onSuccess: () => void;
+  onCancel: () => void;
+}
+
+export const DictionaryItemEdit: React.FC<DictionaryItemEditProps> = ({
+  id,
+  selectedDictionaryId,
+  onSuccess,
+  onCancel,
+}) => {
+  const { formProps, saveButtonProps } = useForm({
+    resource: "dictionary-item",
+    id,
+    action: "edit",
+    onMutationSuccess: onSuccess,
+  });
 
   const { selectProps: dictionarySelectProps } = useSelect({
     resource: "dictionary",
@@ -12,14 +29,8 @@ export const DictionaryItemEdit = () => {
   });
 
   return (
-    <Edit saveButtonProps={saveButtonProps}>
-      <Form {...formProps} layout="vertical" initialValues={{
-        name: "",
-        code: "",
-        description: "",
-        sort: 0,
-        dictionaryId: ""
-      }}>
+    <Edit saveButtonProps={saveButtonProps}  headerButtons={[]}>
+      <Form {...formProps} layout="vertical">
         <Form.Item
           label="字典项名称"
           name="name"

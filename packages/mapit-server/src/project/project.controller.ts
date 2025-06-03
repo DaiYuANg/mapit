@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards } from '@nestjs/common';
 import { ProjectService } from './project.service';
 import { CreateProjectDto } from './dto/create-project.dto';
+import { UpdateProjectDto } from './dto/update-project.dto';
 import { Project } from './entities/project.entity';
-import { ApiTags, ApiOperation, ApiQuery } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiQuery, ApiBearerAuth } from '@nestjs/swagger';
 import { PaginationDto } from '../dictionary_item/dto/pagination.dto';
 
 @ApiTags('项目管理')
@@ -10,6 +11,7 @@ import { PaginationDto } from '../dictionary_item/dto/pagination.dto';
 export class ProjectController {
   constructor(private readonly projectService: ProjectService) {}
 
+  @ApiBearerAuth()
   @ApiOperation({ summary: '分页查询所有项目' })
   @ApiQuery({ name: 'page', required: false, description: '页码，默认1' })
   @ApiQuery({ name: 'pageSize', required: false, description: '每页数量，默认10' })
@@ -18,30 +20,40 @@ export class ProjectController {
     return this.projectService.findPaginated(paginationDto);
   }
 
+  @ApiBearerAuth()
   @ApiOperation({ summary: '获取所有项目' })
   @Get()
   async findAll(): Promise<Project[]> {
     return await this.projectService.findAll();
   }
 
+  @ApiBearerAuth()
   @ApiOperation({ summary: '获取单个项目' })
   @Get('detail/:id')
   async findOne(@Param('id') id: string): Promise<Project> {
     return await this.projectService.findOne(id);
   }
 
+  @ApiBearerAuth()
   @ApiOperation({ summary: '创建项目' })
   @Post()
   async create(@Body() createProjectDto: CreateProjectDto): Promise<Project> {
     return await this.projectService.create(createProjectDto);
   }
 
+  @ApiBearerAuth()
   @ApiOperation({ summary: '更新项目' })
+  // @Patch(':id')
+  // async update(@Param('id') id: string, @Body() updateProjectDto: updateProjectDto): Promise<Project> {
+  //   return await this.projectService.update(id, updateProjectDto);
+  // }
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateProjectDto: CreateProjectDto): Promise<Project> {
+  async update(@Param('id') id: string, @Body() updateProjectDto: UpdateProjectDto): Promise<Project> {
+    console.log('收到的 updateProjectDto:', updateProjectDto);
     return await this.projectService.update(id, updateProjectDto);
   }
 
+  @ApiBearerAuth()
   @ApiOperation({ summary: '删除项目' })
   @Delete(':id')
   async remove(@Param('id') id: string): Promise<Project> {

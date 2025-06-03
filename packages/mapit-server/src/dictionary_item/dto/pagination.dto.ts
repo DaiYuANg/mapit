@@ -14,4 +14,3 @@ export class PaginationDto {
   @IsOptional()
   pageSize?: number = 10;
 }
- 

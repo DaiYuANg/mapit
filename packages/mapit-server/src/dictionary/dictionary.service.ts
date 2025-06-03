@@ -28,10 +28,26 @@ export class DictionaryService {
     return await this.dictionaryRepository.save(dictionary);
   }
 
-  async findAll() {
+  async findAll(projectId?: string) {
+    const where = projectId ? { project: { id: projectId } } : {};
     return await this.dictionaryRepository.find({
-      relations: ['items', 'project'],
+      where,
+      relations: ['items'],
     });
+  }
+
+  async findByProjectId(projectId: string) {
+    const cacheKey = `dictionary:by_project:${projectId}`;
+    const cache = await this.cacheManager.get<Dictionary[]>(cacheKey);
+    if (cache) {
+      return cache;
+    }
+    const dictionaries = await this.dictionaryRepository.find({
+      where: { project: { id: projectId } },
+      relations: ['items'],
+    });
+    await this.cacheManager.set(cacheKey, dictionaries, 3600);
+    return dictionaries;
   }
 
   async findOne(id: string) {
@@ -42,7 +58,7 @@ export class DictionaryService {
     }
     const dictionary = await this.dictionaryRepository.findOne({
       where: { id },
-      relations: ['items', 'project'],
+      relations: ['items'],
     });
     if (!dictionary) {
       throw new NotFoundException(`Dictionary with ID ${id} not found`);
@@ -51,11 +67,18 @@ export class DictionaryService {
     return dictionary;
   }
 
+  // async update(id: string, updateDictionaryDto: UpdateDictionaryDto) {
+  //   await this.dictionaryRepository.update(id, {
+  //     ...updateDictionaryDto,
+  //   });
+  //   await this.cacheManager.del(`dictionary:${id}`);
+  //   return await this.findOne(id);
+  // }
   async update(id: string, updateDictionaryDto: UpdateDictionaryDto) {
-    const { projectId, ...updateData } = updateDictionaryDto;
+    const { projectId, ...rest } = updateDictionaryDto;
     await this.dictionaryRepository.update(id, {
-      ...updateData,
-      project: projectId ? { id: projectId } : undefined,
+      ...rest,
+      ...(projectId ? { project: { id: projectId } } : {}),
     });
     await this.cacheManager.del(`dictionary:${id}`);
     return await this.findOne(id);
@@ -71,10 +94,13 @@ export class DictionaryService {
   }
 
   /** 分页查询所有字典 */
-  async findPaginated(paginationDto: PaginationDto) {
-    const { page = 1, pageSize = 10 } = paginationDto;
+  async findPaginated(paginationDto: PaginationDto & { projectId?: string }) {
+    const { page = 1, pageSize = 10, projectId } = paginationDto;
     const skip = (page - 1) * pageSize;
+    const where: Record<string, any> = {};
+    if (projectId) where.project = { id: projectId };
     const [items, total] = await this.dictionaryRepository.findAndCount({
+      where,
       skip,
       take: pageSize,
       order: { id: 'ASC' },

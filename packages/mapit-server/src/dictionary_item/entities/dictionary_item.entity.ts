@@ -19,7 +19,13 @@ export class DictionaryItem {
   @Column()
   sort: number;
 
-  @ManyToOne(() => Dictionary, dictionary => dictionary.items, { onDelete: 'CASCADE' })
-  @JoinColumn()
+  @Column({ name: 'dictionaryId', type: 'varchar' })
+  dictionaryId: string;
+
+  @ManyToOne(() => Dictionary, (dictionary) => dictionary.items, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'dictionaryId' })
   dictionary: Dictionary;
+
+  @Column({ type: 'timestamp', nullable: true })
+  updated_at: Date;
 }

@@ -44,14 +44,15 @@ export class DictionaryItemService {
 
   /** 更新字典项 */
   async update(id: string, updateDto: UpdateDictionaryItemDto) {
+    const { dictionaryId, ...rest } = updateDto;
     await this.dictionaryItemRepository.update(id, {
-      ...updateDto,
-      dictionary: updateDto.dictionaryId ? { id: updateDto.dictionaryId } : undefined,
+      ...rest,
+      dictionary: dictionaryId ? { id: dictionaryId } : undefined,
     });
     const updated = await this.findOne(id);
     if (!updated) throw new NotFoundException(`DictionaryItem with ID ${id} not found`);
-    if (updateDto.dictionaryId) {
-      await this.cacheManager.del(`dictionary_item:by_dict:${updateDto.dictionaryId}`);
+    if (dictionaryId) {
+      await this.cacheManager.del(`dictionary_item:by_dict:${dictionaryId}`);
     }
     return updated;
   }
@@ -88,17 +89,18 @@ export class DictionaryItemService {
   }
 
   /** 分页查询所有字典项 */
-  async findPaginated(paginationDto: PaginationDto) {
-    const { page = 1, pageSize = 10 } = paginationDto;
+  async findPaginated(paginationDto: PaginationDto & { dictionaryId?: string }) {
+    const { page = 1, pageSize = 10, dictionaryId } = paginationDto;
     const skip = (page - 1) * pageSize;
-
+    const where: Record<string, any> = {};
+    if (dictionaryId) where.dictionary = { id: dictionaryId };
     const [items, total] = await this.dictionaryItemRepository.findAndCount({
-      order: { sort: 'ASC' },
+      where,
       skip,
       take: pageSize,
+      order: { sort: 'ASC' },
       relations: ['dictionary'],
     });
-
     return {
       data: items,
       total,

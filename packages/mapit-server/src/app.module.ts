@@ -25,6 +25,7 @@ import * as redisStore from 'cache-manager-ioredis';
 
 @Module({
   imports: [
+    AuthModule,
     HealthModule,
     ScheduleModule.forRoot(),
     EventEmitterModule.forRoot(),

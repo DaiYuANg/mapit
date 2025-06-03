@@ -3,6 +3,9 @@ import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as compression from 'compression';
 import helmet from 'helmet';
+import { ValidationPipe } from '@nestjs/common';
+import { JwtAuthGuard } from './auth/jwt-auth.guard';
+import { Reflector } from '@nestjs/core';
 
 const bootstrap = async () => {
   const app = await NestFactory.create(AppModule);
@@ -12,11 +15,16 @@ const bootstrap = async () => {
     .setDescription('The mapit API description')
     .setVersion('1.0')
     .addTag('map')
+    .addBearerAuth()
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, documentFactory);
   app.use(compression());
   app.use(helmet());
+  app.useGlobalPipes(new ValidationPipe());
+  // 全局注册 JwtAuthGuard
+  const reflector = app.get(Reflector);
+  app.useGlobalGuards(new JwtAuthGuard(reflector));
   await app.listen(process.env.PORT ?? 3000, '0.0.0.0');
 };
 

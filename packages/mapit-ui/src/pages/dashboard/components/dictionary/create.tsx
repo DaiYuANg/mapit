@@ -1,15 +1,23 @@
 import { Create, useForm, useSelect } from "@refinedev/antd";
 import { Form, Input, Select } from "antd";
 import React from "react";
-
-export const DictionaryCreate = () => {
-  const { formProps, saveButtonProps } = useForm({});
+interface DictionaryCreateProps {
+  onSuccess?: () => void;
+  onCancel?: () => void;
+}
+export const DictionaryCreate:  React.FC<DictionaryCreateProps> = ({ onSuccess, onCancel }) => {
+  const { formProps, saveButtonProps } = useForm({
+    resource: "dictionary",
+    onMutationSuccess: () => {
+      onSuccess?.();
+    },
+  });
   const { selectProps: projectSelectProps } = useSelect({
     resource: "project",
     optionLabel: "name",
     optionValue: "id",
   });
-
+  console.log("projectSelectProps.options", projectSelectProps.options);
   return (
     <Create saveButtonProps={saveButtonProps}>
       <Form {...formProps} layout="vertical">

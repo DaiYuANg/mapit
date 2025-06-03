@@ -5,14 +5,22 @@ import React from "react";
 
 const { Title } = Typography;
 
-export const DictionaryShow = () => {
-  const { queryResult } = useShow({});
+interface DictionaryShowProps {
+  id: string;
+  onCancel?: () => void;
+}
+
+export const DictionaryShow: React.FC<DictionaryShowProps> = ({ id, onCancel }) => {
+  const { queryResult } = useShow({
+    resource: "dictionary",
+    id,
+  });
   const { data, isLoading } = queryResult;
 
   const record = data?.data;
 
   return (
-    <Show isLoading={isLoading}>
+    <Show isLoading={isLoading}  headerButtons={[]} title={"字典信息"}>
       <Title level={5}>ID</Title>
       <TextField value={record?.id} />
       <Title level={5}>字典名称</Title>
