@@ -11,20 +11,20 @@ export const Login = () => {
     login(
       {
         username: values.username,
-        password: values.password
+        password: values.password,
       },
       {
         onSuccess: (res: any) => {
           console.log(res);
-          if (String(res.code) === "200") {
+          if (String(res.code) === '200') {
             message.success('登录成功');
             push('/');
           }
         },
         onError: () => {
           message.error('登录失败，请重新尝试');
-        }
-      }
+        },
+      },
     );
   };
 
@@ -41,18 +41,10 @@ export const Login = () => {
             initialValues={{ username: 'admin', password: '123456' }}
             layout="vertical"
           >
-            <Form.Item
-              name="username"
-              label="账号"
-              rules={[{ required: true, message: '请输入你的账号' }]}
-            >
+            <Form.Item name="username" label="账号" rules={[{ required: true, message: '请输入你的账号' }]}>
               <Input size="large" placeholder="输入你的账号" />
             </Form.Item>
-            <Form.Item
-              name="password"
-              label="密码"
-              rules={[{ required: true, message: '请输入你的密码' }]}
-            >
+            <Form.Item name="password" label="密码" rules={[{ required: true, message: '请输入你的密码' }]}>
               <Input.Password size="large" placeholder="输入你的密码" />
             </Form.Item>
             <Form.Item>

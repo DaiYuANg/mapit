@@ -63,7 +63,10 @@ export class DictionaryController {
   @ApiBearerAuth()
   @ApiOperation({ summary: '更新字典' })
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateDictionaryDto: UpdateDictionaryDto): Promise<{ data: Dictionary }> {
+  async update(
+    @Param('id') id: string,
+    @Body() updateDictionaryDto: UpdateDictionaryDto,
+  ): Promise<{ data: Dictionary }> {
     const data = await this.dictionaryService.update(id, updateDictionaryDto);
     if (!data) {
       throw new NotFoundException(`Dictionary with ID ${id} not found`);

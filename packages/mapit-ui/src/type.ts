@@ -1,7 +1,7 @@
 type Result<T> = {
-  data: T
-  code: string
-  message: string
-}
+  data: T;
+  code: string;
+  message: string;
+};
 
-export type { Result }
+export type { Result };

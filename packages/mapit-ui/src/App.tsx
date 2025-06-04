@@ -44,7 +44,7 @@ function App() {
                     meta: { canDelete: false },
                     options: { label: '首页' },
                     icon: <HomeOutlined />,
-                  }
+                  },
                 ]}
                 options={{
                   syncWithLocation: true,
