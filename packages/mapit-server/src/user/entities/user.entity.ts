@@ -1,9 +1,11 @@
-import { Entity, Column, CreateDateColumn, UpdateDateColumn, PrimaryColumn } from 'typeorm';
+import { Entity, Column, CreateDateColumn, UpdateDateColumn, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity('user')
+@Entity({ name: 'user', schema: 'public' })
 export class User {
-  @PrimaryColumn('bigint', { generated: false })
+  @PrimaryGeneratedColumn('increment')
   id: number;
+  // @PrimaryColumn('bigint', { generated: false })
+  // id: number;
 
   @Column({ length: 64, unique: true })
   username: string;

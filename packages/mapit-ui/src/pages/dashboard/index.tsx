@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Card, Row, Col, Typography, Space, Button, Popconfirm, Modal, Pagination } from 'antd';
 import { DictionaryList } from './components/dictionary';
 import { DictionaryItemList } from './components/dictionary-item';
 import './dashboard-animate.css';
-import { useNavigate } from 'react-router-dom';
 import { EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import { message } from 'antd';
 import Draggable from 'react-draggable';
-import { useDelete, useCreate } from '@refinedev/core';
+import { useDelete, useCreate, useList } from '@refinedev/core';
 import { ProjectCreateForm } from './components/project/create';
 import { ProjectEdit } from './components/project/edit';
 
@@ -16,44 +15,21 @@ export interface Project {
   name: string;
   description?: string;
 }
-
 export const Dashboard: React.FC = () => {
   const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
   const [selectedDictionaryId, setSelectedDictionaryId] = useState<string | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [currentProject, setCurrentProject] = useState<Project | null>(null);
   const [page, setPage] = useState(1);
-
   const pageSize = 20;
-
-  const navigate = useNavigate();
-
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [, setLoading] = useState(true);
-  const [, setError] = useState<string | null>(null);
   const { mutate: deleteProject } = useDelete();
   const [createModalVisible, setCreateModalVisible] = useState(false);
   const { mutate: createProject, isLoading: createLoading } = useCreate();
-
-  useEffect(() => {
-    setLoading(true);
-    fetch('/api/v1/project')
-      .then((res) => res.json())
-      .then((data) => {
-        setProjects(Array.isArray(data) ? data : data.data || []);
-        setLoading(false);
-      })
-      .catch(() => {
-        setError('获取项目失败');
-        setLoading(false);
-      });
-  }, []);
-
+  const { data, isLoading, isError, refetch } = useList<Project>({ resource: 'project' });
+  const projects: Project[] = data?.data ?? [];
   const total = projects.length;
   const pagedProjects = projects.slice((page - 1) * pageSize, page * pageSize);
   const emptyCount = pageSize - pagedProjects.length;
-
-  // 删除项目
   const handleDelete = (id: string) => {
     deleteProject(
       {
@@ -63,14 +39,7 @@ export const Dashboard: React.FC = () => {
       {
         onSuccess: () => {
           message.success('删除成功');
-          // 重新获取全部数据
-          setLoading(true);
-          fetch('/api/v1/project')
-            .then((res) => res.json())
-            .then((data) => {
-              setProjects(Array.isArray(data) ? data : data.data || []);
-              setLoading(false);
-            });
+          refetch();
           if (selectedProjectId === id) {
             setSelectedProjectId(null);
             setSelectedDictionaryId(null);
@@ -82,22 +51,19 @@ export const Dashboard: React.FC = () => {
       },
     );
   };
-
   const handleCardClick = (project: Project) => {
-    console.log('我点击了项目');
     setCurrentProject(project);
     setSelectedProjectId(project.id);
     setSelectedDictionaryId(null);
     setModalVisible(true);
   };
-
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [editProject, setEditProject] = useState<Project | null>(null);
   return (
     <>
       <Typography.Title level={4}>项目列表</Typography.Title>
       <Row gutter={[12, 32]} style={{ display: 'flex', flexWrap: 'wrap' }}>
-        {pagedProjects.map((project) => (
+        {pagedProjects.map((project: Project) => (
           <Col key={project.id} style={{ flex: '0 0 20%', maxWidth: '20%' }}>
             <Card
               hoverable
@@ -243,14 +209,7 @@ export const Dashboard: React.FC = () => {
                 onSuccess: () => {
                   message.success('创建成功');
                   setCreateModalVisible(false);
-                  // 刷新项目列表
-                  setLoading(true);
-                  fetch('/api/v1/project')
-                    .then((res) => res.json())
-                    .then((data) => {
-                      setProjects(Array.isArray(data) ? data : data.data || []);
-                      setLoading(false);
-                    });
+                  refetch();
                 },
               },
             );
@@ -270,13 +229,7 @@ export const Dashboard: React.FC = () => {
             project={editProject}
             onSuccess={() => {
               setEditModalVisible(false);
-              setLoading(true);
-              fetch('/api/v1/project')
-                .then((res) => res.json())
-                .then((data) => {
-                  setProjects(Array.isArray(data) ? data : data.data || []);
-                  setLoading(false);
-                });
+              refetch();
             }}
             onCancel={() => setEditModalVisible(false)}
           />

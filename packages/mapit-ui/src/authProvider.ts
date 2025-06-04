@@ -1,26 +1,34 @@
 import type { AuthProvider } from '@refinedev/core';
+import { loginApi } from './api/auth';
 
 export const TOKEN_KEY = 'refine-auth';
 
 export const authProvider: AuthProvider = {
-  login: async ({ username, email, password }) => {
-    if ((username || email) && password) {
-      localStorage.setItem(TOKEN_KEY, username);
+  login: async ({ username, password }) => {
+    try {
+      const res = await loginApi(username, password);
+      console.log('Login response:', res);
+      localStorage.setItem(TOKEN_KEY, res.data.token);
+      console.log('Token stored:', localStorage.getItem(TOKEN_KEY));
       return {
         success: true,
         redirectTo: '/',
+        code: res.code,
+        message: res.message,
+      };
+    } catch (res: any) {
+      console.error('Login error:', res);
+      return {
+        success: false,
+        error: {
+          name: 'Login Error',
+          message: res?.response?.data?.message || res?.message || '登录失败了',
+        },
       };
     }
-
-    return {
-      success: false,
-      error: {
-        name: 'LoginError',
-        message: 'Invalid username or password',
-      },
-    };
   },
   logout: async () => {
+    console.log('Logging out, removing token');
     localStorage.removeItem(TOKEN_KEY);
     return {
       success: true,
@@ -29,6 +37,7 @@ export const authProvider: AuthProvider = {
   },
   check: async () => {
     const token = localStorage.getItem(TOKEN_KEY);
+    console.log('Auth check - token:', token);
     if (token) {
       return {
         authenticated: true,
@@ -43,6 +52,7 @@ export const authProvider: AuthProvider = {
   getPermissions: async () => null,
   getIdentity: async () => {
     const token = localStorage.getItem(TOKEN_KEY);
+    console.log('Getting identity - token:', token);
     if (token) {
       return {
         id: 1,
@@ -53,7 +63,7 @@ export const authProvider: AuthProvider = {
     return null;
   },
   onError: async (error) => {
-    console.error(error);
+    console.error('Auth error:', error);
     return { error };
   },
 };

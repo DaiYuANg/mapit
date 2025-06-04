@@ -32,7 +32,7 @@ function App() {
           <AntdApp>
             <DevtoolsProvider>
               <Refine
-                dataProvider={dataProvider('/api/v1')}
+                dataProvider={dataProvider('')}
                 notificationProvider={useNotificationProvider}
                 authProvider={authProvider}
                 routerProvider={routerBindings}
@@ -44,7 +44,7 @@ function App() {
                     meta: { canDelete: false },
                     options: { label: '首页' },
                     icon: <HomeOutlined />,
-                  },
+                  }
                 ]}
                 options={{
                   syncWithLocation: true,

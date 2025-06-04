@@ -19,8 +19,9 @@ export class DictionaryController {
   @ApiOperation({ summary: '创建字典' })
   @ApiResponse({ status: 201, description: '成功创建字典' })
   @Post()
-  async create(@Body() createDictionaryDto: CreateDictionaryDto): Promise<Dictionary> {
-    return await this.dictionaryService.create(createDictionaryDto);
+  async create(@Body() createDictionaryDto: CreateDictionaryDto): Promise<{ data: Dictionary }> {
+    const data = await this.dictionaryService.create(createDictionaryDto);
+    return { data };
   }
 
   @ApiBearerAuth()
@@ -29,27 +30,29 @@ export class DictionaryController {
   @ApiQuery({ name: 'page', required: false, description: '页码，默认1' })
   @ApiQuery({ name: 'pageSize', required: false, description: '每页数量，默认10' })
   @Get('paginated')
-  findPaginated(@Query() paginationDto: PaginationDto & { projectId?: string }) {
-    return this.dictionaryService.findPaginated(paginationDto);
+  async findPaginated(@Query() paginationDto: PaginationDto & { projectId?: string }) {
+    const { data, total } = await this.dictionaryService.findPaginated(paginationDto);
+    return { data, total };
   }
 
   @ApiBearerAuth()
   @ApiOperation({ summary: '获取所有字典' })
   @ApiQuery({ name: 'projectId', required: false, description: '项目ID' })
   @Get()
-  async findAll(@Query('projectId') projectId?: string): Promise<Dictionary[]> {
-    return await this.dictionaryService.findAll(projectId);
+  async findAll(@Query('projectId') projectId?: string): Promise<{ data: Dictionary[]; total: number }> {
+    const data = await this.dictionaryService.findAll(projectId);
+    return { data, total: data.length };
   }
 
   @ApiBearerAuth()
   @ApiOperation({ summary: '根据ID获取字典' })
   @Get(':id')
-  async findOne(@Param('id') id: string): Promise<Dictionary> {
-    const dictionary = await this.dictionaryService.findOne(id);
-    if (!dictionary) {
+  async findOne(@Param('id') id: string): Promise<{ data: Dictionary }> {
+    const data = await this.dictionaryService.findOne(id);
+    if (!data) {
       throw new NotFoundException(`Dictionary with ID ${id} not found`);
     }
-    return dictionary;
+    return { data };
   }
 
   /**
@@ -60,12 +63,12 @@ export class DictionaryController {
   @ApiBearerAuth()
   @ApiOperation({ summary: '更新字典' })
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateDictionaryDto: UpdateDictionaryDto): Promise<Dictionary> {
-    const dictionary = await this.dictionaryService.update(id, updateDictionaryDto);
-    if (!dictionary) {
+  async update(@Param('id') id: string, @Body() updateDictionaryDto: UpdateDictionaryDto): Promise<{ data: Dictionary }> {
+    const data = await this.dictionaryService.update(id, updateDictionaryDto);
+    if (!data) {
       throw new NotFoundException(`Dictionary with ID ${id} not found`);
     }
-    return dictionary;
+    return { data };
   }
 
   /**
@@ -75,19 +78,20 @@ export class DictionaryController {
   @ApiBearerAuth()
   @ApiOperation({ summary: '删除字典' })
   @Delete(':id')
-  async remove(@Param('id') id: string): Promise<Dictionary> {
-    const dictionary = await this.dictionaryService.remove(id);
-    if (!dictionary) {
+  async remove(@Param('id') id: string): Promise<{ data: Dictionary }> {
+    const data = await this.dictionaryService.remove(id);
+    if (!data) {
       throw new NotFoundException(`Dictionary with ID ${id} not found`);
     }
-    return dictionary;
+    return { data };
   }
 
   @ApiBearerAuth()
   @Get('project/:projectId')
   @ApiOperation({ summary: '获取项目下的所有字典' })
   @ApiResponse({ status: 200, description: '返回项目下的所有字典' })
-  findByProjectId(@Param('projectId') projectId: string) {
-    return this.dictionaryService.findByProjectId(projectId);
+  async findByProjectId(@Param('projectId') projectId: string): Promise<{ data: Dictionary[]; total: number }> {
+    const data = await this.dictionaryService.findByProjectId(projectId);
+    return { data, total: data.length };
   }
 }

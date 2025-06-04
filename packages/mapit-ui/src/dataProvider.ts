@@ -1,4 +1,5 @@
 import { DataProvider } from '@refinedev/core';
+import { request } from './api/request';
 
 export const dataProvider = (apiUrl: string): DataProvider => ({
   getList: async ({ resource, pagination, filters }) => {
@@ -11,61 +12,48 @@ export const dataProvider = (apiUrl: string): DataProvider => ({
         .map((filter: any) => `${encodeURIComponent(filter.field)}=${encodeURIComponent(filter.value)}`)
         .join('&');
     }
-    const url = `${apiUrl}/${resource}?page=${current}&pageSize=${pageSize}${filterQuery ? `&${filterQuery}` : ''}`;
-    const response = await fetch(url);
-    const result = await response.json();
+    const url = `/${resource}?page=${current}&pageSize=${pageSize}${filterQuery ? `&${filterQuery}` : ''}`;
+    console.log('DataProvider getList - URL:', url);
+    console.log('DataProvider getList - Request instance:', request);
+    const result: { data: any[]; total: number } = await request.get(url);
+    console.log('DataProvider getList - Response:', result);
     return {
-      data: Array.isArray(result) ? result : result.data,
-      total: Array.isArray(result) ? result.length : result.total,
+      data: result.data,
+      total: result.total,
     };
   },
   getOne: async ({ resource, id }) => {
-    let url = `${apiUrl}/${resource}/${id}`;
+    let url = `/${resource}/${id}`;
     if (resource === 'project') {
-      url = `${apiUrl}/project/detail/${id}`;
+      url = `/project/detail/${id}`;
     }
-    const response = await fetch(url);
-    const result = await response.json();
-    return { data: result };
+    const result = await request.get(url);
+    return { data: result.data };
   },
   create: async ({ resource, variables }) => {
-    const url = `${apiUrl}/${resource}`;
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(variables),
-    });
-    const result = await response.json();
-    return { data: result };
+    const url = `/${resource}`;
+    const result = await request.post(url, variables);
+    return { data: result.data };
   },
   update: async ({ resource, id, variables }) => {
-    const url = `${apiUrl}/${resource}/${id}`;
-    const response = await fetch(url, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(variables),
-    });
-    const result = await response.json();
-    return { data: result };
+    const url = `/${resource}/${id}`;
+    const result = await request.patch(url, variables);
+    return { data: result.data };
   },
   deleteOne: async ({ resource, id }) => {
-    const url = `${apiUrl}/${resource}/${id}`;
-    const response = await fetch(url, {
-      method: 'DELETE',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id }),
-    });
-    const result = await response.json();
-    return { data: result };
+    const url = `/${resource}/${id}`;
+    const result = await request.delete(url, { data: { id } });
+    return { data: result.data };
   },
   getApiUrl: () => apiUrl,
   custom: async ({ url, method, payload, query, headers }) => {
-    const response = await fetch(url, {
+    const result = await request({
+      url,
       method,
       headers,
-      body: payload ? JSON.stringify(payload) : undefined,
+      data: payload,
+      params: query,
     });
-    const result = await response.json();
-    return { data: result };
+    return { data: result.data };
   },
 });

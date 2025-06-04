@@ -59,12 +59,16 @@ export class UserService {
     const payload = { sub: user.id, username: user.username };
     const token = this.jwtService.sign(payload);
     return {
-      token,
-      user: {
-        id: user.id,
-        username: user.username,
-        email: user.email,
+      data: {
+        token,
+        user: {
+          id: user.id,
+          username: user.username,
+          email: user.email,
+        },
       },
+      code: '200',
+      message: '登录成功',
     };
   }
 }
