@@ -66,14 +66,6 @@ export class DictionaryService {
     await this.cacheManager.set(cacheKey, dictionary, 3600);
     return dictionary;
   }
-
-  // async update(id: string, updateDictionaryDto: UpdateDictionaryDto) {
-  //   await this.dictionaryRepository.update(id, {
-  //     ...updateDictionaryDto,
-  //   });
-  //   await this.cacheManager.del(`dictionary:${id}`);
-  //   return await this.findOne(id);
-  // }
   async update(id: string, updateDictionaryDto: UpdateDictionaryDto) {
     const { projectId, ...rest } = updateDictionaryDto;
     await this.dictionaryRepository.update(id, {

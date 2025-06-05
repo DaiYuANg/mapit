@@ -4,6 +4,8 @@ import { Repository } from 'typeorm';
 import { AccessKey } from './entities/access_key.entity';
 import { CreateAccessKeyDto } from './dto/create-access_key.dto';
 import { UpdateAccessKeyDto } from './dto/update-access_key.dto';
+import * as crypto from 'crypto';
+import { generateId } from '../common/utils/id-generator';
 
 @Injectable()
 export class AccessKeyService {
@@ -17,8 +19,22 @@ export class AccessKeyService {
     return !!found;
   }
 
-  create(createAccessKeyDto: CreateAccessKeyDto) {
-    return this.accessKeyRepo.save(createAccessKeyDto);
+  async create(createAccessKeyDto: CreateAccessKeyDto) {
+    // 用雪花ID生成唯一 key
+    let key: string;
+    let exists = true;
+    do {
+      key = generateId() as string;
+      exists = !!(await this.accessKeyRepo.findOne({ where: { key } }));
+    } while (exists);
+    // 生成 secret
+    const secret = crypto.randomBytes(24).toString('hex');
+    const entity = this.accessKeyRepo.create({
+      ...createAccessKeyDto,
+      key,
+      secret,
+    });
+    return this.accessKeyRepo.save(entity);
   }
 
   findAll() {

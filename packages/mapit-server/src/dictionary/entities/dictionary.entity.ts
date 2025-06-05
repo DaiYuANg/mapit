@@ -1,4 +1,3 @@
-// packages/mapit-server/src/dictionary/entities/dictionary.entity.ts
 import { Entity, PrimaryColumn, Column, OneToMany, ManyToOne, JoinColumn } from 'typeorm';
 import { DictionaryItem } from '../../dictionary_item/entities/dictionary_item.entity';
 import { Project } from '../../project/entities/project.entity';
