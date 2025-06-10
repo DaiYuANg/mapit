@@ -18,18 +18,18 @@ export class AccessKeyGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest<Request>();
-    
+
     // 1. 验证 JWT token
     const authHeader = request.headers.authorization;
     if (!authHeader) {
       throw new UnauthorizedException('缺少 JWT token');
     }
-    
+
     const [type, token] = authHeader.split(' ');
     if (type !== 'Bearer') {
       throw new UnauthorizedException('无效的 token 类型');
     }
-    
+
     try {
       const payload = await this.jwtService.verifyAsync(token);
       request['user'] = payload;
@@ -60,7 +60,7 @@ export class AccessKeyGuard implements CanActivate {
     ]);
 
     if (requiredRoles) {
-      const hasPermission = requiredRoles.some(role => keyInfo.permissions.includes(role));
+      const hasPermission = requiredRoles.some((role) => keyInfo.permissions.includes(role));
       if (!hasPermission) {
         throw new UnauthorizedException('权限不足');
       }
