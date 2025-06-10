@@ -3,18 +3,20 @@ import { Card, Row, Col, Typography, Space, Button, Popconfirm, Modal, Paginatio
 import { DictionaryList } from './components/dictionary';
 import { DictionaryItemList } from './components/dictionary-item';
 import './dashboard-animate.css';
-import { EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
+import { EditOutlined, DeleteOutlined, PlusOutlined, KeyOutlined } from '@ant-design/icons';
 import { message } from 'antd';
 import Draggable from 'react-draggable';
 import { useDelete, useCreate, useList } from '@refinedev/core';
 import { ProjectCreateForm } from './components/project/create';
 import { ProjectEdit } from './components/project/edit';
+import { KeyModal } from './components/KeyModal';
 
 export interface Project {
   id: string;
   name: string;
   description?: string;
 }
+
 export const Dashboard: React.FC = () => {
   const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
   const [selectedDictionaryId, setSelectedDictionaryId] = useState<string | null>(null);
@@ -59,6 +61,7 @@ export const Dashboard: React.FC = () => {
   };
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [editProject, setEditProject] = useState<Project | null>(null);
+  const [keyModal, setKeyModal] = useState({ visible: false, projectId: '' });
   return (
     <>
       <Typography.Title level={4}>项目列表</Typography.Title>
@@ -86,6 +89,16 @@ export const Dashboard: React.FC = () => {
                     e.stopPropagation();
                     setEditProject(project);
                     setEditModalVisible(true);
+                  }}
+                />
+                <Button
+                  className="card-action-btn"
+                  icon={<KeyOutlined />}
+                  size="small"
+                  type="text"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setKeyModal({ visible: true, projectId: project.id });
                   }}
                 />
                 <Popconfirm
@@ -235,6 +248,11 @@ export const Dashboard: React.FC = () => {
           />
         )}
       </Modal>
+      <KeyModal
+        visible={keyModal.visible}
+        projectId={keyModal.projectId}
+        onClose={() => setKeyModal({ visible: false, projectId: '' })}
+      />
     </>
   );
 };
