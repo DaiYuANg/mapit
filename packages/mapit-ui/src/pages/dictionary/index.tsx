@@ -3,10 +3,17 @@ import { Card, Row, Col, Typography, Space, Button, Popconfirm, Modal, Paginatio
 import { DictionaryList } from './components/dictionary';
 import { DictionaryItemList } from './components/dictionary-item';
 import './dashboard-animate.css';
-import { EditOutlined, DeleteOutlined, PlusOutlined, KeyOutlined } from '@ant-design/icons';
+import {
+  EditOutlined,
+  DeleteOutlined,
+  PlusOutlined,
+  KeyOutlined,
+  ExportOutlined,
+  SyncOutlined,
+} from '@ant-design/icons';
 import { message } from 'antd';
 import Draggable from 'react-draggable';
-import { useDelete, useCreate, useList } from '@refinedev/core';
+import { useDelete, useCreate, useList, useCustomMutation } from '@refinedev/core';
 import { ProjectCreateForm } from './components/project/create';
 import { ProjectEdit } from './components/project/edit';
 import { KeyModal } from './components/KeyModal';
@@ -17,17 +24,20 @@ export interface Project {
   description?: string;
 }
 
-export const Dashboard: React.FC = () => {
+export const DictionaryView: React.FC = () => {
   const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
   const [selectedDictionaryId, setSelectedDictionaryId] = useState<string | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [currentProject, setCurrentProject] = useState<Project | null>(null);
   const [page, setPage] = useState(1);
   const pageSize = 20;
+  const { mutate, isLoading, error } = useCustomMutation({});
+
   const { mutate: deleteProject } = useDelete();
   const [createModalVisible, setCreateModalVisible] = useState(false);
   const { mutate: createProject, isLoading: createLoading } = useCreate();
-  const { data, isLoading, isError, refetch } = useList<Project>({ resource: 'project' });
+  const { data, refetch } = useList<Project>({ resource: 'project' });
+  console.log(data);
   const projects: Project[] = data?.data ?? [];
   const total = projects.length;
   const pagedProjects = projects.slice((page - 1) * pageSize, page * pageSize);
@@ -133,6 +143,26 @@ export const Dashboard: React.FC = () => {
                 <Typography.Paragraph ellipsis={{ rows: 2 }} style={{ marginBottom: 0, marginTop: 4 }}>
                   {project.description || '暂无描述'}
                 </Typography.Paragraph>
+              </Space>
+              <Space direction={'horizontal'}>
+                <Button
+                  size="small"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    mutate({
+                      url: `/project/${project.id}/export-dictionaries`, // 动态拼接 URL
+                      method: 'post',
+                      values: {},
+                    });
+                  }}
+                  type="text"
+                  icon={<ExportOutlined />}
+                >
+                  Export
+                </Button>
+                <Button size="small" type="text" icon={<SyncOutlined />}>
+                  Sync
+                </Button>
               </Space>
             </Card>
           </Col>

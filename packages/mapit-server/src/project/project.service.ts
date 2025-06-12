@@ -1,26 +1,26 @@
-import { Inject } from '@nestjs/common';
-import { CACHE_MANAGER } from '@nestjs/cache-manager';
-import { Cache } from 'cache-manager';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { Project } from './entities/project.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { PaginationDto } from '../dictionary_item/dto/pagination.dto';
-import { generateId } from '../common/utils/id-generator';
+import { Dictionary } from '../dictionary/entities/dictionary.entity';
+import { DictionaryItem } from '../dictionary_item/entities/dictionary_item.entity';
 
 @Injectable()
 export class ProjectService {
   constructor(
     @InjectRepository(Project)
     private projectRepository: Repository<Project>,
-    @Inject(CACHE_MANAGER) private cacheManager: Cache,
+    @InjectRepository(Dictionary)
+    private dictionaryRepository: Repository<Dictionary>,
+    @InjectRepository(DictionaryItem)
+    private dictionaryItemRepository: Repository<DictionaryItem>,
   ) {}
 
   async create(createProjectDto: CreateProjectDto): Promise<Project> {
     const project = this.projectRepository.create({
       ...createProjectDto,
-      id: generateId(),
     });
     return await this.projectRepository.save(project);
   }
@@ -29,29 +29,26 @@ export class ProjectService {
     return await this.projectRepository.find();
   }
 
-  async findOne(id: string): Promise<Project> {
-    const cacheKey = `project:${id}`;
-    const cache = await this.cacheManager.get<Project>(cacheKey);
-    if (cache) {
-      return cache;
+  async findOne(id: string | undefined): Promise<Project> {
+    console.log('project id:{}', id);
+    if (id) {
+      const project = await this.projectRepository.findOne({ where: { id } });
+      if (!project) {
+        throw new NotFoundException(`Project with ID ${id} not found`);
+      }
+      // await this.cacheManager.set(cacheKey, project, 3600);
+      return project;
     }
-    const project = await this.projectRepository.findOne({ where: { id } });
-    if (!project) {
-      throw new NotFoundException(`Project with ID ${id} not found`);
-    }
-    await this.cacheManager.set(cacheKey, project, 3600);
-    return project;
+    throw new NotFoundException(`Project with ID ${id} not found`);
   }
 
   async update(id: string, updateProjectDto: Partial<CreateProjectDto>): Promise<Project> {
     await this.projectRepository.update(id, updateProjectDto);
-    await this.cacheManager.del(`project:${id}`);
     return this.findOne(id);
   }
 
   async remove(id: string): Promise<Project> {
     const project = await this.findOne(id);
-    await this.cacheManager.del(`project:${id}`);
     return await this.projectRepository.remove(project);
   }
 
@@ -70,6 +67,36 @@ export class ProjectService {
       page,
       pageSize,
       totalPages: Math.ceil(total / pageSize),
+    };
+  }
+
+  async exportProjectDictionaries(projectId: string) {
+    const project = await this.projectRepository.findOne({
+      where: { id: projectId },
+      relations: ['dictionaries', 'dictionaries.items'],
+    });
+
+    if (!project) {
+      throw new NotFoundException(`Project with id ${projectId} not found.`);
+    }
+
+    // 构造导出数据结构
+    return {
+      projectId: project.id,
+      projectName: project.name,
+      dictionaries: project.dictionaries.map((dict) => ({
+        id: dict.id,
+        name: dict.name,
+        code: dict.code,
+        description: dict.description,
+        items: dict.items.map((item) => ({
+          id: item.id,
+          name: item.name,
+          code: item.code,
+          description: item.description,
+          sort: item.sort,
+        })),
+      })),
     };
   }
 }

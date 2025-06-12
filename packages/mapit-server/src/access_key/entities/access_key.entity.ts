@@ -1,24 +1,15 @@
 // AccessKey.ts
 import { Project } from 'src/project/entities/project.entity';
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  CreateDateColumn,
-  UpdateDateColumn,
-  ManyToOne,
-  JoinColumn,
-} from 'typeorm';
+import { Entity, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
+import { Permission } from '../permission';
+import { BaseEntity } from '../../base/base.entity';
 
 @Entity('access_key')
-export class AccessKey {
-  @PrimaryGeneratedColumn({ type: 'int' })
-  id: string;
-
+export class AccessKey extends BaseEntity {
   @Column({ default: true })
   active: boolean;
 
-  @Column({ type: 'bigint', nullable: true })
+  @Column({ type: 'uuid', nullable: true })
   projectId: string;
 
   @Column({ unique: true })
@@ -27,14 +18,11 @@ export class AccessKey {
   @Column({ nullable: true })
   secret: string;
 
-  @Column({ nullable: true })
-  project_name: string;
-
   @Column({ type: 'timestamp', nullable: true })
   expires_at: Date;
 
-  @Column({ type: 'simple-array', default: 'read' })
-  permissions: string[];
+  @Column({ type: 'simple-array' })
+  permissions: Permission[];
 
   @Column({ type: 'int', default: 0 })
   usage_count: number;

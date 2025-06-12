@@ -1,9 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post, Query } from '@nestjs/common';
 import { ProjectService } from './project.service';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
 import { Project } from './entities/project.entity';
-import { ApiTags, ApiOperation, ApiQuery, ApiBearerAuth } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { PaginationDto } from '../dictionary_item/dto/pagination.dto';
 
 @ApiTags('项目管理')
@@ -59,5 +59,17 @@ export class ProjectController {
   async remove(@Param('id') id: string): Promise<{ data: Project }> {
     const data = await this.projectService.remove(id);
     return { data };
+  }
+
+  @Post(':projectId/export-dictionaries')
+  async exportDictionaries(@Param('projectId') projectId: string) {
+    try {
+      return await this.projectService.exportProjectDictionaries(projectId);
+    } catch (error: any) {
+      if (error) {
+        throw new NotFoundException(error);
+      }
+      throw error;
+    }
   }
 }

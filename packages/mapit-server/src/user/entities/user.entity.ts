@@ -1,11 +1,8 @@
-import { Entity, Column, CreateDateColumn, UpdateDateColumn, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, CreateDateColumn, UpdateDateColumn, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity } from '../../base/base.entity';
 
 @Entity({ name: 'user', schema: 'public' })
-export class User {
-  @PrimaryGeneratedColumn('increment')
-  id: number;
-  // @PrimaryColumn('bigint', { generated: false })
-  // id: number;
+export class User extends BaseEntity{
 
   @Column({ length: 64, unique: true })
   username: string;
@@ -15,10 +12,4 @@ export class User {
 
   @Column({ length: 255 })
   password: string;
-
-  @CreateDateColumn()
-  created_at: Date;
-
-  @UpdateDateColumn()
-  updated_at: Date;
 }

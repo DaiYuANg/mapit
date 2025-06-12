@@ -7,7 +7,6 @@ import { CreateDictionaryItemDto } from './dto/create-dictionary_item.dto';
 import { UpdateDictionaryItemDto } from './dto/update-dictionary_item.dto';
 import { Dictionary } from '../dictionary/entities/dictionary.entity';
 import { PaginationDto } from './dto/pagination.dto';
-import { generateId } from '../common/utils/id-generator';
 
 @Injectable()
 export class DictionaryItemService {
@@ -24,7 +23,6 @@ export class DictionaryItemService {
   async create(createDictionaryItemDto: CreateDictionaryItemDto) {
     const dictionaryItem = this.dictionaryItemRepository.create({
       ...createDictionaryItemDto,
-      id: generateId(),
       dictionary: { id: createDictionaryItemDto.dictionaryId },
     });
     const result = await this.dictionaryItemRepository.save(dictionaryItem);

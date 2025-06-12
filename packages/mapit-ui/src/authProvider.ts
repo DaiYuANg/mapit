@@ -1,5 +1,6 @@
 import type { AuthProvider } from '@refinedev/core';
 import { loginApi } from './api/auth';
+import { AxiosError } from 'axios';
 
 export const TOKEN_KEY = 'refine-auth';
 

@@ -1,13 +1,11 @@
 // Project.ts
-import { Entity, PrimaryColumn, Column, OneToMany } from 'typeorm';
+import { Entity, Column, OneToMany } from 'typeorm';
 import { AccessKey } from '../../access_key/entities/access_key.entity';
 import { Dictionary } from '../../dictionary/entities/dictionary.entity';
+import { BaseEntity } from '../../base/base.entity';
 
 @Entity('project')
-export class Project {
-  @PrimaryColumn('bigint', { generated: false })
-  id: string;
-
+export class Project extends BaseEntity{
   @Column({ unique: true })
   name: string;
 
@@ -16,7 +14,4 @@ export class Project {
 
   @OneToMany(() => Dictionary, (dictionary) => dictionary.project)
   dictionaries: Dictionary[];
-
-  @Column({ type: 'date', nullable: true })
-  updated_at: Date;
 }

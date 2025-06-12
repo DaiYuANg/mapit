@@ -9,7 +9,6 @@ import { UpdateDictionaryDto } from './dto/update-dictionary.dto';
 import { NotFoundException } from '@nestjs/common';
 import { Cache } from 'cache-manager';
 import { PaginationDto } from '../dictionary_item/dto/pagination.dto';
-import { generateId } from '../common/utils/id-generator';
 
 @Injectable()
 export class DictionaryService {
@@ -22,7 +21,6 @@ export class DictionaryService {
   async create(createDictionaryDto: CreateDictionaryDto) {
     const dictionary = this.dictionaryRepository.create({
       ...createDictionaryDto,
-      id: generateId(),
       project: { id: createDictionaryDto.projectId },
     });
     return await this.dictionaryRepository.save(dictionary);

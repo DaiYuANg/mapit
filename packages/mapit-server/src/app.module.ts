@@ -2,13 +2,13 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProjectModule } from './project/project.module';
 import { DictionaryModule } from './dictionary/dictionary.module';
 import { DictionaryItemModule } from './dictionary_item/dictionary_item.module';
 import { AccessKeyModule } from './access_key/access_key.module';
-import { CacheModule } from '@nestjs/cache-manager';
-import configuration from './config/configuration';
+import { CacheInterceptor, CacheModule, CacheOptions } from '@nestjs/cache-manager';
+import configuration, { CacheConfig, DatabaseConfig, JwtConfig } from './config/configuration';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { TerminusModule } from '@nestjs/terminus';
@@ -20,12 +20,30 @@ import { AuthModule } from './auth/auth.module';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { HealthController } from './health/health.controller';
 import { HealthModule } from './health/health.module';
-// @ts-expect-error: No type definitions for 'cache-manager-ioredis'
-import * as redisStore from 'cache-manager-ioredis';
-import { DictionaryService } from './dictionary/dictionary.service';
+import { JwtModule } from '@nestjs/jwt';
+import { createKeyv, Keyv } from '@keyv/redis';
+import { CacheableMemory } from 'cacheable';
+import { APP_INTERCEPTOR } from '@nestjs/core';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      load: [configuration],
+    }),
+    JwtModule.registerAsync({
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => {
+        const jwtConfig = configService.get<JwtConfig>('jwt')!;
+        return {
+          secret: jwtConfig.secret,
+          signOptions: {
+            expiresIn: jwtConfig.expiresIn,
+          },
+          secretOrPrivateKey: jwtConfig.secret,
+        };
+      },
+    }),
     AuthModule,
     HealthModule,
     ScheduleModule.forRoot(),
@@ -45,33 +63,41 @@ import { DictionaryService } from './dictionary/dictionary.service';
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '.', 'mapit-ui'),
     }),
-    ConfigModule.forRoot({
+    CacheModule.registerAsync({
       isGlobal: true,
-      load: [configuration],
-    }),
-    CacheModule.register({
-      isGlobal: true,
-      store: redisStore,
-      host: 'localhost',
-      port: 6379,
-      // password: 'yourpassword', // 如有密码可取消注释
-      ttl: 3600, // 默认缓存1小时
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => {
+        const _cache = configService.get<CacheConfig>('cache')!;
+        return {
+          stores: [
+            new Keyv({
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-call
+              store: new CacheableMemory({ ttl: 60000, lruSize: 5000 }),
+            }),
+            createKeyv(`redis://${_cache.host}:${_cache.port}`),
+          ],
+          isGlobal: true,
+        };
+      },
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
-      useFactory: (config: ConfigService) =>
-        ({
-          type: config.get<'mysql' | 'postgres' | 'sqlite' | 'better-sqlite3'>('DB_TYPE', 'better-sqlite3'),
-          host: config.get('DB_HOST', 'localhost'),
-          port: parseInt(config.get('DB_PORT', '3306'), 10),
-          username: config.get('DB_USERNAME', 'root'),
-          password: config.get('DB_PASSWORD', ''),
-          database: config.get('DB_DATABASE', ':memory:'),
+      useFactory: (config: ConfigService) => {
+        const dbConfig = config.get<DatabaseConfig>('database')!;
+        return {
+          type: dbConfig.type,
+          host: dbConfig.host,
+          port: dbConfig.port,
+          username: dbConfig.username,
+          password: dbConfig.password,
+          database: dbConfig.database,
           entities: [__dirname + '/**/*.entity{.ts,.js}'],
-          synchronize: true, // 生产环境建议 false
+          synchronize: true,
           logging: 'all',
           logger: 'simple-console',
-        }) as TypeOrmModuleOptions,
+        };
+      },
       inject: [ConfigService],
     }),
     ProjectModule,
@@ -83,6 +109,12 @@ import { DictionaryService } from './dictionary/dictionary.service';
     HealthModule,
   ],
   controllers: [AppController, HealthController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: CacheInterceptor,
+    },
+  ],
 })
 export class AppModule {}

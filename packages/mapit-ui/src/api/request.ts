@@ -14,7 +14,7 @@ request.interceptors.request.use(
     console.log('=== Request Interceptor Start ===');
     console.log('Request URL:', config.url);
     console.log('Current headers:', config.headers);
-
+    config.headers['Timestamp'] = new Date().getTime();
     const token = localStorage.getItem(TOKEN_KEY);
     console.log('Token from localStorage:', token);
 
@@ -38,7 +38,7 @@ request.interceptors.response.use(
     console.log('Response status:', response.status);
     console.log('Response headers:', response.headers);
     console.log('=== Response Interceptor End ===');
-    return response.data;
+    return response;
   },
   function (error) {
     console.error('Response interceptor error:', error);

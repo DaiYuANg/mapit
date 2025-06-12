@@ -4,8 +4,10 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as compression from 'compression';
 import helmet from 'helmet';
 import { ValidationPipe } from '@nestjs/common';
-import { JwtAuthGuard } from './auth/jwt-auth.guard';
+import { AuthGuard } from './auth/jwt.auth.guard';
 import { Reflector } from '@nestjs/core';
+import { AllExceptionsFilter } from './filter/HttpExceptionFilter';
+import { PaginationInterceptor } from './interceptor/PaginationInterceptor';
 
 const bootstrap = async () => {
   const app = await NestFactory.create(AppModule);
@@ -22,10 +24,10 @@ const bootstrap = async () => {
   app.use(compression());
   app.use(helmet());
   app.useGlobalPipes(new ValidationPipe());
-  // 全局注册 JwtAuthGuard
-  const reflector = app.get(Reflector);
-  app.useGlobalGuards(new JwtAuthGuard(reflector));
+  app.useGlobalInterceptors(new PaginationInterceptor());
+  app.useGlobalFilters(new AllExceptionsFilter());
   await app.listen(process.env.PORT ?? 3000, '0.0.0.0');
+  return app;
 };
 
 void bootstrap().then(() => {

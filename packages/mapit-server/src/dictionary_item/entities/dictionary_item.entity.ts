@@ -1,12 +1,10 @@
 // packages/mapit-server/src/dictionary/entities/dictionary-item.entity.ts
-import { Entity, PrimaryColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { Dictionary } from '../../dictionary/entities/dictionary.entity';
+import { BaseEntity } from '../../base/base.entity';
 
 @Entity('dictionary_item') // 明确指定表名
-export class DictionaryItem {
-  @PrimaryColumn('bigint', { generated: false })
-  id: string;
-
+export class DictionaryItem extends BaseEntity{
   @Column()
   name: string;
 
@@ -25,7 +23,4 @@ export class DictionaryItem {
   @ManyToOne(() => Dictionary, (dictionary) => dictionary.items, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'dictionaryId' })
   dictionary: Dictionary;
-
-  @Column({ type: 'date', nullable: true })
-  updated_at: Date;
 }

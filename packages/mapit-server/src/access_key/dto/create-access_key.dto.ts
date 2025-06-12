@@ -1,5 +1,6 @@
 import { IsString, IsOptional, IsBoolean, IsArray, IsDateString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { Permission } from '../permission';
 
 export class CreateAccessKeyDto {
   @ApiProperty({ description: '项目ID' })
@@ -20,7 +21,7 @@ export class CreateAccessKeyDto {
   @IsOptional()
   @IsArray()
   @IsString({ each: true })
-  permissions?: string[];
+  permissions?: Permission[];
 
   @ApiProperty({ description: '备注' })
   @IsOptional()

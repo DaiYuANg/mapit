@@ -1,11 +1,12 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, MoreThan } from 'typeorm';
+import { MoreThan, Repository } from 'typeorm';
 import { AccessKey } from './entities/access_key.entity';
 import { CreateAccessKeyDto } from './dto/create-access_key.dto';
 import { UpdateAccessKeyDto } from './dto/update-access_key.dto';
 import * as crypto from 'crypto';
-import { generateId } from '../common/utils/id-generator';
+import { Permission } from './permission';
+import { v7 as uuidv7 } from 'uuid';
 
 interface AccessKeyFilters {
   projectId?: string;
@@ -51,21 +52,16 @@ export class AccessKeyService {
   }
 
   async create(createAccessKeyDto: CreateAccessKeyDto) {
-    // 用雪花ID生成唯一 key
-    let key: string;
-    let exists = true;
-    do {
-      key = generateId();
-      exists = !!(await this.accessKeyRepo.findOne({ where: { key } }));
-    } while (exists);
-
     // 生成 secret
     const secret = crypto.randomBytes(24).toString('hex');
 
+    const key = uuidv7();
+
     const entity = this.accessKeyRepo.create({
       ...createAccessKeyDto,
-      key,
+      permissions: [Permission.READ],
       secret,
+      key,
       usage_count: 0,
     });
 
@@ -152,6 +148,15 @@ export class AccessKeyService {
     await this.accessKeyRepo.update(id, {
       usage_count: () => 'usage_count + 1',
       last_used_at: new Date(),
+    });
+  }
+
+  async validateKey(key: string, secret: string) {
+    return this.accessKeyRepo.findOne({
+      where: {
+        key,
+        secret,
+      },
     });
   }
 }

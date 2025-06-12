@@ -3,20 +3,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Project } from './entities/project.entity';
 import { ProjectService } from './project.service';
 import { ProjectController } from './project.controller';
-import { CacheModule } from '@nestjs/cache-manager';
-// @ts-expect-error: No type definitions for 'cache-manager-ioredis'
-import * as redisStore from 'cache-manager-ioredis';
+import { Dictionary } from '../dictionary/entities/dictionary.entity';
+import { DictionaryItem } from '../dictionary_item/entities/dictionary_item.entity';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([Project]),
-    CacheModule.register({
-      store: redisStore,
-      host: '127.0.0.1',
-      port: 6379,
-      ttl: 3600,
-    }),
-  ],
+  imports: [TypeOrmModule.forFeature([Project, Dictionary, DictionaryItem])],
   providers: [ProjectService],
   controllers: [ProjectController],
   exports: [ProjectService], // 如果有需要被其他模块用到

@@ -6,6 +6,8 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
+import { ConfigService } from '@nestjs/config';
+import { JwtConfig, UserConfig } from '../config/configuration';
 
 @Injectable()
 export class UserService {
@@ -13,7 +15,10 @@ export class UserService {
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
     private readonly jwtService: JwtService,
-  ) {}
+    private readonly configService: ConfigService,
+  ) {
+    console.log(jwtService);
+  }
 
   async create(createUserDto: CreateUserDto) {
     const { username, email, password } = createUserDto;
@@ -30,13 +35,13 @@ export class UserService {
     return this.userRepository.find();
   }
 
-  async findOne(id: number) {
+  async findOne(id: string) {
     const user = await this.userRepository.findOne({ where: { id } });
     if (!user) throw new NotFoundException('用户不存在');
     return user;
   }
 
-  async update(id: number, updateUserDto: UpdateUserDto) {
+  async update(id: string, updateUserDto: UpdateUserDto) {
     const user = await this.findOne(id);
     if (updateUserDto.password) {
       updateUserDto.password = await bcrypt.hash(updateUserDto.password, 10);
@@ -45,14 +50,34 @@ export class UserService {
     return this.userRepository.save(user);
   }
 
-  async remove(id: number) {
+  async remove(id: string) {
     const user = await this.findOne(id);
     return this.userRepository.remove(user);
   }
 
   async login(username: string, password: string) {
+    const userConfig = this.configService.get<UserConfig>('user');
+    if (username === userConfig?.defaultUser && password === userConfig?.defaultUserPassword) {
+      return {
+        data: {
+          token: this.jwtService.sign(
+            { sub: 1, username: userConfig.defaultUser },
+            {
+              secret: this.configService.get<JwtConfig>('jwt')?.secret,
+            },
+          ),
+          user: {
+            id: 1,
+            username: userConfig.defaultUser,
+            email: '',
+          },
+        },
+        code: '200',
+        message: '登录成功',
+      };
+    }
     const user = await this.userRepository.findOne({ where: { username } });
-    if (!user) throw new NotFoundException('用户不存在');
+    if (!user) throw new BadRequestException('用户不存在');
     const ok = await bcrypt.compare(password, user.password);
     if (!ok) throw new BadRequestException('密码错误');
     // 生成 token
