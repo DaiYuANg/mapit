@@ -4,7 +4,7 @@ import { Dictionary } from '../../dictionary/entities/dictionary.entity';
 import { BaseEntity } from '../../base/base.entity';
 
 @Entity('dictionary_item') // 明确指定表名
-export class DictionaryItem extends BaseEntity{
+export class DictionaryItem extends BaseEntity {
   @Column()
   name: string;
 

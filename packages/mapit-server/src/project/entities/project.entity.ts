@@ -5,7 +5,7 @@ import { Dictionary } from '../../dictionary/entities/dictionary.entity';
 import { BaseEntity } from '../../base/base.entity';
 
 @Entity('project')
-export class Project extends BaseEntity{
+export class Project extends BaseEntity {
   @Column({ unique: true })
   name: string;
 

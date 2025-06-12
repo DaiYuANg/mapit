@@ -2,8 +2,7 @@ import { Entity, Column, CreateDateColumn, UpdateDateColumn, PrimaryGeneratedCol
 import { BaseEntity } from '../../base/base.entity';
 
 @Entity({ name: 'user', schema: 'public' })
-export class User extends BaseEntity{
-
+export class User extends BaseEntity {
   @Column({ length: 64, unique: true })
   username: string;
 
