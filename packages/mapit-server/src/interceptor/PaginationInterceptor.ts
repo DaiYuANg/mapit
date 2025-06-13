@@ -9,7 +9,6 @@ interface PaginatedResponse<T = any> {
 export class PaginationInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const res: Response = context.switchToHttp().getResponse();
-
     return next.handle().pipe(
       map((result: unknown) => {
         // 用类型保护断言 result 是 PaginatedResponse

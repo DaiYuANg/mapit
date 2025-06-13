@@ -7,7 +7,7 @@ import { ProjectModule } from './project/project.module';
 import { DictionaryModule } from './dictionary/dictionary.module';
 import { DictionaryItemModule } from './dictionary_item/dictionary_item.module';
 import { AccessKeyModule } from './access_key/access_key.module';
-import { CacheInterceptor, CacheModule, CacheOptions } from '@nestjs/cache-manager';
+import { CacheModule } from '@nestjs/cache-manager';
 import configuration, { CacheConfig, DatabaseConfig, JwtConfig } from './config/configuration';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
@@ -23,7 +23,10 @@ import { HealthModule } from './health/health.module';
 import { JwtModule } from '@nestjs/jwt';
 import { createKeyv, Keyv } from '@keyv/redis';
 import { CacheableMemory } from 'cacheable';
-import { APP_INTERCEPTOR } from '@nestjs/core';
+import { AccessKey } from './access_key/entities/access_key.entity';
+import { Project } from './project/entities/project.entity';
+import { Dictionary } from './dictionary/entities/dictionary.entity';
+import { DictionaryItem } from './dictionary_item/entities/dictionary_item.entity';
 
 @Module({
   imports: [
@@ -72,7 +75,6 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
         return {
           stores: [
             new Keyv({
-              // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-call
               store: new CacheableMemory({ ttl: 60000, lruSize: 5000 }),
             }),
             createKeyv(`redis://${_cache.host}:${_cache.port}`),
@@ -107,14 +109,15 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
     UserModule,
     AuthModule,
     HealthModule,
+    TypeOrmModule.forFeature([AccessKey, Project, Dictionary, DictionaryItem]),
   ],
   controllers: [AppController, HealthController],
   providers: [
     AppService,
-    {
-      provide: APP_INTERCEPTOR,
-      useClass: CacheInterceptor,
-    },
+    // {
+    //   provide: APP_INTERCEPTOR,
+    //   useClass: CacheInterceptor,
+    // },
   ],
 })
 export class AppModule {}

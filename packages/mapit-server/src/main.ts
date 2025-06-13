@@ -4,8 +4,6 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as compression from 'compression';
 import helmet from 'helmet';
 import { ValidationPipe } from '@nestjs/common';
-import { AuthGuard } from './auth/jwt.auth.guard';
-import { Reflector } from '@nestjs/core';
 import { AllExceptionsFilter } from './filter/HttpExceptionFilter';
 import { PaginationInterceptor } from './interceptor/PaginationInterceptor';
 
