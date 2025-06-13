@@ -2,7 +2,7 @@ services:
   server:
     image: mapit-server:latest
     ports:
-      - "3000:3000"
+      - '3000:3000'
     environment:
       - DATABASE_HOST=mysql
       - DATABASE_PORT=3306
@@ -25,7 +25,7 @@ services:
   mysql:
     image: mysql:latest
     ports:
-      - "3306"
+      - '3306'
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=mapit
