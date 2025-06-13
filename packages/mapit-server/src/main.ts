@@ -1,11 +1,11 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import * as compression from 'compression';
 import helmet from 'helmet';
 import { ValidationPipe } from '@nestjs/common';
 import { AllExceptionsFilter } from './filter/HttpExceptionFilter';
 import { PaginationInterceptor } from './interceptor/PaginationInterceptor';
+import compression from 'compression';
 
 const bootstrap = async () => {
   const app = await NestFactory.create(AppModule);

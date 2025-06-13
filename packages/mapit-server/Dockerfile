@@ -1,43 +1,104 @@
-# ---- 构建阶段 ----
-FROM node:22-alpine AS builder
+## Use the official Node.js image as the base image
+#FROM node:22-alpine AS builder
+#
+#ENV NODE_ENV production
+## Set the working directory inside the container
+#WORKDIR /usr/src/app
+#
+#RUN npm config set registry https://registry.npmmirror.com
+#
+#RUN npm install -g pnpm
+## Copy package.json and package-lock.json to the working directory
+#COPY package.json ./
+#
+## Install the application dependencies
+#RUN pnpm install
+#
+## Copy the rest of the application files
+#COPY . .
+#
+## Build the NestJS application
+#RUN pnpm run build
+#
+#FROM node:22-alpine AS runner
+#
+#ENV NODE_ENV production
+#
+#WORKDIR /app
+#
+## 只复制构建结果
+#COPY --from=builder /usr/src/app/dist ./dist
+#COPY --from=builder /usr/src/app/package.json ./package.json
+#COPY --from=builder /usr/src/app/node_modules ./node_modules
+#
+#CMD ["node", "dist/main.js"]
+###################
+# DEVELOPMENT STAGE (for caching dependencies)
+###################
+FROM node:22-alpine as development
 
-WORKDIR /repo
+# 使用 corepack 管理 pnpm
+RUN corepack enable && corepack prepare pnpm@9.10.0 --activate
 
-# 安装 pnpm
-RUN npm install -g pnpm
+WORKDIR /usr/src/app
 
-# 拷贝根配置
-COPY pnpm-workspace.yaml ./
-COPY pnpm-lock.yaml ./
-COPY package.json ./
+# 只复制锁文件用于缓存依赖
+COPY --chown=node:node package.json ./
 
-# 拷贝 monorepo 中所有 packages
-COPY packages ./packages
+# 使用 fetch 提前缓存依赖
+RUN pnpm fetch --prod
+
+# 复制完整源码
+COPY --chown=node:node . .
 
 # 安装所有依赖（包含 dev）
-RUN pnpm install --frozen-lockfile
+RUN pnpm install
 
-# 构建 mapit-server
-WORKDIR /repo/packages/mapit-server
+USER node
+
+
+###################
+# BUILD STAGE
+###################
+FROM node:22-alpine as build
+
+RUN corepack enable && corepack prepare pnpm@9.10.0 --activate
+
+WORKDIR /usr/src/app
+
+# 拷贝依赖缓存（注意要与 fetch 产物相匹配）
+COPY --chown=node:node package.json ./
+COPY --chown=node:node --from=development /usr/src/app/node_modules ./node_modules
+
+# 复制全部源码
+COPY --chown=node:node . .
+
+# 构建项目
 RUN pnpm build:tsup
 
-# ---- 生产阶段 ----
-FROM node:22-alpine AS runtime
+# 设置生产环境变量
+ENV NODE_ENV=production
+
+# 安装生产依赖，确保只包含必要内容
+RUN pnpm install --prod
+
+USER node
+
+
+###################
+# PRODUCTION STAGE
+###################
+FROM node:22-alpine as production
 
 WORKDIR /app
 
-# 安装 pnpm（或选择复制 .output 的 node_modules，但更推荐这样干净）
-RUN npm install -g pnpm
+# 使用 node 用户
+USER node
 
-# 只复制根 package 和目标包的依赖描述
-COPY package.json pnpm-lock.yaml ./
-COPY packages/mapit-server/package.json ./packages/mapit-server/
+# 拷贝运行时依赖
+COPY --chown=node:node --from=build /usr/src/app/node_modules ./node_modules
+COPY --chown=node:node --from=build /usr/src/app/package.json ./
+COPY --chown=node:node --from=build /usr/src/app/dist ./dist
 
-# 安装生产依赖
-RUN pnpm install --prod --frozen-lockfile
-
-# 复制构建产物
-COPY --from=builder /repo/packages/mapit-server/dist ./dist
-
-# 设置入口（根据你的 nest 项目入口）
-CMD ["node", "dist/main.js"]
+# 设置入口
+CMD [ "node", "dist/main.js" ]

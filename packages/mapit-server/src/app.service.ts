@@ -1,5 +1,4 @@
-import { Injectable } from '@nestjs/common';
-import { AccessKeyService } from './access_key/access_key.service';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { Dictionary } from './dictionary/entities/dictionary.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -7,8 +6,9 @@ import { Project } from './project/entities/project.entity';
 
 @Injectable()
 export class AppService {
+  private readonly logger = new Logger(AppService.name, { timestamp: true });
+
   constructor(
-    private readonly accessKeyService: AccessKeyService,
     @InjectRepository(Dictionary)
     private readonly dictionaryRepository: Repository<Dictionary>,
     @InjectRepository(Project)
@@ -22,11 +22,11 @@ export class AppService {
       },
     });
     if (!project) {
-      throw new Error('project not found');
+      throw new NotFoundException('project not found');
     }
-    console.log(project);
+    this.logger.log(project);
 
-    console.log(dictionaryCode);
+    this.logger.log(dictionaryCode);
     const dict = await this.dictionaryRepository.findOne({
       where: {
         code: dictionaryCode,
@@ -36,7 +36,7 @@ export class AppService {
     });
 
     if (!dict) {
-      throw new Error('dictionary not found');
+      throw new NotFoundException('dictionary not found');
     }
 
     return dict.items.find((item) => item.code === itemValue)?.name;

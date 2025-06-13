@@ -1,4 +1,4 @@
-// base.entity.ts
+// base.table.option.ts
 import {
   PrimaryGeneratedColumn,
   CreateDateColumn,

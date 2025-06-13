@@ -40,7 +40,6 @@
     "axios": "^1.9.0",
     "bcrypt": "^6.0.0",
     "bcryptjs": "^3.0.2",
-    "better-sqlite3": "^11.10.0",
     "cache-manager": "^6.4.3",
     "cacheable": "^1.10.0",
     "class-transformer": "^0.5.1",

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Card, Row, Col, Typography, Space, Button, Popconfirm, Modal, Pagination } from 'antd';
+import { Card, Row, Col, Typography, Space, Button, Popconfirm, Modal, Pagination, Spin } from 'antd';
 import { DictionaryList } from './components/dictionary';
 import { DictionaryItemList } from './components/dictionary-item';
 import './dashboard-animate.css';
@@ -10,13 +10,16 @@ import {
   KeyOutlined,
   ExportOutlined,
   SyncOutlined,
+  ImportOutlined,
 } from '@ant-design/icons';
 import { message } from 'antd';
 import Draggable from 'react-draggable';
-import { useDelete, useCreate, useList, useCustomMutation } from '@refinedev/core';
+import { useDelete, useCreate, useList, useCustom } from '@refinedev/core';
 import { ProjectCreateForm } from './components/project/create';
 import { ProjectEdit } from './components/project/edit';
 import { KeyModal } from './components/KeyModal';
+import { useModal } from '@refinedev/antd';
+import { ExportModal } from './ExportModal';
 
 export interface Project {
   id: string;
@@ -31,13 +34,17 @@ export const DictionaryView: React.FC = () => {
   const [currentProject, setCurrentProject] = useState<Project | null>(null);
   const [page, setPage] = useState(1);
   const pageSize = 20;
-  const { mutate, isLoading, error } = useCustomMutation({});
-
+  const { show, close, modalProps } = useModal({
+    modalProps: {
+      onCancel() {
+        close();
+      },
+    },
+  });
   const { mutate: deleteProject } = useDelete();
   const [createModalVisible, setCreateModalVisible] = useState(false);
   const { mutate: createProject, isLoading: createLoading } = useCreate();
   const { data, refetch } = useList<Project>({ resource: 'project' });
-  console.log(data);
   const projects: Project[] = data?.data ?? [];
   const total = projects.length;
   const pagedProjects = projects.slice((page - 1) * pageSize, page * pageSize);
@@ -49,15 +56,15 @@ export const DictionaryView: React.FC = () => {
         id,
       },
       {
-        onSuccess: () => {
+        onSuccess: async () => {
           message.success('删除成功');
-          refetch();
+          await refetch();
           if (selectedProjectId === id) {
             setSelectedProjectId(null);
             setSelectedDictionaryId(null);
           }
         },
-        onError: () => {
+        onError: async () => {
           message.error('删除失败');
         },
       },
@@ -144,23 +151,24 @@ export const DictionaryView: React.FC = () => {
                   {project.description || '暂无描述'}
                 </Typography.Paragraph>
               </Space>
-              <Space direction={'horizontal'}>
+              <Space direction={'horizontal'} wrap>
                 <Button
                   size="small"
+                  color={'green'}
                   onClick={(e) => {
                     e.stopPropagation();
-                    mutate({
-                      url: `/project/${project.id}/export-dictionaries`, // 动态拼接 URL
-                      method: 'post',
-                      values: {},
-                    });
+                    setSelectedProjectId(project.id);
+                    show();
                   }}
                   type="text"
                   icon={<ExportOutlined />}
                 >
                   Export
                 </Button>
-                <Button size="small" type="text" icon={<SyncOutlined />}>
+                <Button size="small" type="text" icon={<ImportOutlined />} color={'cyan'}>
+                  Import
+                </Button>
+                <Button size="small" type="text" icon={<SyncOutlined />} color={'cyan'}>
                   Sync
                 </Button>
               </Space>
@@ -249,10 +257,10 @@ export const DictionaryView: React.FC = () => {
             createProject(
               { resource: 'project', values },
               {
-                onSuccess: () => {
+                onSuccess: async () => {
                   message.success('创建成功');
                   setCreateModalVisible(false);
-                  refetch();
+                  await refetch();
                 },
               },
             );
@@ -270,14 +278,15 @@ export const DictionaryView: React.FC = () => {
         {editProject && (
           <ProjectEdit
             project={editProject}
-            onSuccess={() => {
+            onSuccess={async () => {
               setEditModalVisible(false);
-              refetch();
+              await refetch();
             }}
             onCancel={() => setEditModalVisible(false)}
           />
         )}
       </Modal>
+      {selectedProjectId && <ExportModal {...modalProps} projectId={selectedProjectId} onClose={close} />}
       <KeyModal
         visible={keyModal.visible}
         projectId={keyModal.projectId}

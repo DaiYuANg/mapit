@@ -1,7 +1,8 @@
 import { Entity, Column, CreateDateColumn, UpdateDateColumn, PrimaryGeneratedColumn } from 'typeorm';
 import { BaseEntity } from '../../base/base.entity';
+import { TableNaming } from '../../constant/table';
 
-@Entity({ name: 'user', schema: 'public' })
+@Entity({ name: TableNaming.USER, schema: 'public' })
 export class User extends BaseEntity {
   @Column({ length: 64, unique: true })
   username: string;

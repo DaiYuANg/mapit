@@ -24,8 +24,8 @@ export class AccessKeyGuard implements CanActivate {
     //   throw new UnauthorizedException('缺少 JWT token');
     // }
     //
-    // const [type, token] = authHeader.split(' ');
-    // if (type !== 'Bearer') {
+    // const [http, token] = authHeader.split(' ');
+    // if (http !== 'Bearer') {
     //   throw new UnauthorizedException('无效的 token 类型');
     // }
     //

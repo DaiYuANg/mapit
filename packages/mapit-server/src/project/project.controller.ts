@@ -31,10 +31,9 @@ export class ProjectController {
 
   @ApiBearerAuth()
   @ApiOperation({ summary: '获取单个项目' })
-  @Get('detail/:id')
-  async findOne(@Param('id') id: string): Promise<{ data: Project }> {
-    const data = await this.projectService.findOne(id);
-    return { data };
+  @Get(':id')
+  async findOne(@Param('id') id: string) {
+    return await this.projectService.findOne(id);
   }
 
   @ApiBearerAuth()

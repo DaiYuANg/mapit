@@ -1,3 +1,7 @@
-const ACCESS_KEY_HEADER = 'X-Access-Key';
+enum AccessHeader {
+  AccessKey = 'X-Access-Key',
+  AccessSecret = 'X-Access-Secret',
+  ProjectId = 'X-Project-Id',
+}
 
-export { ACCESS_KEY_HEADER };
+export { AccessHeader };

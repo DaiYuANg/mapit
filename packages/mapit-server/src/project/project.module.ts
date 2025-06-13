@@ -10,6 +10,6 @@ import { DictionaryItem } from '../dictionary_item/entities/dictionary_item.enti
   imports: [TypeOrmModule.forFeature([Project, Dictionary, DictionaryItem])],
   providers: [ProjectService],
   controllers: [ProjectController],
-  exports: [ProjectService], // 如果有需要被其他模块用到
+  exports: [ProjectService],
 })
 export class ProjectModule {}

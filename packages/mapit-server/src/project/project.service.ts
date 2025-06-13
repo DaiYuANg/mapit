@@ -82,15 +82,13 @@ export class ProjectService {
 
     // 构造导出数据结构
     return {
-      projectId: project.id,
       projectName: project.name,
+      projectDescription: project.description,
       dictionaries: project.dictionaries.map((dict) => ({
-        id: dict.id,
         name: dict.name,
         code: dict.code,
         description: dict.description,
         items: dict.items.map((item) => ({
-          id: item.id,
           name: item.name,
           code: item.code,
           description: item.description,

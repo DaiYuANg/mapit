@@ -1,7 +1,7 @@
 import { randomBytes } from 'node:crypto';
 
 export interface DatabaseConfig {
-  type: 'mysql' | 'postgres' | 'sqlite' | 'better-sqlite3';
+  type: 'mysql' | 'postgres';
   host: string;
   port: number;
   username: string;

@@ -2,8 +2,9 @@ import { Entity, PrimaryColumn, Column, OneToMany, ManyToOne, JoinColumn } from 
 import { DictionaryItem } from '../../dictionary_item/entities/dictionary_item.entity';
 import { Project } from '../../project/entities/project.entity';
 import { BaseEntity } from '../../base/base.entity';
+import { TableNaming } from '../../constant/table';
 
-@Entity('dictionary') // 明确指定表名
+@Entity(TableNaming.DICTIONARY) // 明确指定表名
 export class Dictionary extends BaseEntity {
   @Column()
   name: string;

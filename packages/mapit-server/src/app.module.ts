@@ -27,6 +27,7 @@ import { AccessKey } from './access_key/entities/access_key.entity';
 import { Project } from './project/entities/project.entity';
 import { Dictionary } from './dictionary/entities/dictionary.entity';
 import { DictionaryItem } from './dictionary_item/entities/dictionary_item.entity';
+import { InitDatabase1749804669929 } from './migration/init.database';
 
 @Module({
   imports: [
@@ -95,8 +96,12 @@ import { DictionaryItem } from './dictionary_item/entities/dictionary_item.entit
           password: dbConfig.password,
           database: dbConfig.database,
           entities: [__dirname + '/**/*.entity{.ts,.js}'],
-          synchronize: true,
+          // synchronize: process.env.MODE === 'development',
+          synchronize: false,
           logging: 'all',
+          migrations: [InitDatabase1749804669929],
+          migrationsRun: true,
+          migrationsTableName: 'mapit_migration',
           logger: 'simple-console',
         };
       },

@@ -18,6 +18,7 @@
     "deploy:ui": "pnpm --filter=@mapit/ui deploy dist/ui",
     "clean:deploy": "rimraf dist && concurrently \"pnpm deploy:server\" \"pnpm deploy:ui\"",
     "format": "prettier . --write",
+    "clean": "rimraf ./packages/*/node_modules",
     "prepare": "husky"
   },
   "packageManager": "pnpm@9.10.0"

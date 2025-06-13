@@ -3,8 +3,9 @@ import { Project } from 'src/project/entities/project.entity';
 import { Entity, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
 import { Permission } from '../permission';
 import { BaseEntity } from '../../base/base.entity';
+import { TableNaming } from '../../constant/table';
 
-@Entity('access_key')
+@Entity(TableNaming.ACCESS_KEY)
 export class AccessKey extends BaseEntity {
   @Column({ default: true })
   active: boolean;

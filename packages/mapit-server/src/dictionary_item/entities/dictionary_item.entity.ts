@@ -2,8 +2,9 @@
 import { Entity, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { Dictionary } from '../../dictionary/entities/dictionary.entity';
 import { BaseEntity } from '../../base/base.entity';
+import { TableNaming } from '../../constant/table';
 
-@Entity('dictionary_item') // 明确指定表名
+@Entity(TableNaming.DICTIONARY_ITEM) // 明确指定表名
 export class DictionaryItem extends BaseEntity {
   @Column()
   name: string;
