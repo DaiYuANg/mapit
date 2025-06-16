@@ -1,7 +1,7 @@
 import { Edit, useForm } from '@refinedev/antd';
 import { Form, Input } from 'antd';
-import React from 'react';
-import type { Project } from '../../index';
+import { FC } from 'react';
+import { Project } from '../../type';
 
 interface ProjectEditProps {
   project: Project;
@@ -9,7 +9,7 @@ interface ProjectEditProps {
   onCancel: () => void;
 }
 
-export const ProjectEdit: React.FC<ProjectEditProps> = ({ project, onSuccess, onCancel }) => {
+export const ProjectEdit: FC<ProjectEditProps> = ({ project, onSuccess, onCancel }) => {
   const { formProps, saveButtonProps, formLoading } = useForm({
     resource: 'project',
     id: project.id,

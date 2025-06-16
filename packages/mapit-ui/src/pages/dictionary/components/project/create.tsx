@@ -7,9 +7,7 @@ export const ProjectCreateForm: React.FC<{
   onCancel?: () => void;
   loading?: boolean;
 }> = ({ onFinish, onCancel, loading }) => {
-  const { formProps, saveButtonProps } = useForm({
-
-  });
+  const { formProps, saveButtonProps } = useForm({});
 
   return (
     <Form {...formProps} layout="vertical" onFinish={onFinish}>
