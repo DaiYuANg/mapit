@@ -26,7 +26,7 @@ export class AccessKeyService {
       where: {
         key,
         active: true,
-        expires_at: MoreThan(new Date()),
+        expiresAt: MoreThan(new Date()),
       },
     });
     return !!found;
@@ -37,7 +37,7 @@ export class AccessKeyService {
       where: {
         key,
         active: true,
-        expires_at: MoreThan(new Date()),
+        expiresAt: MoreThan(new Date()),
       },
     });
 
@@ -62,7 +62,7 @@ export class AccessKeyService {
       permissions: [Permission.READ],
       secret,
       key,
-      usage_count: 0,
+      usageCount: 0,
     });
 
     return this.accessKeyRepo.save(entity);
@@ -140,14 +140,14 @@ export class AccessKeyService {
 
   async renew(id: number, days: number) {
     const accessKey = await this.findOne(id);
-    accessKey.expires_at = new Date(Date.now() + days * 24 * 60 * 60 * 1000);
+    accessKey.expiresAt = new Date(Date.now() + days * 24 * 60 * 60 * 1000);
     return this.accessKeyRepo.save(accessKey);
   }
 
   async updateUsage(id: string): Promise<void> {
     await this.accessKeyRepo.update(id, {
-      usage_count: () => 'usage_count + 1',
-      last_used_at: new Date(),
+      usageCount: () => 'usage_count + 1',
+      lastUsedAt: new Date(),
     });
   }
 

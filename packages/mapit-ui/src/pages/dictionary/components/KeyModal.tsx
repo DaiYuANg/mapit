@@ -39,7 +39,7 @@ export const KeyModal: React.FC<KeyModalProps> = ({ visible, projectId, onClose 
     deleteKey(
       { resource: 'access-key', id },
       {
-        onSuccess: () => {
+        onSuccess: async () => {
           message.success('删除成功');
           refetch();
         },
@@ -47,7 +47,7 @@ export const KeyModal: React.FC<KeyModalProps> = ({ visible, projectId, onClose 
     );
   };
 
-  const handleCopy = (key: string) => {
+  const handleCopy = async (key: string) => {
     navigator.clipboard.writeText(key);
     message.success('已复制密钥');
   };
@@ -82,7 +82,7 @@ export const KeyModal: React.FC<KeyModalProps> = ({ visible, projectId, onClose 
           },
           {
             title: '创建时间',
-            dataIndex: 'created_at',
+            dataIndex: 'createdAt',
             render: (text: string) => (text ? new Date(text).toLocaleString() : '-'),
           },
           {

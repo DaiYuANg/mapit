@@ -19,6 +19,7 @@
     "clean:deploy": "rimraf dist && concurrently \"pnpm deploy:server\" \"pnpm deploy:ui\"",
     "format": "prettier . --write",
     "clean": "rimraf ./packages/*/node_modules",
+    "build:server:docker": "docker build ./packages/mapit-server -t mapit-server",
     "prepare": "husky"
   },
   "packageManager": "pnpm@9.10.0"

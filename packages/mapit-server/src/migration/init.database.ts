@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner, Table } from 'typeorm';
+import { MigrationInterface, QueryRunner, Table, TableIndex } from 'typeorm';
 import { TableNaming } from '../constant/table';
 import { baseTableOptions } from './base.table.option';
 
@@ -73,6 +73,13 @@ class InitDatabase1749804669929 implements MigrationInterface {
       }),
       true,
     );
+    await queryRunner.createIndex(
+      TableNaming.PROJECT,
+      new TableIndex({
+        name: 'IDX_PROJECT_TYPE',
+        columnNames: ['projectType'],
+      }),
+    );
   }
 
   private async createDictionaryItem(queryRunner: QueryRunner) {
@@ -105,6 +112,11 @@ class InitDatabase1749804669929 implements MigrationInterface {
             name: 'dictionaryId',
             type: 'varchar',
             isNullable: false,
+          },
+          {
+            name: 'extra',
+            type: queryRunner.connection.driver.options.type === 'postgres' ? 'jsonb' : 'json',
+            isNullable: true,
           },
         ],
       }),
@@ -139,7 +151,7 @@ class InitDatabase1749804669929 implements MigrationInterface {
             isNullable: true,
           },
           {
-            name: 'expires_at',
+            name: 'expiresAt',
             type: 'timestamp',
             isNullable: true,
           },
@@ -149,12 +161,12 @@ class InitDatabase1749804669929 implements MigrationInterface {
             isNullable: false,
           },
           {
-            name: 'usage_count',
+            name: 'usageCount',
             type: 'int',
             default: 0,
           },
           {
-            name: 'last_used_at',
+            name: 'lastUsedAt',
             type: 'timestamp',
             isNullable: true,
           },
@@ -173,7 +185,6 @@ class InitDatabase1749804669929 implements MigrationInterface {
     await queryRunner.createTable(
       new Table({
         name: 'user',
-        schema: 'public',
         columns: [
           ...baseTableOptions,
           {

@@ -16,9 +16,7 @@ export class UserService {
     private readonly userRepository: Repository<User>,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
-  ) {
-    console.log(jwtService);
-  }
+  ) {}
 
   async create(createUserDto: CreateUserDto) {
     const { username, email, password } = createUserDto;
@@ -31,7 +29,7 @@ export class UserService {
     return this.userRepository.save(user);
   }
 
-  findAll() {
+  async findAll() {
     return this.userRepository.find();
   }
 

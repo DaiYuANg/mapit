@@ -4,13 +4,14 @@ const baseTableOptions: Array<TableColumnOptions> = [
   {
     type: 'varchar',
     isPrimary: true,
-    generationStrategy: 'uuid',
     name: 'id',
+    isNullable: false,
   },
   {
     type: 'timestamp',
     name: 'createdAt',
     isNullable: false,
+    default: 'CURRENT_TIMESTAMP',
   },
   {
     type: 'timestamp',

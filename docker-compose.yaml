@@ -1,4 +1,17 @@
 services:
+
+  gateway:
+    image: traefik
+    command:
+      - --api.dashboard=true
+      - --providers.docker=true
+      - --entrypoints.web.address=:80
+    ports:
+      - "18888:80"
+      - "8080:8080"  # Dashboard
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
   server:
     image: mapit-server:latest
     ports:
@@ -11,16 +24,35 @@ services:
       - DATABASE_DATABASE=mapit
       - DATABASE_NAME=mapit
       - DATABASE_TYPE=mysql
-      - JWT_SECRET=secretxxxxx
+      - JWT_SECRET=M9qdl4P1gKzRMXUu6NpewYOmfw5qNZUetCevYX7SWBQ=
       - CACHE_STORE=redis
       - CACHE_HOST=redis
       - CACHE_PORT=6379
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.mapit-server.rule=PathPrefix(`/api`)
+      - traefik.http.routers.mapit-server.entrypoints=web
+      - traefik.http.services.mapit-server.loadbalancer.server.port=3000
+      - traefik.http.middlewares.strip-api.stripprefix.prefixes=/
+      - traefik.http.routers.mapit-server.middlewares=strip-api
     depends_on:
       - mysql
       - redis
 
+  ui:
+    image: mapit-ui:latest
+    ports:
+      - '80:80'
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.mapit-ui.rule=PathPrefix(`/`)
+      - traefik.http.routers.mapit-ui.entrypoints=web
+      - traefik.http.services.mapit-ui.loadbalancer.server.port=80
+
   redis:
     image: redis
+    labels:
+      - traefik.enable=false
 
   mysql:
     image: mysql:latest
@@ -32,3 +64,5 @@ services:
       - MYSQL_PASSWORD=mapit
       - MYSQL_USER=mapit
       - MYSQL_ROOT_HOST=0.0.0.0
+    labels:
+      - traefik.enable=false

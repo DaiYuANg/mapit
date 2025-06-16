@@ -74,7 +74,7 @@ COPY --chown=node:node --from=development /usr/src/app/node_modules ./node_modul
 COPY --chown=node:node . .
 
 # 构建项目
-RUN pnpm build:tsup
+RUN pnpm build
 
 # 设置生产环境变量
 ENV NODE_ENV=production
@@ -88,7 +88,7 @@ USER node
 ###################
 # PRODUCTION STAGE
 ###################
-FROM node:22-alpine as production
+FROM node:slim as production
 
 WORKDIR /app
 

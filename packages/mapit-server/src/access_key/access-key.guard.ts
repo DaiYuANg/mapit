@@ -86,7 +86,7 @@ export class AccessKeyGuard implements CanActivate {
       throw new UnauthorizedException('AccessKey is inactive');
     }
 
-    if (keyRecord.expires_at && new Date() > new Date(keyRecord.expires_at)) {
+    if (keyRecord.expiresAt && new Date() > new Date(keyRecord.expiresAt)) {
       throw new UnauthorizedException('AccessKey expired');
     }
 

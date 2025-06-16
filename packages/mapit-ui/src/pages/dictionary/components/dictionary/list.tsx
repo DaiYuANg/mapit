@@ -63,7 +63,7 @@ export const DictionaryList: React.FC<DictionaryListProps> = ({ projectId, onDic
         })}
       >
         <Table.Column dataIndex="name" title="名称" width={120} />
-        {/*<Table.Column dataIndex="code" title="编码" width={120} />*/}
+        <Table.Column dataIndex="code" title="编码" width={120} />
         <Table.Column dataIndex="description" title="描述" width={80} />
         <Table.Column
           width={120}
@@ -102,7 +102,7 @@ export const DictionaryList: React.FC<DictionaryListProps> = ({ projectId, onDic
         destroyOnHidden
       >
         <DictionaryCreate
-          onSuccess={() => {
+          onSuccess={async () => {
             setCreateModalVisible(false);
             // 这里可以加刷新逻辑，比如 refetch table 数据
             tableQueryResult?.refetch();
@@ -114,7 +114,7 @@ export const DictionaryList: React.FC<DictionaryListProps> = ({ projectId, onDic
         {editDictionaryId && (
           <DictionaryEdit
             id={editDictionaryId}
-            onSuccess={() => {
+            onSuccess={async () => {
               setEditDictionaryId(null);
               tableQueryResult?.refetch();
             }}

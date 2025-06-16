@@ -4,7 +4,7 @@ import { RefineKbar, RefineKbarProvider } from '@refinedev/kbar';
 import '../i18n';
 import { ErrorComponent, ThemedLayoutV2, ThemedSiderV2, useNotificationProvider } from '@refinedev/antd';
 import '@refinedev/antd/dist/reset.css';
-import { i18nProvider } from './i18nProvider';
+import { i18nProvider } from './provider/i18nProvider';
 import { App as AntdApp } from 'antd';
 import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom';
 import routerBindings, {
@@ -19,7 +19,7 @@ import { Header } from './components';
 import { Login } from './pages/login';
 import { Register } from './pages/register';
 import { ForgotPassword } from './pages/forgotPassword';
-import { authProvider } from './authProvider';
+import { authProvider } from './provider/authProvider';
 import { DictionaryView } from './pages/dictionary';
 import { BookOutlined, DashboardOutlined } from '@ant-design/icons';
 import dataProvider from '@refinedev/simple-rest';

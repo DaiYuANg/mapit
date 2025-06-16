@@ -1,4 +1,4 @@
-import i18n from '../i18n';
+import i18n from '../../i18n';
 
 export const i18nProvider = {
   translate: (key: string, params?: any) => String(i18n.t(key, params)),

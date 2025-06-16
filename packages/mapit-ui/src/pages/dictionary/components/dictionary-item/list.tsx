@@ -8,7 +8,7 @@ import { DictionaryItemShow } from './show';
 
 interface DictionaryItemListProps {
   projectId: string;
-  selectedDictionaryId: string | null;
+  selectedDictionaryId: string;
 }
 
 export const DictionaryItemList: React.FC<DictionaryItemListProps> = ({ projectId, selectedDictionaryId }) => {
@@ -50,6 +50,7 @@ export const DictionaryItemList: React.FC<DictionaryItemListProps> = ({ projectI
     <List title={'字典项列表'} headerButtons={<CreateButton onClick={() => setCreateModalVisible(true)} />}>
       <Table {...tableProps} rowKey="id" scroll={{ y: 300 }} size="small">
         <Table.Column dataIndex="name" title="名称" width={120} />
+        <Table.Column dataIndex="code" title="编码" width={120} />
         <Table.Column dataIndex="description" title="描述" width={80} />
         <Table.Column
           width={120}
@@ -73,7 +74,7 @@ export const DictionaryItemList: React.FC<DictionaryItemListProps> = ({ projectI
       <Modal open={createModalVisible} onCancel={() => setCreateModalVisible(false)} footer={null} destroyOnClose>
         <DictionaryItemCreate
           selectedDictionaryId={selectedDictionaryId}
-          onSuccess={() => {
+          onSuccess={async () => {
             setCreateModalVisible(false);
             tableQueryResult?.refetch();
           }}

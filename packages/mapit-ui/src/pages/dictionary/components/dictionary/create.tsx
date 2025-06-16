@@ -1,23 +1,26 @@
 import { Create, useForm, useSelect } from '@refinedev/antd';
 import { Form, Input, Select } from 'antd';
 import React from 'react';
+import { useProject } from '../../../../contexts/useProject';
+
 interface DictionaryCreateProps {
   onSuccess?: () => void;
   onCancel?: () => void;
 }
+
 export const DictionaryCreate: React.FC<DictionaryCreateProps> = ({ onSuccess, onCancel }) => {
+  const { projectId } = useProject();
+
   const { formProps, saveButtonProps } = useForm({
     resource: 'dictionary',
     onMutationSuccess: () => {
       onSuccess?.();
     },
+    defaultFormValues: {
+      projectId: projectId ? projectId : '',
+    },
   });
-  const { selectProps: projectSelectProps } = useSelect({
-    resource: 'project',
-    optionLabel: 'name',
-    optionValue: 'id',
-  });
-  console.log('projectSelectProps.options', projectSelectProps.options);
+
   return (
     <Create saveButtonProps={saveButtonProps}>
       <Form {...formProps} layout="vertical">
@@ -30,8 +33,8 @@ export const DictionaryCreate: React.FC<DictionaryCreateProps> = ({ onSuccess, o
         <Form.Item label="描述" name="description" rules={[{ required: true, message: '请输入描述' }]}>
           <Input />
         </Form.Item>
-        <Form.Item label="所属项目" name="projectId" rules={[{ required: true, message: '请选择项目' }]}>
-          <Select {...projectSelectProps} />
+        <Form.Item name="projectId" hidden>
+          <Input type="hidden" />
         </Form.Item>
       </Form>
     </Create>

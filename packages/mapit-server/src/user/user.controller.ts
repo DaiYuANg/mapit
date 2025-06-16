@@ -27,25 +27,25 @@ export class UserController {
 
   @ApiOperation({ summary: '获取所有用户' })
   @Get()
-  findAll() {
+  async findAll() {
     return this.userService.findAll();
   }
 
   @ApiOperation({ summary: '根据ID获取用户详情' })
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string) {
     return this.userService.findOne(id);
   }
 
   @ApiOperation({ summary: '更新用户信息' })
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+  async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.userService.update(id, updateUserDto);
   }
 
   @ApiOperation({ summary: '删除用户' })
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
     return this.userService.remove(id);
   }
 }

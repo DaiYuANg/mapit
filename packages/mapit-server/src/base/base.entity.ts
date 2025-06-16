@@ -6,17 +6,18 @@ import {
   DeleteDateColumn,
   BaseEntity as TypeOrmBaseEntity,
 } from 'typeorm';
+import { v7 as uuidV7 } from 'uuid';
 
 export abstract class BaseEntity extends TypeOrmBaseEntity {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id: string = uuidV7();
 
-  @CreateDateColumn({ type: 'datetime' })
+  @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
 
-  @UpdateDateColumn({ type: 'datetime' })
+  @UpdateDateColumn({ type: 'timestamp' })
   updatedAt: Date;
 
-  @DeleteDateColumn({ type: 'datetime', nullable: true })
+  @DeleteDateColumn({ type: 'timestamp', nullable: true })
   deletedAt?: Date;
 }

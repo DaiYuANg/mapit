@@ -1,37 +1,48 @@
-# This Dockerfile uses `serve` npm package to serve the static files with node process.
-# You can find the Dockerfile for nginx in the following link:
-# https://github.com/refinedev/dockerfiles/blob/main/vite/Dockerfile.nginx
-FROM refinedev/node:18 AS base
+#############################
+## 1️⃣ 依赖阶段 —— 安装 node_modules
+#############################
+#FROM node:22-alpine AS deps
+#WORKDIR /app
+#
+## 复制包管理文件（能最大化地命中构建缓存）
+#COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* .npmrc* ./
+#
+## 判断锁文件类型并安装依赖
+#RUN npm install -g pnpm && pnpm i;
+#
+#############################
+## 2️⃣ 构建阶段 —— 编译 Refine 前端
+#############################
+#FROM node:22-alpine AS builder
+#WORKDIR /app
+#
+## 先拷贝依赖，避免再次安装
+#COPY --from=deps /app/node_modules ./node_modules
+#
+## 再拷贝源代码并构建
+#COPY . .
+#ENV NODE_ENV=production
+#RUN pnpm run build  # 或 yarn build / pnpm build
+#
+#############################
+## 3️⃣ 运行阶段 —— nginx:alpine 托管静态文件
+#############################
+#FROM nginx:alpine AS runner
+## 如有自定义配置就 COPY；若用默认配置可省略
+##COPY default.conf /etc/nginx/default.conf
+#
+## 拷贝构建产物到 nginx 默认静态目录
+#COPY --from=builder /app/dist /usr/share/nginx/html
+#
+#EXPOSE 80
+#CMD ["nginx", "-g", "daemon off;"]
 
-FROM base as deps
-
-COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* .npmrc* ./
-
-RUN \
-  if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
-  elif [ -f package-lock.json ]; then npm ci; \
-  elif [ -f pnpm-lock.yaml ]; then yarn global add pnpm && pnpm i --frozen-lockfile; \
-  else echo "Lockfile not found." && exit 1; \
-  fi
-
-FROM base as builder
-
-ENV NODE_ENV production
-
-COPY --from=deps /app/refine/node_modules ./node_modules
-
-COPY . .
-
-RUN npm run build
-
-FROM base as runner
-
-ENV NODE_ENV production
-
-RUN npm install -g serve
-
-COPY --from=builder /app/refine/dist ./
-
-USER refine
-
-CMD ["serve"]
+FROM nginx:alpine AS runner
+## 如有自定义配置就 COPY；若用默认配置可省略
+COPY default.conf /etc/nginx/conf.d/default.conf
+#
+## 拷贝构建产物到 nginx 默认静态目录
+COPY dist /usr/share/nginx/html
+#
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]

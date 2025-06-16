@@ -39,4 +39,26 @@ export class AppController {
   ) {
     return this.appService.queryLabel(req.projectId!, dictCode, itemValue);
   }
+
+  @ApiHeader({
+    name: AccessHeader.AccessKey,
+    description: 'access key header',
+    required: true,
+  })
+  @ApiHeader({
+    name: AccessHeader.AccessSecret,
+    description: 'access secret header',
+    required: true,
+  })
+  @ApiHeader({
+    name: AccessHeader.ProjectId,
+    description: 'access secret header',
+    required: true,
+  })
+  @AccessKey()
+  @Public()
+  @Get('dictionaries/all')
+  async dictionaryAll(@Req() req: CustomRequest) {
+    return this.appService.getAllByProject(req.projectId!);
+  }
 }

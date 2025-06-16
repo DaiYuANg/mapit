@@ -9,8 +9,6 @@ import { DictionaryItemModule } from './dictionary_item/dictionary_item.module';
 import { AccessKeyModule } from './access_key/access_key.module';
 import { CacheModule } from '@nestjs/cache-manager';
 import configuration, { CacheConfig, DatabaseConfig, JwtConfig } from './config/configuration';
-import { ServeStaticModule } from '@nestjs/serve-static';
-import { join } from 'path';
 import { TerminusModule } from '@nestjs/terminus';
 import { HttpModule } from '@nestjs/axios';
 import { EventEmitterModule } from '@nestjs/event-emitter';
@@ -21,7 +19,7 @@ import { ThrottlerModule } from '@nestjs/throttler';
 import { HealthController } from './health/health.controller';
 import { HealthModule } from './health/health.module';
 import { JwtModule } from '@nestjs/jwt';
-import { createKeyv, Keyv } from '@keyv/redis';
+import KeyvRedis, { createKeyv, Keyv } from '@keyv/redis';
 import { CacheableMemory } from 'cacheable';
 import { AccessKey } from './access_key/entities/access_key.entity';
 import { Project } from './project/entities/project.entity';
@@ -64,22 +62,19 @@ import { InitDatabase1749804669929 } from './migration/init.database';
     TerminusModule.forRoot({
       gracefulShutdownTimeoutMs: 1000,
     }),
-    ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '.', 'mapit-ui'),
-    }),
     CacheModule.registerAsync({
       isGlobal: true,
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => {
         const _cache = configService.get<CacheConfig>('cache')!;
+        const storeMap: Record<string, () => Keyv<any>> = {
+          redis: () => new Keyv({ store: new KeyvRedis(`redis://${_cache.host}:${_cache.port}`) }),
+          memory: () => new Keyv({ store: new CacheableMemory({ ttl: 60 * 1000, lruSize: 5000 }) }),
+        };
+        const store = (storeMap[_cache.store] ?? storeMap['memory'])();
         return {
-          stores: [
-            new Keyv({
-              store: new CacheableMemory({ ttl: 60000, lruSize: 5000 }),
-            }),
-            createKeyv(`redis://${_cache.host}:${_cache.port}`),
-          ],
+          stores: store,
           isGlobal: true,
         };
       },

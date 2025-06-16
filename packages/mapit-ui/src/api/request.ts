@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { TOKEN_KEY } from '../authProvider';
+import { TOKEN_KEY } from '../provider/authProvider';
 
 const request = axios.create({
   baseURL: '/api/v1',

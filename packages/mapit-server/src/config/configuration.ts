@@ -24,10 +24,10 @@ export interface AppConfig {
 
 export interface CacheConfig {
   store: 'memory' | 'redis';
-  host?: string; // redis 才需要
-  port?: number; // redis 才需要
-  ttl: number; // 缓存过期时间（秒）
-  max?: number; // 最大缓存数量（仅 memory 模式可用）
+  host?: string;
+  port?: number;
+  ttl: number;
+  max?: number;
 }
 
 export interface JwtConfig {
