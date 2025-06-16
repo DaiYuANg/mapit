@@ -14,16 +14,24 @@ import {
 } from '@ant-design/icons';
 import { message } from 'antd';
 import Draggable from 'react-draggable';
-import { useDelete, useCreate, useList } from '@refinedev/core';
+import { useDelete, useList } from '@refinedev/core';
 import { ProjectCreateForm } from './components/project/create';
-import { ProjectEdit } from './components/project/edit';
-import { KeyModal } from './components/KeyModal';
 import { useModal } from '@refinedev/antd';
 import { ExportModal } from './components/ExportModal';
 import { DictViewModal } from './components/DictViewModal';
 import { Project } from './type';
 import { CreateProjectModal } from './components/CreateProjectModal';
 import { ProjectEditModal } from './components/ProjectEditModal';
+
+import { Tag } from 'antd';
+import { KeyModal } from './components/KeyModal';
+import dayjs from 'dayjs';
+
+// 你可以定义类型映射
+const projectTypeMap: Record<number, { text: string; color: string }> = {
+  0: { text: '公共', color: 'green' },
+  1: { text: '私有', color: 'red' },
+};
 
 export const DictionaryView: React.FC = () => {
   const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
@@ -167,6 +175,9 @@ export const DictionaryView: React.FC = () => {
                     <Typography.Title level={4} style={{ marginBottom: 0 }}>
                       {project.name}
                     </Typography.Title>
+                    <Tag color={projectTypeMap[project.projectType]?.color}>
+                      {projectTypeMap[project.projectType]?.text}
+                    </Tag>
                     <Typography.Text type="secondary" style={{ fontSize: 12 }}>
                       ID:{' '}
                       <Typography.Text copyable style={{ fontSize: 12 }}>
@@ -176,6 +187,9 @@ export const DictionaryView: React.FC = () => {
                     <Typography.Paragraph ellipsis={{ rows: 2 }} style={{ marginBottom: 0, marginTop: 4 }}>
                       {project.description || '暂无描述'}
                     </Typography.Paragraph>
+                    <Typography.Text type="secondary" style={{ fontSize: 12 }}>
+                      创建时间: {dayjs(project.createdAt).format('YYYY-MM-DD HH:mm:ss')}
+                    </Typography.Text>
                   </Space>
                   <Space direction={'horizontal'} wrap>
                     <Button
@@ -208,7 +222,7 @@ export const DictionaryView: React.FC = () => {
           <Col key={`empty-${idx}`} style={{ flex: '0 0 20%', maxWidth: '20%' }} />
         ))}
       </Row>
-      <Row justify="center" style={{ margin: '16px 0' }}>
+      <Row justify="center" style={{ margin: '16px 0px' }}>
         <Pagination current={page} pageSize={pageSize} total={total} onChange={setPage} showSizeChanger={false} />
       </Row>
       <Draggable defaultPosition={{ x: window.innerWidth - 120, y: window.innerHeight - 120 }}>
