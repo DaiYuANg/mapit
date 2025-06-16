@@ -26,10 +26,10 @@ export const KeyModal: React.FC<KeyModalProps> = ({ visible, projectId, onClose 
         values: { projectId, remark }, // remark 可以为空字符串
       },
       {
-        onSuccess: () => {
+        onSuccess: async () => {
           message.success('创建成功');
           setRemark('');
-          refetch();
+          await refetch();
         },
       },
     );
@@ -41,7 +41,7 @@ export const KeyModal: React.FC<KeyModalProps> = ({ visible, projectId, onClose 
       {
         onSuccess: async () => {
           message.success('删除成功');
-          refetch();
+          await refetch();
         },
       },
     );
@@ -72,8 +72,13 @@ export const KeyModal: React.FC<KeyModalProps> = ({ visible, projectId, onClose 
         pagination={false}
         columns={[
           {
-            title: '密钥',
+            title: 'AccessKey',
             dataIndex: 'key',
+            render: (text: string) => <span style={{ fontFamily: 'monospace' }}>{text}</span>,
+          },
+          {
+            title: 'AccessSecret',
+            dataIndex: 'secret',
             render: (text: string) => <span style={{ fontFamily: 'monospace' }}>{text}</span>,
           },
           {
@@ -91,7 +96,10 @@ export const KeyModal: React.FC<KeyModalProps> = ({ visible, projectId, onClose 
             render: (_: any, record: any) => (
               <>
                 <Button size="small" onClick={() => handleCopy(record.key)} style={{ marginRight: 8 }}>
-                  复制
+                  复制AccessKey
+                </Button>
+                <Button size="small" onClick={() => handleCopy(record.secret)} style={{ marginRight: 8 }}>
+                  复制AccessSecret
                 </Button>
                 <Popconfirm title="确定删除？" onConfirm={() => handleDelete(record.id)}>
                   <Button size="small" danger>

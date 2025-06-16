@@ -19,7 +19,7 @@ import { ThrottlerModule } from '@nestjs/throttler';
 import { HealthController } from './health/health.controller';
 import { HealthModule } from './health/health.module';
 import { JwtModule } from '@nestjs/jwt';
-import KeyvRedis, { createKeyv, Keyv } from '@keyv/redis';
+import KeyvRedis, { Keyv } from '@keyv/redis';
 import { CacheableMemory } from 'cacheable';
 import { AccessKey } from './access_key/entities/access_key.entity';
 import { Project } from './project/entities/project.entity';
@@ -112,12 +112,6 @@ import { InitDatabase1749804669929 } from './migration/init.database';
     TypeOrmModule.forFeature([AccessKey, Project, Dictionary, DictionaryItem]),
   ],
   controllers: [AppController, HealthController],
-  providers: [
-    AppService,
-    // {
-    //   provide: APP_INTERCEPTOR,
-    //   useClass: CacheInterceptor,
-    // },
-  ],
+  providers: [AppService],
 })
 export class AppModule {}

@@ -24,6 +24,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
       message = exception.message;
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     this.logger.error(`[${request.method}] ${request.url} → ${status} ${message}`, (exception as any).stack);
 
     response.status(status).json({

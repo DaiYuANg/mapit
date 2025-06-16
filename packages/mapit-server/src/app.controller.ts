@@ -13,7 +13,7 @@ import type { CustomRequest } from './http/request';
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get('/api/v1/projects/:projectId/dictionaries/:dictCode/mapping/:itemValue')
+  @Get('dictionaries/:dictCode/mapping/:itemValue')
   @AccessKey()
   @Public()
   @CacheKey('label')

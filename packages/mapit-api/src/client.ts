@@ -3,6 +3,7 @@ import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 export interface ApiClientOptions {
   baseURL: string;
   accessKey: string;
+  accessSecret: string;
   projectId: string;
 }
 
@@ -11,12 +12,12 @@ export class ApiClient {
 
   constructor(private options: ApiClientOptions) {
     this.instance = axios.create({
-      baseURL: options.baseURL,
-    });
-
-    this.instance.interceptors.request.use((config) => {
-      config.headers['Access-Key'] = this.options.accessKey;
-      return config;
+      baseURL: this.options.baseURL,
+      headers: {
+        'X-Access-Key': this.options.accessKey,
+        'X-Access-Secret': this.options.accessSecret,
+        'X-Project-Id': this.options.projectId,
+      },
     });
 
     this.instance.interceptors.response.use(
@@ -28,7 +29,7 @@ export class ApiClient {
     );
   }
 
-  get<T = any>(url: string, config?: AxiosRequestConfig) {
+  private get<T = any>(url: string, config?: AxiosRequestConfig) {
     return this.instance.get<T>(url, config);
   }
 
@@ -36,11 +37,12 @@ export class ApiClient {
     return this.instance.post<T>(url, data, config);
   }
 
-  mapping(dictCode: string, itemValue: string) {
-    return this.instance.get(`/api/v1/projects/${this.options.projectId}/dictionaries/${dictCode}/mapping`, {
-      params: {
-        value: itemValue,
-      },
-    });
+  public mappingByValue(dictCode: string, itemValue: string) {
+    const url = `/api/v1/dictionaries/${dictCode}/mapping/${itemValue}`;
+    return this.get(url);
+  }
+
+  public dictionaryAll() {
+    return this.get(`/api/v1/dictionaries/all`);
   }
 }

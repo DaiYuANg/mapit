@@ -11,7 +11,8 @@
   },
   "dependencies": {
     "react": "catalog:",
-    "react-dom": "catalog:"
+    "react-dom": "catalog:",
+    "@mapit/api": "workspace:*"
   },
   "devDependencies": {
     "@eslint/js": "^9.25.0",

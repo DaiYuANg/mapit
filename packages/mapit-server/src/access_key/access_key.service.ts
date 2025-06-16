@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { MoreThan, Repository } from 'typeorm';
 import { AccessKey } from './entities/access_key.entity';
@@ -7,6 +7,7 @@ import { UpdateAccessKeyDto } from './dto/update-access_key.dto';
 import * as crypto from 'crypto';
 import { Permission } from './permission';
 import { v7 as uuidv7 } from 'uuid';
+import { CACHE_MANAGER, Cache } from '@nestjs/cache-manager';
 
 interface AccessKeyFilters {
   projectId?: string;
@@ -19,6 +20,7 @@ export class AccessKeyService {
   constructor(
     @InjectRepository(AccessKey)
     private readonly accessKeyRepo: Repository<AccessKey>,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
   ) {}
 
   async validate(key: string): Promise<boolean> {
@@ -152,11 +154,27 @@ export class AccessKeyService {
   }
 
   async validateKey(key: string, secret: string) {
-    return this.accessKeyRepo.findOne({
+    const cacheKey = `accessKey:${key}:${secret}`;
+
+    // 先查缓存
+    const cached = await this.cacheManager.get<AccessKey | null>(cacheKey);
+    if (cached) {
+      return cached;
+    }
+
+    // 缓存没命中，查数据库
+    const accessKey = await this.accessKeyRepo.findOne({
       where: {
         key,
         secret,
       },
     });
+
+    // 查到了就缓存，缓存时间可以根据需求调整，比如 5 分钟
+    if (accessKey) {
+      await this.cacheManager.set(cacheKey, accessKey, 6000);
+    }
+
+    return accessKey;
   }
 }
