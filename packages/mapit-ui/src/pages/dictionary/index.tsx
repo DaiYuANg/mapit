@@ -1,7 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { Card, Row, Col, Typography, Space, Button, Popconfirm, Modal, Pagination, Spin } from 'antd';
-import { DictionaryList } from './components/dictionary';
-import { DictionaryItemList } from './components/dictionary-item';
+import { Card, Row, Col, Typography, Space, Button, Popconfirm, Pagination } from 'antd';
 import './dashboard-animate.css';
 import {
   EditOutlined,
@@ -15,7 +13,6 @@ import {
 import { message } from 'antd';
 import Draggable from 'react-draggable';
 import { useDelete, useList } from '@refinedev/core';
-import { ProjectCreateForm } from './components/project/create';
 import { useModal } from '@refinedev/antd';
 import { ExportModal } from './components/ExportModal';
 import { DictViewModal } from './components/DictViewModal';

@@ -1,4 +1,6 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
+import { ApiClient } from './api-client';
+import { DictionaryGroup } from '@mapit/types';
 
 export interface ApiClientOptions {
   baseURL: string;
@@ -7,7 +9,7 @@ export interface ApiClientOptions {
   projectId: string;
 }
 
-export class ApiClient {
+export class AxiosClient implements ApiClient {
   private instance: AxiosInstance;
 
   constructor(private options: ApiClientOptions) {
@@ -37,12 +39,12 @@ export class ApiClient {
     return this.instance.post<T>(url, data, config);
   }
 
-  public mappingByValue(dictCode: string, itemValue: string) {
+  public queryByCodeAndValue(dictCode: string, itemValue: string) {
     const url = `/api/v1/dictionaries/${dictCode}/mapping/${itemValue}`;
-    return this.get(url);
+    return this.instance.get<null, string>(url);
   }
 
   public dictionaryAll() {
-    return this.get(`/api/v1/dictionaries/all`);
+    return this.instance.get<null, DictionaryGroup, null>(`/api/v1/dictionaries/all`);
   }
 }

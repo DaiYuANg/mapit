@@ -1,8 +1,8 @@
 import { describe, it, expect, vi, beforeEach, beforeAll } from 'vitest';
 import axios from 'axios';
-import { ApiClient } from '../client';
+import { AxiosClient } from '../axios-client';
 
-let client: ApiClient = new ApiClient({
+let client: AxiosClient = new AxiosClient({
   baseURL: 'http://localhost:3000',
   accessKey: '01977808-8260-70fa-ad85-9a32be7a2e2e',
   accessSecret: '4abaab01494d34660876099e4180e37c9e387f11c83e45ba',
@@ -21,7 +21,7 @@ describe('ApiClient integration (real HTTP)', () => {
     const dictCode = 'sex';
     const itemValue = '1';
 
-    const result = await client.mappingByValue(dictCode, itemValue);
+    const result = await client.queryByCodeAndValue(dictCode, itemValue);
     console.log(result);
     expect(result).toHaveProperty('name');
   });

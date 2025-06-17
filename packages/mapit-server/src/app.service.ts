@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Project } from './project/entities/project.entity';
 import { DictionaryItem } from './dictionary_item/entities/dictionary_item.entity';
 import { Cache, CACHE_MANAGER } from '@nestjs/cache-manager';
+import { DictionaryGroup, DictionaryItemSelectView, DictionaryItemView } from '@mapit/types';
 
 @Injectable()
 export class AppService {
@@ -20,7 +21,7 @@ export class AppService {
     @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
   ) {}
 
-  async queryLabel(projectId: string, dictionaryCode: string, itemValue: string) {
+  async findByCodeAndValue(projectId: string, dictionaryCode: string, itemValue: string) {
     const cacheKey = `dictItem:${projectId}:${dictionaryCode}:${itemValue}`;
 
     // 先查缓存
@@ -60,13 +61,28 @@ export class AppService {
       code: dictItem.code,
     };
 
-    // 写入缓存，设置过期时间（秒）
     await this.cacheManager.set(cacheKey, result, 60 * 60); // 1小时缓存
 
     return result;
   }
 
-  async getAllByProject(projectId: string) {
+  async findByCode(projectId: string, dictionaryCode: string): Promise<DictionaryItemSelectView[]> {
+    const result = await this.dictionaryItemRepository.find({
+      where: {
+        dictionary: { code: dictionaryCode, project: { id: projectId } },
+      },
+    });
+    return result.map((item) => {
+      return {
+        value: item.code,
+        label: item.name,
+        description: item.description,
+        extra: item.extra,
+      };
+    });
+  }
+
+  async getAllByProject(projectId: string): Promise<DictionaryGroup> {
     const project = await this.projectRepository.findOne({
       where: { id: projectId },
     });
@@ -93,6 +109,7 @@ export class AppService {
           code: item.code,
           name: item.name,
           description: item.description,
+          extra: item.extra,
         })),
       ]),
     );

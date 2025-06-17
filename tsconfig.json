@@ -1,0 +1,4 @@
+{
+  "files": [],
+  "references": [{ "path": "packages/mapit-types" }, { "path": "packages/mapit-server" }]
+}

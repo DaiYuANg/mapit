@@ -32,12 +32,35 @@ export class AppController {
     description: 'access secret header',
     required: true,
   })
-  async queryLabel(
+  async queryByCodeAndValue(
     @Param('dictCode') dictCode: string,
     @Param('itemValue') itemValue: string,
     @Req() req: CustomRequest,
   ) {
-    return this.appService.queryLabel(req.projectId!, dictCode, itemValue);
+    return this.appService.findByCodeAndValue(req.projectId!, dictCode, itemValue);
+  }
+
+  @Get('dictionaries/:dictCode')
+  @AccessKey()
+  @Public()
+  @CacheKey('label')
+  @ApiHeader({
+    name: AccessHeader.AccessKey,
+    description: 'access key header',
+    required: true,
+  })
+  @ApiHeader({
+    name: AccessHeader.AccessSecret,
+    description: 'access secret header',
+    required: true,
+  })
+  @ApiHeader({
+    name: AccessHeader.ProjectId,
+    description: 'access secret header',
+    required: true,
+  })
+  async queryByCode(@Param('dictCode') dictCode: string, @Req() req: CustomRequest) {
+    return this.appService.findByCode(req.projectId!, dictCode);
   }
 
   @ApiHeader({
