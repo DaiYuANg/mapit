@@ -13,11 +13,10 @@ interface DictionaryListProps {
 
 export const DictionaryList: React.FC<DictionaryListProps> = ({ projectId, onDictionarySelect }) => {
   const [createModalVisible, setCreateModalVisible] = useState(false);
-  const [selectedDictionaryId, setSelectedDictionaryId] = useState<string | null>(null);
   const [editDictionaryId, setEditDictionaryId] = useState<string | null>(null);
   const [showDictionaryId, setShowDictionaryId] = useState<string | null>(null);
 
-  const { tableProps, tableQueryResult } = useTable({
+  const { tableProps, tableQuery } = useTable({
     resource: 'dictionary/paginated',
     pagination: { current: 1, pageSize: 10 },
     filters: {
@@ -37,7 +36,7 @@ export const DictionaryList: React.FC<DictionaryListProps> = ({ projectId, onDic
 
   const handleRowClick = (record: BaseRecord) => {
     const newSelectedId = record.id as string;
-    setSelectedDictionaryId(newSelectedId);
+    // setSelectedDictionaryId(newSelectedId);
     onDictionarySelect(newSelectedId);
   };
 
@@ -85,8 +84,8 @@ export const DictionaryList: React.FC<DictionaryListProps> = ({ projectId, onDic
                 resource="dictionary"
                 hideText
                 size="small"
-                onSuccess={() => {
-                  tableQueryResult?.refetch();
+                onSuccess={async () => {
+                  tableQuery?.refetch();
                 }}
                 recordItemId={record.id}
               />
@@ -105,7 +104,7 @@ export const DictionaryList: React.FC<DictionaryListProps> = ({ projectId, onDic
           onSuccess={async () => {
             setCreateModalVisible(false);
             // 这里可以加刷新逻辑，比如 refetch table 数据
-            tableQueryResult?.refetch();
+            tableQuery?.refetch();
           }}
           onCancel={() => setCreateModalVisible(false)}
         />
@@ -116,7 +115,7 @@ export const DictionaryList: React.FC<DictionaryListProps> = ({ projectId, onDic
             id={editDictionaryId}
             onSuccess={async () => {
               setEditDictionaryId(null);
-              tableQueryResult?.refetch();
+              tableQuery?.refetch();
             }}
             onCancel={() => setEditDictionaryId(null)}
           />

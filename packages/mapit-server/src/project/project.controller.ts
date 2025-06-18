@@ -33,6 +33,7 @@ export class ProjectController {
   @ApiOperation({ summary: '获取单个项目' })
   @Get(':id')
   async findOne(@Param('id') id: string) {
+    if (!id) throw new NotFoundException('项目不存在');
     return await this.projectService.findOne(id);
   }
 
