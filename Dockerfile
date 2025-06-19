@@ -1,4 +1,4 @@
-FROM node:22-alpine AS base
+FROM node:24-alpine AS base
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
@@ -11,13 +11,17 @@ RUN pnpm run -r build
 RUN pnpm deploy --filter=@mapit/server --prod /prod/server
 
 FROM base AS server
+
+RUN npm install -g pm2
+
 COPY --from=build /prod/server/dist /prod/server/dist
 COPY --from=build /prod/server/package.json /prod/server/package.json
 COPY --from=build /prod/server/node_modules /prod/server/node_modules
 
 WORKDIR /prod/server
 EXPOSE 3000
-CMD [ "node", "dist/main.js" ]
+#CMD [ "node", "dist/main.js" ]
+CMD ["pm2-runtime", "dist/main.js", "-i", "max","--exec_mode","cluster"]
 
 #FROM base AS web
 #COPY --from=build /prod/app2 /prod/app2

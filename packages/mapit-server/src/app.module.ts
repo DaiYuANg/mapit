@@ -26,6 +26,7 @@ import { Project } from './project/entities/project.entity';
 import { Dictionary } from './dictionary/entities/dictionary.entity';
 import { DictionaryItem } from './dictionary_item/entities/dictionary_item.entity';
 import { InitDatabase1749804669929 } from './migration/init.database';
+import { TypeOrmModuleOptions } from '@nestjs/typeorm/dist/interfaces/typeorm-options.interface';
 
 @Module({
   imports: [
@@ -83,7 +84,9 @@ import { InitDatabase1749804669929 } from './migration/init.database';
       imports: [ConfigModule],
       useFactory: (config: ConfigService) => {
         const dbConfig = config.get<DatabaseConfig>('database')!;
-        return {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-expect-error
+        const option: TypeOrmModuleOptions = {
           type: dbConfig.type,
           host: dbConfig.host,
           port: dbConfig.port,
@@ -91,14 +94,15 @@ import { InitDatabase1749804669929 } from './migration/init.database';
           password: dbConfig.password,
           database: dbConfig.database,
           entities: [__dirname + '/**/*.entity{.ts,.js}'],
-          // synchronize: process.env.MODE === 'development',
           synchronize: false,
-          logging: 'all',
+          logging: process.env.MODE === 'development' ? 'all' : undefined,
           migrations: [InitDatabase1749804669929],
           migrationsRun: true,
           migrationsTableName: 'mapit_migration',
-          logger: 'simple-console',
+          logger: process.env.NODE_ENV === 'development' ? 'simple-console' : undefined,
+          poolSize: 50,
         };
+        return option;
       },
       inject: [ConfigService],
     }),
