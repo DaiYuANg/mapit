@@ -1,11 +1,14 @@
-FROM node:24-alpine AS base
+FROM node:24-slim AS base
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
-RUN corepack enable
 
 FROM base AS build
 COPY . /usr/src/app
 WORKDIR /usr/src/app
+RUN sed -i 's/deb.debian.org/mirrors.ustc.edu.cn/g' /etc/apt/sources.list.d/debian.sources && \
+    sed -i 's/deb.debian.org/mirrors.ustc.edu.cn/g' /etc/apt/sources.list.d/debian.sources && \
+    apt-get update && apt-get install -y python3 make g++ build-essential --fix-missing
+RUN corepack enable
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 RUN pnpm run -r build
 RUN pnpm deploy --filter=@mapit/server --prod /prod/server
