@@ -24,7 +24,7 @@ COPY --from=build /prod/server/node_modules /prod/server/node_modules
 WORKDIR /prod/server
 EXPOSE 3000
 #CMD [ "node", "dist/main.js" ]
-CMD ["pm2-runtime", "dist/main.js", "-i", "max","--exec_mode","cluster"]
+CMD ["sh", "-c", "pm2-runtime dist/main.js -i ${PM2_INSTANCES:-max} --exec_mode cluster"]
 
 #FROM base AS web
 #COPY --from=build /prod/app2 /prod/app2

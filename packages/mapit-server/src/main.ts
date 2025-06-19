@@ -11,24 +11,32 @@ import { LoggingInterceptor } from './interceptor/LoggingInterceptor';
 const bootstrap = async () => {
   const app = await NestFactory.create(AppModule, {
     logger: new ConsoleLogger({
-      json: process.env.NODE_MODE === 'development',
+      json: process.env.NODE_ENV === 'development',
       prefix: 'mapit',
       timestamp: true,
     }),
   });
   app.setGlobalPrefix('api/v1');
-  const config = new DocumentBuilder()
-    .setTitle('Map it')
-    .setDescription('The mapit API description')
-    .setVersion('1.0')
-    .addTag('map')
-    .addBearerAuth()
-    .build();
-  const documentFactory = () => SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, documentFactory);
+  if (process.env.NODE_ENV === 'development') {
+    const config = new DocumentBuilder()
+      .setTitle('Map it')
+      .setDescription('The mapit API description')
+      .setVersion('1.0')
+      .addTag('map')
+      .addBearerAuth()
+      .build();
+    const documentFactory = () => SwaggerModule.createDocument(app, config);
+    SwaggerModule.setup('api', app, documentFactory);
+  }
   app.use(compression());
   app.use(helmet());
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      transform: true,
+    }),
+  );
   app.useGlobalInterceptors(new PaginationInterceptor(), new LoggingInterceptor());
   app.useGlobalFilters(new AllExceptionsFilter());
   await app.listen(process.env.PORT ?? 3000, '0.0.0.0');

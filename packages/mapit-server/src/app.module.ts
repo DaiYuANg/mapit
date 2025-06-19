@@ -49,8 +49,11 @@ import { TypeOrmModuleOptions } from '@nestjs/typeorm/dist/interfaces/typeorm-op
     }),
     AuthModule,
     HealthModule,
-    ScheduleModule.forRoot(),
-    EventEmitterModule.forRoot(),
+    ScheduleModule.forRoot({}),
+    EventEmitterModule.forRoot({
+      global: true,
+      verboseMemoryLeak: process.env.NODE_ENV === 'development',
+    }),
     ThrottlerModule.forRoot({
       throttlers: [
         {
@@ -95,12 +98,15 @@ import { TypeOrmModuleOptions } from '@nestjs/typeorm/dist/interfaces/typeorm-op
           database: dbConfig.database,
           entities: [__dirname + '/**/*.entity{.ts,.js}'],
           synchronize: false,
-          logging: process.env.MODE === 'development' ? 'all' : undefined,
+          logging: process.env.NODE_ENV === 'development' ? 'all' : undefined,
           migrations: [InitDatabase1749804669929],
           migrationsRun: true,
           migrationsTableName: 'mapit_migration',
           logger: process.env.NODE_ENV === 'development' ? 'simple-console' : undefined,
           poolSize: 50,
+          extra: {
+            connectionLimit: 50,
+          },
         };
         return option;
       },
